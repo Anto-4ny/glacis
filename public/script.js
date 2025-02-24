@@ -32,15 +32,15 @@ const firebaseConfig = {
     measurementId: "G-EPLJB8MTRH",
 };
 
-// Initialize Firebase
+// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); 
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// ✅ Export properly
+export { auth, db, doc, getDoc, query, collection, where, getDocs, storage, sendPasswordResetEmail };
 
-export const auth = {
-    auth, db, doc, getDoc, query, collection, where, getDocs, storage,  sendPasswordResetEmail
-  };
 
 // Ensure user is authenticated
 export const ensureAuthenticated = () => {
