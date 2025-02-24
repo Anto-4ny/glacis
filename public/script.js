@@ -34,11 +34,13 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app); // ✅ Correct way to get auth
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-  export { auth, db, doc, getDoc, query, collection, where, getDocs, storage,  sendPasswordResetEmail };
+
+export const auth = {
+    auth, db, doc, getDoc, query, collection, where, getDocs, storage,  sendPasswordResetEmail
+  };
 
 // Ensure user is authenticated
 export const ensureAuthenticated = () => {
@@ -290,3 +292,4 @@ document.addEventListener("DOMContentLoaded", () => {
   closeNav.addEventListener("click", closeMobileNav);
   overlay.addEventListener("click", closeMobileNav);
 });
+
