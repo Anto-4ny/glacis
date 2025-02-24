@@ -139,87 +139,79 @@
         <script type ="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"></script>
         <script type ="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js"></script>
     
-    <!-- Your custom script using Firebase -->
-    <script type="module" src="script.js"></script>
-    <script type="module">
-        import { auth, sendPasswordResetEmail } from "./script.js"; // ✅ Correct
-
-
-        // Switch between forms
-        document.getElementById("show-login").addEventListener("click", (e) => {
-            e.preventDefault();
-            document.getElementById("signup-section").classList.add("hidden");
-            document.getElementById("login-section").classList.remove("hidden");
-        });
-
-        document.getElementById("show-signup").addEventListener("click", (e) => {
-            e.preventDefault();
-            document.getElementById("login-section").classList.add("hidden");
-            document.getElementById("signup-section").classList.remove("hidden");
-        });
-
-        document.getElementById("forgot-password").addEventListener("click", (e) => {
-            e.preventDefault();
-            document.getElementById("login-section").classList.add("hidden");
-            document.getElementById("forgot-password-section").classList.remove("hidden");
-        });
-
-        // Send reset password email
-        document.getElementById("send-reset-email").addEventListener("click", () => {
-            const email = document.getElementById("reset-email").value;
-
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    document.getElementById("reset-message").innerText =
-                        "Password reset email sent! Check your inbox.";
-                })
-                .catch((error) => {
-                    document.getElementById("reset-message").innerText =
-                        `Error: ${error.message}`;
-                });
-        });
-
-        // Back to login after resetting password
-        document.getElementById("back-to-login").addEventListener("click", (e) => {
-            e.preventDefault();
-            document.getElementById("forgot-password-section").classList.add("hidden");
-            document.getElementById("login-section").classList.remove("hidden");
-        });
-   
-        // Auto-fill referral code from URL if provided
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const referralCode = urlParams.get('referral');
-            if (referralCode) {
-                const referralInput = document.getElementById('referral-code');
-                referralInput.value = referralCode;
-               // referralInput.disabled = true;
-            }
-        });
-
+        <script type="module">
+            import { auth, sendPasswordResetEmail } from "/script.js"; // ✅ Import Firebase functions
         
-  document.addEventListener("contextmenu", function (event) {
-    event.preventDefault(); // Disable right-click
-  });
-
-  document.addEventListener("keydown", function (event) {
-    if (event.ctrlKey && (event.key === "u" || event.key === "U")) {
-      event.preventDefault(); // Disable "View Source" (Ctrl + U)
-    }
-    if (event.ctrlKey && event.shiftKey && event.key === "I") {
-      event.preventDefault(); // Disable DevTools (Ctrl + Shift + I)
-    }
-    if (event.ctrlKey && event.shiftKey && event.key === "J") {
-      event.preventDefault(); // Disable DevTools (Ctrl + Shift + J)
-    }
-    if (event.ctrlKey && event.key === "S") {
-      event.preventDefault(); // Disable Save (Ctrl + S)
-    }
-    if (event.ctrlKey && event.key === "P") {
-      event.preventDefault(); // Disable Print (Ctrl + P)
-    }
-  });
-
-    </script>
+            // 🔹 Toggle Between Forms (Signup/Login/Forgot Password)
+            const toggleForm = (hide, show) => {
+                document.getElementById(hide).classList.add("hidden");
+                document.getElementById(show).classList.remove("hidden");
+            };
+        
+            document.getElementById("show-login").addEventListener("click", (e) => {
+                e.preventDefault();
+                toggleForm("signup-section", "login-section");
+            });
+        
+            document.getElementById("show-signup").addEventListener("click", (e) => {
+                e.preventDefault();
+                toggleForm("login-section", "signup-section");
+            });
+        
+            document.getElementById("forgot-password").addEventListener("click", (e) => {
+                e.preventDefault();
+                toggleForm("login-section", "forgot-password-section");
+            });
+        
+            document.getElementById("back-to-login").addEventListener("click", (e) => {
+                e.preventDefault();
+                toggleForm("forgot-password-section", "login-section");
+            });
+        
+            // 🔹 Send Reset Password Email
+            document.getElementById("send-reset-email").addEventListener("click", async () => {
+                const email = document.getElementById("reset-email").value;
+                const messageBox = document.getElementById("reset-message");
+        
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    messageBox.innerText = "✅ Password reset email sent! Check your inbox.";
+                    messageBox.style.color = "green";
+                } catch (error) {
+                    messageBox.innerText = `⚠️ Error: ${error.message}`;
+                    messageBox.style.color = "red";
+                }
+            });
+        
+            // 🔹 Auto-fill Referral Code from URL (If Provided)
+            document.addEventListener("DOMContentLoaded", () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const referralCode = urlParams.get("referral");
+                if (referralCode) {
+                    const referralInput = document.getElementById("referral-code");
+                    referralInput.value = referralCode;
+                }
+            });
+        
+            // 🔹 Disable Right-Click & Common DevTools Shortcuts
+            document.addEventListener("contextmenu", (event) => event.preventDefault()); // Disable right-click
+        
+            document.addEventListener("keydown", (event) => {
+                const blockedKeys = [
+                    { ctrl: true, key: "u" }, // View Source (Ctrl + U)
+                    { ctrl: true, shift: true, key: "I" }, // DevTools (Ctrl + Shift + I)
+                    { ctrl: true, shift: true, key: "J" }, // DevTools (Ctrl + Shift + J)
+                    { ctrl: true, key: "S" }, // Save (Ctrl + S)
+                    { ctrl: true, key: "P" } // Print (Ctrl + P)
+                ];
+        
+                blockedKeys.forEach(({ ctrl, shift, key }) => {
+                    if (event.ctrlKey === ctrl && event.shiftKey === shift && event.key.toLowerCase() === key.toLowerCase()) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        
+        </script>        
 </body>
 </html>
