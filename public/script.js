@@ -39,7 +39,7 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 // Export Firebase modules
-export { auth, db, sendPasswordResetEmail };
+export { auth, db, doc, getDoc, query, collection, where, getDocs, storage,  sendPasswordResetEmail };
 
 // Ensure user is authenticated
 export const ensureAuthenticated = () => {
