@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Glacis || Validator</title>
+    <meta name="description" content="Glacis offers an online earning platform where users make money by inviting others, helping verify new users, selling ebooks, advertising, and more.">
+    <meta property="og:title" content="Glacis">
+    <meta property="og:description" content="Join Glacis to earn money through various online opportunities including referrals, verifications, and advertising.">
+    <meta property="og:image" content="images/Photo_1723191951676.png">
+    <meta property="og:url" content="https://glacis.antocapteknologies.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="images/Photo_1723191951676.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+    <script type="module">
+        import { ensureAuthenticated } from "./script.js";
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            ensureAuthenticated(); 
+        });
+    </script>   
+ <!-- Header -->
+<header class="flex items-center justify-between p-4 bg-black shadow-md fixed w-full top-0 z-50">
+    <a href="/" class="flex items-center">
+        <img id="logo" src="images/Photo_1723191951676.png" alt="Logo" class="h-10">
+    </a>
+
+   <!-- Desktop Navigation -->
+<nav class="hidden lg:flex space-x-6 bg-black px-6 py-3 shadow-lg rounded-lg">
+    <a href="dashboard" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Dashboard</a>
+    <a href="earnings" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Earnings</a>
+    <a href="help" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Help</a>
+    <a href="validator" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Validator</a>
+    <a href="referral" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Referrals</a>
+    <a href="withdraw" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Withdraw</a>
+    <a href="about" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">About Us</a>
+    <a href="help" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Help</a>
+    <a href="profile" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Profile</a>
+    <button id="logout-button" class="text-red-500 font-semibold hover:text-red-700 transition duration-300 shadow-md">Log Out</button>
+</nav>
+
+    <!-- Mobile Navigation Icon -->
+    <button id="hamburger-icon" class="text-gray-600 text-xl lg:hidden">
+        <i class="fas fa-bars"></i>
+    </button>
+</header>
+
+<!-- Overlay -->
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden"></div>
+
+<!-- Mobile Navigation -->
+<nav id="mobile-nav" class="fixed left-0 top-0 h-full w-1/4 bg-white shadow-lg transform -translate-x-full transition-transform lg:hidden z-50">
+    <div class="p-4 border-b flex justify-between items-center">
+        <h3 class="text-lg font-semibold">Menu</h3>
+        <button id="close-nav" class="text-gray-600 text-xl"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="p-4 flex flex-col space-y-3">
+        <a href="dashboard" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+        <a href="earnings" class="text-gray-700 hover:text-blue-600">Earnings</a>
+        <a href="validator" class="text-gray-700 hover:text-blue-600">Validator</a>
+        <a href="referral" class="text-gray-700 hover:text-blue-600">Referrals</a>
+        <a href="withdraw" class="text-gray-700 hover:text-blue-600">Withdraw</a>
+        <a href="about" class="text-gray-700 hover:text-blue-600">About Us</a>
+        <a href="help" class="text-gray-700 hover:text-blue-600">Help</a>
+        <a href="profile" class="text-gray-700 hover:text-blue-600">Profile</a>
+        <button id="logout-button" class="text-red-600 hover:text-red-800">Log Out</button>
+    </div>
+</nav>
+
+<body class="bg-gray-100 font-sans mt-20">
+<section id="validators" class="p-6 bg-gray-100 min-h-screen">
+    <!-- Validators Page Title -->
+    <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
+        <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
+                   bg-gradient-to-r from-green-500 to-blue-600 inline-block px-6">
+            Validators Panel
+        </h2>
+    </div>
+
+    <!-- Pending Transactions Table -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Pending Transactions</h3>
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3 border">Username</th>
+                    <th class="p-3 border">Amount Paid</th>
+                    <th class="p-3 border">Transaction ID</th>
+                    <th class="p-3 border">Time Submitted</th>
+                    <th class="p-3 border">Validation Status</th>
+                    <th class="p-3 border">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center">
+                    <td class="p-3 border">JohnDoe</td>
+                    <td class="p-3 border">$33</td>
+                    <td class="p-3 border text-blue-500">#TX123456</td>
+                    <td class="p-3 border">2025-02-24 14:30</td>
+                    <td class="p-3 border text-yellow-500">Pending</td>
+                    <td class="p-3 border">
+                        <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                            Validate
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Validate Payment Panel -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
+        <p class="text-gray-600 mb-4">Review and approve/reject payments.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Payment Details -->
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-700 mb-2">Transaction Details</h4>
+                <p><strong>TXID:</strong> #TX123456</p>
+                <p><strong>Amount:</strong> $33</p>
+                <p><strong>Sender Wallet:</strong> 0x123ABC...</p>
+                <p><strong>Platform Wallet:</strong> 0xXYZ789...</p>
+                <p class="text-blue-500 underline cursor-pointer">View on Blockchain Explorer</p>
+            </div>
+
+            <!-- Screenshot & Actions -->
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-700 mb-2">Proof of Payment</h4>
+                <img src="screenshot.jpg" alt="Transaction Proof" class="w-full h-40 object-cover rounded-lg mb-3">
+                <div class="flex justify-between">
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                        Approve
+                    </button>
+                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                        Reject
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings Tracker for Validators -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Tracker</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-green-100 p-4 rounded-lg text-center">
+                <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
+                <p class="text-2xl font-bold text-green-700">152</p>
+            </div>
+            <div class="bg-blue-100 p-4 rounded-lg text-center">
+                <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
+                <p class="text-2xl font-bold text-blue-700">$456</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
+                <p class="text-2xl font-bold text-gray-600">$30</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation History -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
+        <p class="text-gray-600 mb-4">View previously validated payments.</p>
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3 border">Username</th>
+                    <th class="p-3 border">Amount</th>
+                    <th class="p-3 border">Transaction ID</th>
+                    <th class="p-3 border">Status</th>
+                    <th class="p-3 border">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center">
+                    <td class="p-3 border">JaneSmith</td>
+                    <td class="p-3 border">$100</td>
+                    <td class="p-3 border text-blue-500">#TX789012</td>
+                    <td class="p-3 border text-green-600">Approved</td>
+                    <td class="p-3 border">2025-02-22</td>
+                </tr>
+                <tr class="text-center">
+                    <td class="p-3 border">MikeLee</td>
+                    <td class="p-3 border">$33</td>
+                    <td class="p-3 border text-blue-500">#TX456789</td>
+                    <td class="p-3 border text-red-600">Rejected</td>
+                    <td class="p-3 border">2025-02-21</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<footer class="bg-gray-900 text-white text-center py-4">
+    <p class="copyright-text text-sm">
+        &copy; 2025 <span class="font-bold">Glacis</span>. All rights reserved.
+    </p>
+    <p class="text-xs mt-1">
+        Designed by 
+        <a href="https://antocapteknologies.com" class="text-blue-400 hover:text-blue-300 font-semibold" target="_blank">
+            Antocap Teknologies
+        </a>
+    </p>
+</footer>    
+  
+      
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js"></script>
+
+<!-- Your custom script -->
+<script type="module" src="script.js"></script>
+
+  <script>
+
+document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Disable right-click
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && (event.key === "u" || event.key === "U")) {
+      event.preventDefault(); // Disable "View Source" (Ctrl + U)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "I") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + I)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "J") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + J)
+    }
+    if (event.ctrlKey && event.key === "S") {
+      event.preventDefault(); // Disable Save (Ctrl + S)
+    }
+    if (event.ctrlKey && event.key === "P") {
+      event.preventDefault(); // Disable Print (Ctrl + P)
+    }
+  });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+
+/* Deposit Header */
+#deposit-header {
+    width: 100%;
+    height: 30px; /* Small height for deposit header */
+    background-color: gold; /* Gold background */
+    color: #000; /* Text color */
+    display: flex;
+    align-items: right;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    z-index: 1001;
+}
+
+
+/* Styles for the packages information section */
+.packages-info-box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.packages-info-box h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.packages-info-box p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.packages-info-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.packages-info-box li {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .packages-info-box {
+        padding: 15px;
+    }
+
+    .packages-info-box h1 {
+        font-size: 20px;
+    }
+
+    .packages-info-box p {
+        font-size: 14px;
+    }
+
+    .packages-info-box li {
+        font-size: 14px;
+    }
+    }
+    
+
+/* Packages Section */
+#packages-section {
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.package-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.package-box {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.package-box:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.package-price {
+    font-size: 24px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.package-description {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.package-details {
+    font-size: 14px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.pay-button {
+    background-color: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pay-button:hover {
+    background-color: #1e8e4f;
+}
+
+.package-referral-link {
+    margin-top: 20px;
+}
+
+.package-referral-link p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.package-referral-link button {
+    background-color: #1e88e5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.package-referral-link button:hover {
+    background-color: #0d47a1;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .package-container {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 992px) {
+    .package-box {
+        max-width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .package-box {
+        max-width: 90%;
+    }
+
+    .package-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    }
+    
+
+/*products.html page*/
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.product-card img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.actions {
+    margin-top: 15px;
+}
+
+.actions a {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    color: #fff;
+}
+
+#download-image-1 {
+    background-color: #28a745;
+}
+
+#whatsapp-share-1 {
+    background-color: #25D366;
+}
+
+
+
+.profile-container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture-section {
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture-section img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.form-group {
+    position: relative; /* To position icon absolutely */
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.editable {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    width: calc(100% - 22px); /* Adjust width for border */
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+    
+
+.footer {
+    display: flex;
+    justify-content: space-around; /* Adjust alignment as needed */
+    background-color: #DDE8F0; /* Footer background color */
+    padding: 5px 0; /* Padding around the footer */
+    border-top: 1px solid #ddd; /* Top border for the footer */
+    position: fixed; /* Fixed position */
+    bottom: 0; /* Stick to the bottom */
+    left: 0; /* Align to the left edge */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+.footer-item {
+    text-align: center; /* Center align text and icons */
+    display: flex;
+    flex-direction: row; /* Stack icon above text */
+    align-items: center; /* Center align items horizontally */
+}
+
+.footer-icon {
+    width: 40px; /* Set a fixed width for icons */
+    height: 40px; /* Set a fixed height for icons */
+    margin-bottom: 1px; /* Space between icon and text */
+}
+
+.footer-item a {
+    text-decoration: none;
+    color: #000; /* Color for the text */
+    display: flex;
+    flex-direction: column; /* Stack icon above text */
+    align-items: center; /* Center align items horizontally */
+}
+
+.footer-item a:hover {
+    color: #007bff; /* Change color on hover */
+}
+
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: row; /* Stack items vertically on small screens */
+        align-items: center; /* Center items */
+        margin-top: 100px;
+    }
+
+    .footer-item {
+        margin-bottom: 2px; /* Space between items */
+    }
+}
+
+/* Style for the floating button */
+.Button {
+    position: fixed; /* Fixes the button in place */
+    bottom: 77px; /* Distance from the bottom of the screen */
+    right: 20px; /* Distance from the right side of the screen */
+    z-index: 9999; /* Ensures the button stays on top of other content */
+}
+
+.post-btn {
+    background-color: #28a745; /* Button background color */
+    color: white; /* Icon color */
+    padding: 15px; /* Space around the icon */
+    border-radius: 20%; /* Makes the button circular */
+    font-size: 24px; /* Icon size */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    cursor: pointer; /* Changes the cursor to pointer when hovered */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+
+/* Responsive styling for mobile phones */
+@media (max-width: 600px) {
+    .footer-icon {
+        width: 30px; /* Adjust icon size if needed */
+        height: 30px; /* Adjust icon size if needed */
+    }
+
+    .footer-item span {
+        font-size: 10px; /* Adjust font size if needed */
+    }
+
+    .post-btn i {
+        font-size: 20px; /* Adjust icon size if needed */
+    }
+}
+/*bonuses page*/
+
+#purchase-status-welcome, #purchase-status-cashback {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bonus-box {
+        width: 90%;
+    }
+
+    .price {
+        font-size: 1.2em;
+    }
+
+    button {
+        font-size: 0.9em;
+        padding: 8px 16px;
+    }
+}
