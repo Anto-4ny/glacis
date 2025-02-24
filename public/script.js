@@ -38,8 +38,7 @@ const auth = getAuth(app); // ✅ Correct way to get auth
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Export Firebase modules
-export { auth, db, doc, getDoc, query, collection, where, getDocs, storage,  sendPasswordResetEmail };
+  export { auth, db, doc, getDoc, query, collection, where, getDocs, storage,  sendPasswordResetEmail };
 
 // Ensure user is authenticated
 export const ensureAuthenticated = () => {
