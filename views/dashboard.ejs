@@ -27,13 +27,7 @@
     display: flex !important;
 }
 </style>
-    <script type="module">
-        import { ensureAuthenticated } from "./script.js";
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            ensureAuthenticated(); 
-        });
-    </script>   
+      
  <!-- Header -->
 <header class="flex items-center justify-between p-4 bg-black shadow-md fixed w-full top-0 z-50">
     <a href="/" class="flex items-center">
@@ -333,7 +327,14 @@
        <!-- Your custom script -->
 <script type="module" src="script.js"></script>
 <script type="module">
- import { auth, ensureAuthenticated } from './script.js';
+ import { auth } from './script.js';
+
+        import { ensureAuthenticated } from "./script.js";
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            ensureAuthenticated(); 
+        });
+    
 
 document.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("payment-popup");
