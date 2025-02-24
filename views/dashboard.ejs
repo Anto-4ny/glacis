@@ -333,7 +333,7 @@
        <!-- Your custom script -->
 <script type="module" src="script.js"></script>
 <script type="module">
-import { auth } from './script.js';
+ import { auth, ensureAuthenticated } from './script.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("payment-popup");
