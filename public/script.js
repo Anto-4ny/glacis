@@ -51,6 +51,7 @@ export const ensureAuthenticated = () => {
         console.log("User is authenticated");
     }
 };
+console.log("Auth module loaded:", auth);
 
 // DOM Content Loaded Event Listener
 document.addEventListener("DOMContentLoaded", () => {
