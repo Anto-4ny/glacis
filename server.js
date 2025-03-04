@@ -6,14 +6,18 @@ const app = express();
 
 // Set EJS as the templating engine
 app.set("view engine", "ejs");
-app.set("views", path.join(process.cwd(), "views")); 
+app.set("views", path.join(process.cwd(), "views"));
+
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (CSS, JS, images)
 app.use(express.static(path.join(process.cwd(), "public")));
 
-// Route for Home Page (Registration Page)
+// Route for Home Page (Registration Page) with Referral Code Handling
 app.get("/", (req, res) => {
-    res.render("index"); 
+    const referrerId = req.query.ref || ""; // Get referral ID from URL
+    res.render("index", { referrerId }); // Pass it to EJS template
 });
 
 // Route for /index (Prevents 404 error)
