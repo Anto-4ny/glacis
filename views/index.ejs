@@ -143,48 +143,7 @@
     
         <script type="module" src="script.js"></script>
         <script type="module">
-            import { auth, sendPasswordResetEmail } from "./script.js";
-
-            // 🔹 Toggle Between Forms (Signup/Login/Forgot Password)
-            const toggleForm = (hide, show) => {
-                document.getElementById(hide).classList.add("hidden");
-                document.getElementById(show).classList.remove("hidden");
-            };
-        
-            document.getElementById("show-login").addEventListener("click", (e) => {
-                e.preventDefault();
-                toggleForm("signup-section", "login-section");
-            });
-        
-            document.getElementById("show-signup").addEventListener("click", (e) => {
-                e.preventDefault();
-                toggleForm("login-section", "signup-section");
-            });
-        
-            document.getElementById("forgot-password").addEventListener("click", (e) => {
-                e.preventDefault();
-                toggleForm("login-section", "forgot-password-section");
-            });
-        
-            document.getElementById("back-to-login").addEventListener("click", (e) => {
-                e.preventDefault();
-                toggleForm("forgot-password-section", "login-section");
-            });
-        
-            // 🔹 Send Reset Password Email
-            document.getElementById("send-reset-email").addEventListener("click", async () => {
-                const email = document.getElementById("reset-email").value;
-                const messageBox = document.getElementById("reset-message");
-        
-                try {
-                    await sendPasswordResetEmail(auth, email);
-                    messageBox.innerText = "✅ Password reset email sent! Check your inbox.";
-                    messageBox.style.color = "green";
-                } catch (error) {
-                    messageBox.innerText = `⚠️ Error: ${error.message}`;
-                    messageBox.style.color = "red";
-                }
-            });
+            import { auth } from "./script.js";
         
             // 🔹 Auto-fill Referral Code from URL (If Provided)
             document.addEventListener("DOMContentLoaded", () => {

@@ -58,11 +58,20 @@ export const ensureAuthenticated = () => {
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("login-section");
     const signupSection = document.getElementById("signup-section");
+    const forgotPasswordSection = document.getElementById("forgot-password-section");
+    
     const loginMessage = document.getElementById("login-message");
     const signupMessage = document.getElementById("signup-message");
 
     const showSignupButton = document.getElementById("show-signup");
     const showLoginButton = document.getElementById("show-login");
+    const forgotPasswordButton = document.getElementById("forgot-password");
+    const backToLoginButton = document.getElementById("back-to-login");
+
+    // Ensure Signup is Visible by Default
+    signupSection.classList.remove("hidden");
+    loginSection.classList.add("hidden");
+    forgotPasswordSection.classList.add("hidden");
 
     // Password toggle functionality
     const togglePasswordVisibility = (inputId, toggleId) => {
@@ -82,9 +91,11 @@ document.addEventListener("DOMContentLoaded", () => {
     togglePasswordVisibility("signup-password", "toggle-signup-password");
     togglePasswordVisibility("confirm-password", "toggle-confirm-password");
 
+    // Toggle Between Signup and Login Sections
     if (showSignupButton) {
         showSignupButton.addEventListener("click", () => {
             loginSection.classList.add("hidden");
+            forgotPasswordSection.classList.add("hidden");
             signupSection.classList.remove("hidden");
         });
     }
@@ -92,10 +103,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (showLoginButton) {
         showLoginButton.addEventListener("click", () => {
             signupSection.classList.add("hidden");
+            forgotPasswordSection.classList.add("hidden");
             loginSection.classList.remove("hidden");
         });
     }
 
+    // Show Forgot Password Section
+    if (forgotPasswordButton) {
+        forgotPasswordButton.addEventListener("click", () => {
+            loginSection.classList.add("hidden");
+            signupSection.classList.add("hidden");
+            forgotPasswordSection.classList.remove("hidden");
+        });
+    }
+
+    // Back to Login from Forgot Password
+    if (backToLoginButton) {
+        backToLoginButton.addEventListener("click", () => {
+            forgotPasswordSection.classList.add("hidden");
+            signupSection.classList.add("hidden");
+            loginSection.classList.remove("hidden");
+        });
+    }
+
+    // Login Form Submission
     const loginForm = document.getElementById("login-form");
     if (loginForm) {
         loginForm.addEventListener("submit", async (e) => {
@@ -121,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Signup Form Submission
     const signupForm = document.getElementById("signup-form");
     if (signupForm) {
         signupForm.addEventListener("submit", async (e) => {
@@ -160,12 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         amountPaid: 0,
                         totalEarnings: 0,
                         totalReferrals: 0,
-                        totalViews: 0,
                         registeredAt: new Date(),
                     });
 
                     // Redirect to dashboard
-                    window.location.href = "dashboard";
+                    window.location.href = "/dashboard";
                 }
             } catch (error) {
                 if (signupMessage) {
@@ -175,7 +206,31 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // Forgot Password Form Submission
+    const resetPasswordButton = document.getElementById("send-reset-email");
+    if (resetPasswordButton) {
+        resetPasswordButton.addEventListener("click", async () => {
+            const resetEmail = document.getElementById("reset-email").value.trim();
+            const resetMessage = document.getElementById("reset-message");
+
+            if (!resetEmail) {
+                resetMessage.textContent = "Please enter a valid email.";
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, resetEmail);
+                resetMessage.textContent = "Reset link sent! Check your email.";
+                resetMessage.classList.add("text-green-500");
+            } catch (error) {
+                resetMessage.textContent = error.message;
+                resetMessage.classList.add("text-red-500");
+            }
+        });
+    }
 });
+
 
 
 // Display referral link and handle sharing
