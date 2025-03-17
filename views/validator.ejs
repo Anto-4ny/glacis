@@ -73,130 +73,369 @@
     </div>
 </nav>
 
-<body class="bg-gray-100 font-sans mt-20">
-<section id="validators" class="p-6 bg-gray-100 min-h-screen">
-    <!-- Validators Page Title -->
-    <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
-        <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
-                   bg-gradient-to-r from-green-500 to-blue-600 inline-block px-6">
-            Validators Panel
-        </h2>
-    </div>
+<!-- Validator Registration Popup -->
+<div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Become a Validator</h3>
+        <p class="text-gray-600 mb-2">To become a validator, pay a one-time registration fee of <strong>$40</strong>.</p>
+        <p class="text-gray-800 font-semibold">Send payment to:</p>
 
-    <!-- Pending Transactions Table -->
-    <div class="bg-white shadow-lg rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Pending Transactions</h3>
-        <table class="w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-3 border">Username</th>
-                    <th class="p-3 border">Amount Paid</th>
-                    <th class="p-3 border">Transaction ID</th>
-                    <th class="p-3 border">Time Submitted</th>
-                    <th class="p-3 border">Validation Status</th>
-                    <th class="p-3 border">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="text-center">
-                    <td class="p-3 border">JohnDoe</td>
-                    <td class="p-3 border">$33</td>
-                    <td class="p-3 border text-blue-500">#TX123456</td>
-                    <td class="p-3 border">2025-02-24 14:30</td>
-                    <td class="p-3 border text-yellow-500">Pending</td>
-                    <td class="p-3 border">
-                        <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-                            Validate
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <!-- Wallet Addresses -->
+        <div class="space-y-2">
+            <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                <span class="text-sm text-gray-700">Binance: <strong id="binance-wallet">bc1qxyz123</strong></span>
+                <button onclick="copyToClipboard('binance-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+            </div>
+            <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                <span class="text-sm text-gray-700">OKX: <strong id="okx-wallet">0xabc456</strong></span>
+                <button onclick="copyToClipboard('okx-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+            </div>
+            <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                <span class="text-sm text-gray-700">Metamask: <strong id="metamask-wallet">0xdef789</strong></span>
+                <button onclick="copyToClipboard('metamask-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+            </div>
+            <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                <span class="text-sm text-gray-700">TrustWallet: <strong id="trustwallet-wallet">0xghi101</strong></span>
+                <button onclick="copyToClipboard('trustwallet-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+            </div>
+        </div>
 
-    <!-- Validate Payment Panel -->
-    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
-        <p class="text-gray-600 mb-4">Review and approve/reject payments.</p>
+        <h3 class="text-lg font-semibold mt-6">Submit Payment Details</h3>
+        <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Payment Details -->
-            <div class="bg-gray-100 p-4 rounded-lg">
-                <h4 class="text-lg font-semibold text-gray-700 mb-2">Transaction Details</h4>
-                <p><strong>TXID:</strong> #TX123456</p>
-                <p><strong>Amount:</strong> $33</p>
-                <p><strong>Sender Wallet:</strong> 0x123ABC...</p>
-                <p><strong>Platform Wallet:</strong> 0xXYZ789...</p>
-                <p class="text-blue-500 underline cursor-pointer">View on Blockchain Explorer</p>
+        <!-- Payment Submission Form -->
+        <form id="payment-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
+                <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>
+   
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
+                <input type="file" id="screenshot" accept="image/*" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
 
-            <!-- Screenshot & Actions -->
-            <div class="bg-gray-100 p-4 rounded-lg">
-                <h4 class="text-lg font-semibold text-gray-700 mb-2">Proof of Payment</h4>
-                <img src="screenshot.jpg" alt="Transaction Proof" class="w-full h-40 object-cover rounded-lg mb-3">
-                <div class="flex justify-between">
-                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-                        Approve
-                    </button>
-                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
-                        Reject
-                    </button>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
+                <input type="text" id="wallet-used" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>
+<div id="message-box"></div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
+                <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>
+
+            <button id="pay-validator-btn" class="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-700 transition">
+                Submit Payment
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard(id) {
+        const text = document.getElementById(id).textContent;
+        navigator.clipboard.writeText(text)
+            .then(() => alert("✅ Wallet Address Copied!"))
+            .catch(() => alert("❌ Failed to copy address."));
+    }
+</script>
+
+
+<body class="bg-gray-100 font-sans mt-20">
+<div id="message-box"></div>
+    <section id="validators" class="p-6 bg-gray-100 min-h-screen">
+        <!-- Validators Page Title -->
+        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
+            <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
+                       bg-gradient-to-r from-green-500 to-blue-600 inline-block px-6">
+                Validators Panel
+            </h2>
+        </div>
+    
+        <!-- Pending Transactions Table -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Pending Transactions</h3>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 border">Username</th>
+                        <th class="p-3 border">Amount Paid</th>
+                        <th class="p-3 border">Transaction ID</th>
+                        <th class="p-3 border">Time Submitted</th>
+                        <th class="p-3 border">Validation Status</th>
+                        <th class="p-3 border">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="pending-transactions">
+                    <!-- Transactions will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Validate Payment Panel -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
+            <p class="text-gray-600 mb-4">Review and approve/reject payments.</p>
+    
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Payment Details -->
+                <div class="bg-gray-100 p-4 rounded-lg" id="payment-details">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">Transaction Details</h4>
+                    <p><strong>TXID:</strong> <span id="txid">N/A</span></p>
+                    <p><strong>Amount:</strong> <span id="amount">N/A</span></p>
+                    <p><strong>Sender Wallet:</strong> <span id="sender-wallet">N/A</span></p>
+                    <p><strong>Platform Wallet:</strong> <span id="platform-wallet">N/A</span></p>
+                    <p class="text-blue-500 underline cursor-pointer">View on Blockchain Explorer</p>
+                </div>
+    
+                <!-- Screenshot & Actions -->
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">Proof of Payment</h4>
+                    <img src="" alt="Transaction Proof" id="proof-image" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between">
+                        <button id="approve-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                            Approve
+                        </button>
+                        <button id="reject-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                            Reject
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Earnings Tracker for Validators -->
-    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Tracker</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-green-100 p-4 rounded-lg text-center">
-                <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
-                <p class="text-2xl font-bold text-green-700">152</p>
-            </div>
-            <div class="bg-blue-100 p-4 rounded-lg text-center">
-                <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
-                <p class="text-2xl font-bold text-blue-700">$456</p>
-            </div>
-            <div class="bg-gray-100 p-4 rounded-lg text-center">
-                <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
-                <p class="text-2xl font-bold text-gray-600">$30</p>
+    
+        <!-- Earnings Tracker for Validators -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Tracker</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-green-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
+                    <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
+                    <p id="total-earnings" class="text-2xl font-bold text-blue-700">$0</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
+                    <p id="pending-earnings" class="text-2xl font-bold text-gray-600">$0</p>
+                </div>
             </div>
         </div>
-    </div>
+    
+        <!-- Validation History -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
+            <p class="text-gray-600 mb-4">View previously validated payments.</p>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 border">Username</th>
+                        <th class="p-3 border">Amount</th>
+                        <th class="p-3 border">Transaction ID</th>
+                        <th class="p-3 border">Status</th>
+                        <th class="p-3 border">Date</th>
+                    </tr>
+                </thead>
+                <tbody id="validation-history">
+                    <!-- History will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script type="module">
+        import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged } from './script.js';
 
-    <!-- Validation History -->
-    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
-        <p class="text-gray-600 mb-4">View previously validated payments.</p>
-        <table class="w-full border-collapse border border-gray-300">
+document.addEventListener("DOMContentLoaded", async () => {
+    const validatorPopup = document.getElementById("validator-popup");
+    const payBtn = document.getElementById("pay-validator-btn");
+    const transactionTable = document.getElementById("pending-transactions");
+    const earningsDisplay = document.getElementById("total-earnings");
+    const txidInput = document.getElementById("txid");
+    const walletUsedInput = document.getElementById("wallet-used");
+    const paymentDateInput = document.getElementById("payment-date");
+    const messageBox = document.getElementById("message-box"); // UI message box
+
+    let user;
+
+    onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+            user = currentUser;
+            checkValidatorStatus();
+        } else {
+            window.location.href = "/";
+        }
+    });
+
+    function displayMessage(type, text) {
+        const color = type === "success" ? "green" : "red";
+        messageBox.innerHTML = `<div class="message" style="color: ${color}; font-weight: bold;">${text}</div>`;
+        setTimeout(() => {
+            messageBox.innerHTML = "";
+        }, 5000);
+    }
+
+    async function checkValidatorStatus() {
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (!userDoc.exists()) {
+            validatorPopup.classList.remove("hidden");
+            return;
+        }
+
+        const userData = userDoc.data();
+        console.log("User Data:", userData); // Debugging log
+
+        if (userData.isValidator && userData.paymentApproved) {
+            console.log("✅ User is an approved validator. Hiding pop-up.");
+            validatorPopup.classList.add("hidden");
+            loadAssignedTransactions();
+            return;
+        } else {
+            console.log("❌ User is NOT fully approved yet.");
+            validatorPopup.classList.remove("hidden");
+        }
+    }
+
+    payBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        if (!user) return displayMessage("error", "❌ Not authenticated!");
+
+        const txid = txidInput.value.trim();
+        const walletUsed = walletUsedInput.value.trim();
+        const paymentDate = paymentDateInput.value;
+
+        if (!txid || !walletUsed || !paymentDate) {
+            return displayMessage("error", "❌ Please fill in all fields.");
+        }
+
+        try {
+            const validatorRef = doc(db, "validators", user.uid);
+            await setDoc(validatorRef, {
+                email: user.email,
+                status: "pending_validation",
+                txid,
+                walletUsed,
+                paymentDate,
+                timestamp: new Date(),
+                earnings: 0
+            });
+
+            await updateDoc(doc(db, "users", user.uid), {
+                isValidator: true,
+                paymentStatus: "pending"
+            });
+
+            displayMessage("success", "✅ Payment submitted. Awaiting validation.");
+        } catch (error) {
+            console.error("Error submitting payment:", error);
+            displayMessage("error", "❌ Submission failed. Try again.");
+        }
+    });
+
+    async function loadAssignedTransactions() {
+        const q = query(
+            collection(db, "payments"),
+            where("status", "==", "pending"),
+            where("assignedValidators", "array-contains", user.uid)
+        );
+
+        const querySnapshot = await getDocs(q);
+        let transactionHTML = "";
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            transactionHTML += `
+                <tr>
+                    <td>${data.email}</td>
+                    <td>${data.amountPaid}</td>
+                    <td>${data.txid}</td>
+                    <td>${new Date(data.timestamp.seconds * 1000).toLocaleString()}</td>
+                    <td>${data.approvals.length}/2 Approved</td>
+                    <td>
+                        <button class="approve-btn" data-id="${doc.id}">Approve</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        transactionTable.innerHTML = transactionHTML;
+
+        document.querySelectorAll(".approve-btn").forEach(button => {
+            button.addEventListener("click", () => approvePayment(button.dataset.id));
+        });
+    }
+
+    async function approvePayment(paymentId) {
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentDoc = await getDoc(paymentRef);
+
+        if (!paymentDoc.exists()) return;
+        const paymentData = paymentDoc.data();
+
+        if (paymentData.approvals?.includes(user.uid)) {
+            return displayMessage("error", "❌ You have already validated this payment.");
+        }
+
+        const updatedApprovals = [...(paymentData.approvals || []), user.uid];
+
+        let paymentStatus = "pending";
+        if (updatedApprovals.length >= 2) {
+            paymentStatus = "approved";
+
+            await updateDoc(doc(db, "users", paymentData.email), {
+                isValidator: true,
+                paymentStatus: "approved",
+                paymentApproved: true
+            });
+
+            displayMessage("success", "✅ Payment Approved!");
+            validatorPopup.classList.add("hidden");
+        }
+
+        await updateDoc(paymentRef, {
+            approvals: updatedApprovals,
+            status: paymentStatus
+        });
+
+        const validatorRef = doc(db, "validators", user.uid);
+        await updateDoc(validatorRef, {
+            earnings: increment(1)
+        });
+    }
+});
+</script>        
+    
+ <!-- Referral Section -->
+ <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto">
+    <h3 class="text-lg font-bold text-white mb-4">Your Referral Link</h3>
+    <div class="flex items-center space-x-4">
+        <p id="referral-link" class="flex-grow text-white bg-gray-700 px-4 py-2 rounded-md overflow-hidden text-ellipsis whitespace-nowrap border border-gray-500">Your Referral Link Here</p>
+        <button id="copy-link-button" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">Copy</button>
+        <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600">
+            <i class="fab fa-whatsapp text-lg"></i>
+        </a>
+    </div>
+    
+    <!-- Referred Friends Section -->
+    <h3 class="text-lg font-bold text-white mt-6">Your Referred Friends</h3>
+    <div class="overflow-x-auto mt-4">
+        <table class="w-full border-collapse text-sm text-left">
             <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-3 border">Username</th>
-                    <th class="p-3 border">Amount</th>
-                    <th class="p-3 border">Transaction ID</th>
-                    <th class="p-3 border">Status</th>
-                    <th class="p-3 border">Date</th>
+                <tr class="bg-gray-700 border-b text-white">
+                    <th class="p-3">Email</th>
+                    <th class="p-3">Status</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr class="text-center">
-                    <td class="p-3 border">JaneSmith</td>
-                    <td class="p-3 border">$100</td>
-                    <td class="p-3 border text-blue-500">#TX789012</td>
-                    <td class="p-3 border text-green-600">Approved</td>
-                    <td class="p-3 border">2025-02-22</td>
-                </tr>
-                <tr class="text-center">
-                    <td class="p-3 border">MikeLee</td>
-                    <td class="p-3 border">$33</td>
-                    <td class="p-3 border text-blue-500">#TX456789</td>
-                    <td class="p-3 border text-red-600">Rejected</td>
-                    <td class="p-3 border">2025-02-21</td>
-                </tr>
+            <tbody id="referred-users-list" class="bg-gray-800 text-white">
+                <!-- Referred users will be dynamically inserted here -->
             </tbody>
         </table>
     </div>
+</div>
 </section>
 
 <footer class="bg-gray-900 text-white text-center py-4">
@@ -217,9 +456,8 @@
 <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
 <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
 
-<!-- Your custom script -->
-<script type="module" src="script.js"></script>
 <script type="module" src="referral.js"></script>
+<script type="module" src="script.js"></script>
 
   <script>
 

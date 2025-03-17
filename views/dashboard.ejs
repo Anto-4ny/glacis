@@ -76,73 +76,91 @@
 </nav>
 
 <body class="bg-gray-100 font-sans mt-20">
-      <!-- <div id="payment-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300 ease-in-out">
-    <div class="relative bg-white p-6 rounded-2xl shadow-2xl max-w-lg w-full sm:w-4/5 md:w-2/3 lg:w-1/3 h-[85vh] overflow-y-auto border border-gray-200">
-        
-        
-        <button id="close-payment-popup" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
-            Activate
-        </button>
-
+  
+    <div id="payment-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300 ease-in-out">
+        <div class="relative bg-white p-6 rounded-2xl shadow-2xl max-w-lg w-full sm:w-4/5 md:w-2/3 lg:w-1/3 h-[85vh] overflow-y-auto border border-gray-200">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">User Registration & Activation</h2>
+            <p class="text-gray-500 text-sm text-center mb-6">
+                To fully activate your account, choose one of the following options:
+            </p>
     
-        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">User Registration & Activation</h2>
-        <p class="text-gray-500 text-sm text-center mb-6">
-            To fully activate your account, choose one of the following options:
-        </p>
-
-        
-        <div class="space-y-4">
-            <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
-                <h3 class="text-lg font-semibold text-gray-800">Common Member</h3>
-                <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-green-600">$33</strong> to start earning.</p>
+            <div class="space-y-4">
+                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
+                    <h3 class="text-lg font-semibold text-gray-800">Common Member</h3>
+                    <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-green-600">$4</strong> to start earning.</p>
+                </div>
+    
+                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
+                    <h3 class="text-lg font-semibold text-gray-800">Validator</h3>
+                    <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-blue-600">$40</strong> to verify payments and earn extra.</p>
+                </div>
             </div>
-
-            <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
-                <h3 class="text-lg font-semibold text-gray-800">Validator</h3>
-                <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-blue-600">$100</strong> to verify payments and earn extra.</p>
+    
+            <h3 class="text-lg font-semibold mt-6">Payment Methods</h3>
+            <p class="text-gray-500 text-sm">Payments are done manually via <strong>Binance, OKX, Metamask, and TrustWallet</strong>.</p>
+    
+            <h3 class="text-lg font-semibold mt-6">Wallet Addresses</h3>
+            <div class="space-y-2">
+                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                    <span class="text-sm text-gray-700">Binance: <strong id="binance-wallet">bc1qxyz123</strong></span>
+                    <button onclick="copyToClipboard('binance-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+                </div>
+                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                    <span class="text-sm text-gray-700">OKX: <strong id="okx-wallet">0xabc456</strong></span>
+                    <button onclick="copyToClipboard('okx-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+                </div>
+                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                    <span class="text-sm text-gray-700">Metamask: <strong id="metamask-wallet">0xdef789</strong></span>
+                    <button onclick="copyToClipboard('metamask-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+                </div>
+                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
+                    <span class="text-sm text-gray-700">TrustWallet: <strong id="trustwallet-wallet">0xghi101</strong></span>
+                    <button onclick="copyToClipboard('trustwallet-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
+                </div>
             </div>
+    
+            <h3 class="text-lg font-semibold mt-6">Payment Submission</h3>
+            <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
+    
+            <form id="payment-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
+                    <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+                </div>
+    
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
+                    <input type="file" id="screenshot" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+                </div>
+    
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
+                    <input type="text" id="wallet-address" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+                </div>
+    
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
+                    <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+                </div>
+    
+                <button type="pay-btn" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-lg font-semibold">
+                    Submit for Verification
+                </button>
+            </form>
         </div>
-
-        
-        <h3 class="text-lg font-semibold mt-6">Payment Methods</h3>
-        <p class="text-gray-500 text-sm">Payments are done manually via <strong>Binance, OKX, Metamask, and TrustWallet</strong>.</p>
-
-        
-        <h3 class="text-lg font-semibold mt-6">Payment Submission</h3>
-        <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
-
-        <form id="payment-form" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
-                <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
-                <input type="file" id="screenshot" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
-                <input type="text" id="wallet-address" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
-                <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-            </div>
-
-            
-            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-lg font-semibold">
-                Submit for Verification
-            </button>
-        </form>
     </div>
-</div>-->
+    
+    <script>
+    function copyToClipboard(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Copied: " + text);
+        }).catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+    }
+    </script>
 
-
-
-   
     <section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
         <!-- Dashboard Title -->
         <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
@@ -168,7 +186,7 @@
                 <!-- User Registration & Activation -->
                 <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-blue-500">
                     <h3 class="text-xl font-bold text-gray-800 mb-2">User Registration & Activation</h3>
-                    <p class="text-gray-600">Register as a common member with <strong>$33</strong> or as a validator with <strong>$100</strong>.</p>
+                    <p class="text-gray-600">Register as a common member with <strong>$4</strong> or as a validator with <strong>$40</strong>.</p>
                 </div>
                 
                 <!-- Validator Responsibilities -->
@@ -312,86 +330,40 @@
     <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
   
        <!-- Your custom script -->
-<script type="module" src="script.js"></script>
+       <script type="module" src="script.js"></script>
 <script type="module" src="referral.js"></script>
-
 <script type="module">
- import { auth } from './script.js';
-
-        import { ensureAuthenticated } from "./script.js";
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            ensureAuthenticated(); 
-        });
-    
+// Updated JavaScript for payment submission and validation
+import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, addDoc, increment } from "./script.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("payment-popup");
     const errorMessageDiv = document.getElementById("error-message");
     const payBtn = document.getElementById("pay-btn");
     const closePopupBtn = document.getElementById("close-payment-popup");
+    const copyButtons = document.querySelectorAll(".copy-wallet");
 
-    // ✅ Check if elements exist before proceeding
-    if (!popup || !payBtn || !closePopupBtn) {
-        console.error("❌ Error: Required elements not found in the DOM!");
-        return;
-    }
+    // Copy wallet address functionality
+    copyButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const walletAddress = button.getAttribute("data-wallet");
+            navigator.clipboard.writeText(walletAddress);
+            alert("Copied: " + walletAddress);
+        });
+    });
 
-    // ✅ Function to show the popup
-    const showPaymentPopup = () => {
-        popup.classList.remove("hidden");
-        popup.classList.add("flex");
-        popup.setAttribute("aria-hidden", "false"); 
-        document.body.style.overflow = "hidden"; // Prevent background scrolling
-        console.log("✅ Payment popup is now visible");
-    };
-
-    // ✅ Function to hide the popup
     const hidePaymentPopup = () => {
         popup.classList.add("hidden");
         popup.classList.remove("flex");
         popup.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "auto"; // Restore scrolling
-        console.log("✅ Payment popup hidden");
+        document.body.style.overflow = "auto";
     };
 
-    // ✅ Show the popup only if the user hasn't paid
-    const initializeDashboard = () => {
-        const paymentStatus = localStorage.getItem("paymentStatus");
-
-        if (!paymentStatus || paymentStatus !== "paid") {
-            showPaymentPopup();
-        }
-    };
-
-    // ✅ Close popup when clicking outside the content area
-    popup.addEventListener("click", (event) => {
-        if (event.target === popup) {
-            hidePaymentPopup();
-        }
-    });
-
-    // ✅ Close popup when clicking on the close button
-    closePopupBtn.addEventListener("click", hidePaymentPopup);
-
-    // ✅ Handle payment submission
     payBtn.addEventListener("click", async () => {
-        const txidInput = document.getElementById("txid");
+        const txid = document.getElementById("txid").value.trim();
         const screenshotInput = document.getElementById("screenshot");
-        const walletAddressInput = document.getElementById("wallet-address");
-
-        if (!txidInput || !screenshotInput || !walletAddressInput) {
-            console.error("❌ Error: One or more input fields not found!");
-            return;
-        }
-
-        const txid = txidInput.value.trim();
-        const walletAddress = walletAddressInput.value.trim();
+        const walletAddress = document.getElementById("wallet-address").value.trim();
         const user = auth.currentUser;
-
-        // ✅ Clear previous error messages
-        errorMessageDiv.classList.add("hidden");
-        errorMessageDiv.textContent = "";
 
         if (!txid || !walletAddress || !screenshotInput.files.length) {
             errorMessageDiv.textContent = "⚠️ All fields are required, including a screenshot.";
@@ -401,54 +373,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (user?.email) {
             try {
-                const formData = new FormData();
-                formData.append("txid", txid);
-                formData.append("walletAddress", walletAddress);
-                formData.append("email", user.email);
-                formData.append("screenshot", screenshotInput.files[0]);
+                const validatorsQuery = query(collection(db, "validators"));
+                const validatorsSnapshot = await getDocs(validatorsQuery);
+                const validators = validatorsSnapshot.docs.map(doc => doc.id);
 
-                // ✅ Disable button to prevent multiple submissions
-                payBtn.disabled = true;
-                payBtn.textContent = "Submitting...";
-
-                const response = await fetch('/api/submit-payment', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                payBtn.disabled = false;
-                payBtn.textContent = "Submit Payment";
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || "Submission failed.");
+                if (validators.length < 2) {
+                    alert("Not enough validators available.");
+                    return;
                 }
 
-                const data = await response.json();
-                alert(data.message || "✅ Payment submitted successfully. Await validation.");
+                const assignedValidators = validators.sort(() => 0.5 - Math.random()).slice(0, 2);
 
-                // ✅ Store payment status to prevent pop-up reappearing
+                const paymentRef = await addDoc(collection(db, "payments"), {
+                    email: user.email,
+                    txid,
+                    walletAddress,
+                    screenshotUrl: "Pending Upload",
+                    status: "pending",
+                    assignedValidators,
+                    approvals: 0
+                });
+
+                alert("✅ Payment submitted! Awaiting validation.");
                 localStorage.setItem("paymentStatus", "pending");
-
-                // ✅ Clear input fields
-                txidInput.value = "";
-                walletAddressInput.value = "";
-                screenshotInput.value = "";
-
                 hidePaymentPopup();
             } catch (error) {
                 errorMessageDiv.textContent = `❌ Error: ${error.message}`;
                 errorMessageDiv.classList.remove("hidden");
-                console.error("❌ Payment Submission Error:", error);
+                console.error("Payment Submission Error:", error);
             }
         } else {
             alert("❌ User not authenticated. Please log in.");
         }
     });
 
-    // ✅ Initialize dashboard on page load
-    initializeDashboard();
+    // Validator approval logic
+    async function approvePayment(paymentId, validatorId) {
+        const paymentDoc = doc(db, "payments", paymentId);
+        const paymentSnapshot = await getDoc(paymentDoc);
+        
+        if (paymentSnapshot.exists()) {
+            const paymentData = paymentSnapshot.data();
+            if (!paymentData.assignedValidators.includes(validatorId)) {
+                alert("You are not assigned to validate this payment.");
+                return;
+            }
+
+            await updateDoc(paymentDoc, { approvals: increment(1) });
+            const updatedSnapshot = await getDoc(paymentDoc);
+            const updatedData = updatedSnapshot.data();
+
+            if (updatedData.approvals >= 2) {
+                await updateDoc(paymentDoc, { status: "approved" });
+                localStorage.setItem("paymentStatus", "approved");
+                hidePaymentPopup();
+            }
+        }
+    }
 });
+
+
 
 document.getElementById("close-notification").addEventListener("click", function () {
         document.getElementById("notification-bar").style.display = "none";

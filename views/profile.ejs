@@ -74,50 +74,131 @@
 </nav>
 
 <body class="bg-gray-100 font-sans mt-20">
+<!-- Add Font Awesome CDN in your HTML head if not already included -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 <section id="profile" class="p-6 bg-gray-100 min-h-screen flex justify-center">
-  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center">
-      <!-- Profile Picture -->
-      <div class="relative inline-block">
-          <img src="https://via.placeholder.com/150" alt="User Avatar" 
-               class="w-24 h-24 rounded-full mx-auto shadow-lg">
-          <input type="file" id="uploadProfile" class="hidden">
-          <label for="uploadProfile" 
-                 class="absolute bottom-0 right-0 bg-gray-800 text-white px-2 py-1 text-xs rounded-full cursor-pointer">
-              Change
-          </label>
-      </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center">
+        <!-- Profile Picture -->
+        <div class="relative inline-block">
+            <img src="https://via.placeholder.com/150" alt="User Avatar" 
+                 class="w-24 h-24 rounded-full mx-auto shadow-lg">
+            <input type="file" id="uploadProfile" class="hidden">
+            <label for="uploadProfile" 
+                   class="absolute bottom-0 right-0 bg-gray-800 text-white px-2 py-1 text-xs rounded-full cursor-pointer">
+                Change
+            </label>
+        </div>
+  
+        <!-- Username -->
+        <h2 id="username" class="text-2xl font-bold text-gray-900 mt-3">Loading...</h2>
 
-      <!-- Username -->
-      <h2 class="text-2xl font-bold text-gray-900 mt-3">JohnDoe</h2>
-
-      <!-- Profile Action Buttons -->
-      <div class="mt-6 space-y-4">
-          <!-- Verify Profile -->
-          <button class="w-full bg-blue-600 text-white py-2 rounded-lg 
-                         hover:bg-blue-700 transition">
-              Verify Profile
-          </button>
-
-          <!-- Become a Validator -->
-          <button class="w-full bg-yellow-500 text-white py-2 rounded-lg 
-                         hover:bg-yellow-600 transition">
-              Become a Validator
-          </button>
-
-          <!-- User Details -->
-          <button class="w-full bg-gray-700 text-white py-2 rounded-lg 
-                         hover:bg-gray-800 transition">
-              User Details
-          </button>
-
-          <!-- Withdraw Earnings -->
-          <button class="w-full bg-green-600 text-white py-2 rounded-lg 
-                         hover:bg-green-700 transition">
-              Withdraw Earnings
-          </button>
-      </div>
-  </div>
+        <!-- Message Box -->
+        <div id="message-box" class="mt-2 text-sm font-semibold"></div>
+  
+        <!-- Profile Action Buttons -->
+        <div class="mt-6 space-y-4">
+            <button id="verifyProfile" class="w-full bg-blue-600 text-white py-2 rounded-lg 
+                           hover:bg-blue-700 transition">
+                Verify Profile
+            </button>
+  
+            <button id="becomeValidator" class="w-full bg-yellow-500 text-white py-2 rounded-lg 
+                           hover:bg-yellow-600 transition">
+                Become a Validator
+            </button>
+  
+            <button id="userDetails" class="w-full bg-gray-700 text-white py-2 rounded-lg 
+                           hover:bg-gray-800 transition">
+                User Details
+            </button>
+  
+            <button id="withdrawEarnings" class="w-full bg-green-600 text-white py-2 rounded-lg 
+                           hover:bg-green-700 transition">
+                Withdraw Earnings
+            </button>
+        </div>
+    </div>
 </section>
+
+<script type="module">
+    import { auth, db, doc, getDoc } from "./script.js";
+
+    async function loadUserProfile() {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            const usernameElement = document.getElementById("username");
+            const messageBox = document.getElementById("message-box");
+
+            // Display user name with Font Awesome blue tick if verified
+            usernameElement.innerHTML = `${userData.firstName} ${userData.lastName}`;
+            if (userData.isValidator) {
+                usernameElement.innerHTML += ` <i class="fa-solid fa-circle-check text-blue-500"></i>`;
+            }
+
+            function showMessage(type, text) {
+                messageBox.innerHTML = `<div class="p-2 rounded-lg ${type === "success" ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}">${text}</div>`;
+                setTimeout(() => { messageBox.innerHTML = ""; }, 5000);
+            }
+
+            // Change button text dynamically
+            const verifyProfileBtn = document.getElementById("verifyProfile");
+            const becomeValidatorBtn = document.getElementById("becomeValidator");
+
+            if (userData.isValidator) {
+                verifyProfileBtn.innerText = "You are verified";
+                verifyProfileBtn.classList.replace("bg-blue-600", "bg-gray-400");
+                verifyProfileBtn.classList.replace("hover:bg-blue-700", "hover:bg-gray-500");
+
+                becomeValidatorBtn.innerText = "You are a Validator, Tap to view your Dashboard";
+                becomeValidatorBtn.classList.replace("bg-yellow-500", "bg-gray-400");
+                becomeValidatorBtn.classList.replace("hover:bg-yellow-600", "hover:bg-gray-500");
+            }
+
+            // Button actions
+            verifyProfileBtn.addEventListener("click", () => {
+                if (userData.isValidator) {
+                    showMessage("success", "✅ You are already verified!");
+                } else {
+                    window.location.href = "/validator";
+                }
+            });
+
+            becomeValidatorBtn.addEventListener("click", () => {
+                if (userData.isValidator && userData.validatorId) {
+                    window.location.href = "/validator-dashboard";
+                } else {
+                    window.location.href = "/validator";
+                }
+            });
+
+            document.getElementById("userDetails").addEventListener("click", () => {
+                window.location.href = "/profile";
+            });
+
+            document.getElementById("withdrawEarnings").addEventListener("click", () => {
+                window.location.href = "/withdraw";
+            });
+
+        } else {
+            console.log("User document does not exist.");
+        }
+    }
+
+    // Wait for auth state to load
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            loadUserProfile();
+        }
+    });
+</script>
+  
 
 <footer class="bg-gray-900 text-white text-center py-4">
   <p class="copyright-text text-sm">

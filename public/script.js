@@ -46,6 +46,7 @@ export {
     db,
     doc,
     getDoc,
+    addDoc,
     updateDoc,
     query,
     collection,
@@ -230,6 +231,7 @@ if (signupForm) {
                     amountPaid: 0,
                     totalEarnings: 0,
                     totalReferrals: 0,
+                    paymentApproved: false,
                     registeredAt: new Date(),
                 });
 
