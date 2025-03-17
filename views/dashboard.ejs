@@ -85,16 +85,16 @@
             </p>
     
             <div class="space-y-4">
-                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
+                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition membership-option" data-type="common">
                     <h3 class="text-lg font-semibold text-gray-800">Common Member</h3>
                     <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-green-600">$4</strong> to start earning.</p>
                 </div>
-    
-                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
+            
+                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition membership-option" data-type="validator">
                     <h3 class="text-lg font-semibold text-gray-800">Validator</h3>
                     <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-blue-600">$40</strong> to verify payments and earn extra.</p>
                 </div>
-            </div>
+            </div>            
     
             <h3 class="text-lg font-semibold mt-6">Payment Methods</h3>
             <p class="text-gray-500 text-sm">Payments are done manually via <strong>Binance, OKX, Metamask, and TrustWallet</strong>.</p>
@@ -132,6 +132,15 @@
                     <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
                     <input type="file" id="screenshot" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
                 </div>
+
+                <!-- Success Message -->
+<div id="success-message" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
+</div>
+
+<!-- Error Message -->
+<div id="error-message" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
+</div>
+
     
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
@@ -149,17 +158,15 @@
             </form>
         </div>
     </div>
-    
-    <script>
-    function copyToClipboard(id) {
-        const text = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Copied: " + text);
-        }).catch(err => {
-            console.error("Failed to copy: ", err);
-        });
-    }
-    </script>
+
+    <!-- Success Message -->
+<div id="success-message" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
+</div>
+
+<!-- Error Message -->
+<div id="error-message" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
+</div>
+
 
     <section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
         <!-- Dashboard Title -->
@@ -333,106 +340,131 @@
        <script type="module" src="script.js"></script>
 <script type="module" src="referral.js"></script>
 <script type="module">
-// Updated JavaScript for payment submission and validation
-import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, addDoc, increment } from "./script.js";
+import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, increment, onAuthStateChanged, onSnapshot } from "./script.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const popup = document.getElementById("payment-popup");
     const errorMessageDiv = document.getElementById("error-message");
+    const successMessageDiv = document.getElementById("success-message");
     const payBtn = document.getElementById("pay-btn");
-    const closePopupBtn = document.getElementById("close-payment-popup");
     const copyButtons = document.querySelectorAll(".copy-wallet");
+    const txidInput = document.getElementById("txid");
+    const walletAddressInput = document.getElementById("wallet-address");
+
+    const showMessage = (message, type) => {
+        const messageDiv = type === "success" ? successMessageDiv : errorMessageDiv;
+        messageDiv.textContent = message;
+        messageDiv.classList.remove("hidden");
+        messageDiv.classList.add(type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700");
+
+        setTimeout(() => {
+            messageDiv.classList.add("hidden");
+        }, 4000);
+    };
 
     // Copy wallet address functionality
     copyButtons.forEach(button => {
         button.addEventListener("click", () => {
             const walletAddress = button.getAttribute("data-wallet");
             navigator.clipboard.writeText(walletAddress);
-            alert("Copied: " + walletAddress);
+            showMessage("Copied: " + walletAddress, "success");
         });
     });
 
-    const hidePaymentPopup = () => {
-        popup.classList.add("hidden");
-        popup.classList.remove("flex");
-        popup.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "auto";
-    };
+    // Monitor user authentication state
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const userRef = doc(db, "users", user.email);
 
-    payBtn.addEventListener("click", async () => {
-        const txid = document.getElementById("txid").value.trim();
-        const screenshotInput = document.getElementById("screenshot");
-        const walletAddress = document.getElementById("wallet-address").value.trim();
-        const user = auth.currentUser;
+            // **Listen for real-time Firestore updates**
+            onSnapshot(userRef, (userSnap) => {
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
 
-        if (!txid || !walletAddress || !screenshotInput.files.length) {
-            errorMessageDiv.textContent = "⚠️ All fields are required, including a screenshot.";
-            errorMessageDiv.classList.remove("hidden");
-            return;
-        }
-
-        if (user?.email) {
-            try {
-                const validatorsQuery = query(collection(db, "validators"));
-                const validatorsSnapshot = await getDocs(validatorsQuery);
-                const validators = validatorsSnapshot.docs.map(doc => doc.id);
-
-                if (validators.length < 2) {
-                    alert("Not enough validators available.");
-                    return;
+                    if (userData.membershipApproved === true) {
+                        popup.classList.add("hidden"); // Hide pop-up when approved
+                        showMessage("✅ Membership approved! You now have access.", "success");
+                    }
                 }
-
-                const assignedValidators = validators.sort(() => 0.5 - Math.random()).slice(0, 2);
-
-                const paymentRef = await addDoc(collection(db, "payments"), {
-                    email: user.email,
-                    txid,
-                    walletAddress,
-                    screenshotUrl: "Pending Upload",
-                    status: "pending",
-                    assignedValidators,
-                    approvals: 0
-                });
-
-                alert("✅ Payment submitted! Awaiting validation.");
-                localStorage.setItem("paymentStatus", "pending");
-                hidePaymentPopup();
-            } catch (error) {
-                errorMessageDiv.textContent = `❌ Error: ${error.message}`;
-                errorMessageDiv.classList.remove("hidden");
-                console.error("Payment Submission Error:", error);
-            }
-        } else {
-            alert("❌ User not authenticated. Please log in.");
+            });
         }
     });
 
-    // Validator approval logic
-    async function approvePayment(paymentId, validatorId) {
-        const paymentDoc = doc(db, "payments", paymentId);
-        const paymentSnapshot = await getDoc(paymentDoc);
-        
-        if (paymentSnapshot.exists()) {
-            const paymentData = paymentSnapshot.data();
-            if (!paymentData.assignedValidators.includes(validatorId)) {
-                alert("You are not assigned to validate this payment.");
+    if (payBtn) {
+        payBtn.addEventListener("click", async (event) => {
+            event.preventDefault(); // Prevent form reload
+
+            const txid = txidInput.value.trim();
+            const walletAddress = walletAddressInput.value.trim();
+            const user = auth.currentUser;
+
+            if (!txid || !walletAddress) {
+                showMessage("⚠️ All fields are required.", "error");
                 return;
             }
 
-            await updateDoc(paymentDoc, { approvals: increment(1) });
-            const updatedSnapshot = await getDoc(paymentDoc);
-            const updatedData = updatedSnapshot.data();
+            if (user?.email) {
+                try {
+                    const validatorsQuery = query(collection(db, "validators"));
+                    const validatorsSnapshot = await getDocs(validatorsQuery);
+                    const validators = validatorsSnapshot.docs.map(doc => doc.id);
 
-            if (updatedData.approvals >= 2) {
-                await updateDoc(paymentDoc, { status: "approved" });
-                localStorage.setItem("paymentStatus", "approved");
-                hidePaymentPopup();
+                    if (validators.length < 2) {
+                        showMessage("⚠️ Not enough validators available.", "error");
+                        return;
+                    }
+
+                    const assignedValidators = validators.sort(() => 0.5 - Math.random()).slice(0, 2);
+
+                    await addDoc(collection(db, "payments"), {
+                        email: user.email,
+                        txid,
+                        walletAddress,
+                        status: "pending",
+                        assignedValidators,
+                        approvals: 0,
+                        type: "membership"
+                    });
+
+                    // **Update Firestore that the user has paid**
+                    const userRef = doc(db, "users", user.email);
+                    await updateDoc(userRef, { membershipPaid: true });
+
+                    showMessage("✅ Payment submitted! Awaiting validation.", "success");
+                    popup.classList.add("hidden"); // Hide pop-up on successful submission
+                } catch (error) {
+                    showMessage(`❌ Error: ${error.message}`, "error");
+                    console.error("Payment Submission Error:", error);
+                }
+            } else {
+                showMessage("❌ User not authenticated. Please log in.", "error");
             }
-        }
+        });
     }
+
+    // ✅ **Live Validator Approval Logic (Real-Time Updates)**
+    const paymentsQuery = query(collection(db, "payments"));
+    onSnapshot(paymentsQuery, async (snapshot) => {
+        snapshot.docChanges().forEach(async (change) => {
+            if (change.type === "modified") {
+                const paymentData = change.doc.data();
+
+                if (paymentData.approvals >= 2 && paymentData.status !== "approved") {
+                    const paymentDoc = doc(db, "payments", change.doc.id);
+
+                    // **Update payment status to approved**
+                    await updateDoc(paymentDoc, { status: "approved" });
+
+                    // **Mark user as membership approved**
+                    const userRef = doc(db, "users", paymentData.email);
+                    await updateDoc(userRef, { membershipApproved: true });
+
+                    showMessage("✅ Payment approved successfully!", "success");
+                }
+            }
+        });
+    });
 });
-
-
 
 document.getElementById("close-notification").addEventListener("click", function () {
         document.getElementById("notification-bar").style.display = "none";

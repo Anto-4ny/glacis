@@ -232,6 +232,8 @@ if (signupForm) {
                     totalEarnings: 0,
                     totalReferrals: 0,
                     paymentApproved: false,
+                    membershipPaid: false,
+                    membershipApproved: false,
                     registeredAt: new Date(),
                 });
 

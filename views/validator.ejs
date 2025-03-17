@@ -245,7 +245,7 @@
         </div>
     </section>
     <script type="module">
-        import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged } from './script.js';
+import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged } from './script.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const validatorPopup = document.getElementById("validator-popup");
@@ -256,13 +256,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const walletUsedInput = document.getElementById("wallet-used");
     const paymentDateInput = document.getElementById("payment-date");
     const messageBox = document.getElementById("message-box"); // UI message box
-
+    const pendingEarningsElem = document.getElementById("pending-earnings");
+    
     let user;
 
     onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
             user = currentUser;
             checkValidatorStatus();
+            loadValidatorDashboard();
         } else {
             window.location.href = "/";
         }
@@ -286,7 +288,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const userData = userDoc.data();
-        console.log("User Data:", userData); // Debugging log
+        console.log("User Data:", userData);
 
         if (userData.isValidator && userData.paymentApproved) {
             console.log("✅ User is an approved validator. Hiding pop-up.");
@@ -313,23 +315,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         try {
-            const validatorRef = doc(db, "validators", user.uid);
-            await setDoc(validatorRef, {
+            // Fetch available validators
+            const validatorQuery = query(collection(db, "validators"), where("status", "==", "approved"));
+            const validatorSnap = await getDocs(validatorQuery);
+            let validatorList = [];
+
+            validatorSnap.forEach(doc => {
+                validatorList.push(doc.id);
+            });
+
+            // Shuffle and select two random validators
+            validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 2);
+
+            if (validatorList.length < 2) {
+                return displayMessage("error", "❌ Not enough validators available.");
+            }
+
+            // Store payment with assigned validators
+            const paymentRef = doc(collection(db, "payments"));
+            await setDoc(paymentRef, {
                 email: user.email,
-                status: "pending_validation",
                 txid,
-                walletUsed,
+                walletAddress: walletUsed,
                 paymentDate,
-                timestamp: new Date(),
-                earnings: 0
+                assignedValidators: validatorList,
+                approvals: [],
+                status: "pending",
+                timestamp: new Date()
             });
 
             await updateDoc(doc(db, "users", user.uid), {
-                isValidator: true,
                 paymentStatus: "pending"
             });
 
-            displayMessage("success", "✅ Payment submitted. Awaiting validation.");
+            displayMessage("success", "✅ Payment submitted and assigned to validators.");
         } catch (error) {
             console.error("Error submitting payment:", error);
             displayMessage("error", "❌ Submission failed. Try again.");
@@ -345,18 +364,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const querySnapshot = await getDocs(q);
         let transactionHTML = "";
+        let pendingEarnings = 0;
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
             transactionHTML += `
                 <tr>
                     <td>${data.email}</td>
-                    <td>${data.amountPaid}</td>
                     <td>${data.txid}</td>
                     <td>${new Date(data.timestamp.seconds * 1000).toLocaleString()}</td>
                     <td>${data.approvals.length}/2 Approved</td>
                     <td>
-                        <button class="approve-btn" data-id="${doc.id}">Approve</button>
+                        <button class="approve-btn" data-id="${docSnap.id}">Approve</button>
                     </td>
                 </tr>
             `;
@@ -381,17 +400,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const updatedApprovals = [...(paymentData.approvals || []), user.uid];
-
         let paymentStatus = "pending";
+
         if (updatedApprovals.length >= 2) {
             paymentStatus = "approved";
-
             await updateDoc(doc(db, "users", paymentData.email), {
-                isValidator: true,
                 paymentStatus: "approved",
                 paymentApproved: true
             });
-
             displayMessage("success", "✅ Payment Approved!");
             validatorPopup.classList.add("hidden");
         }
@@ -400,13 +416,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             approvals: updatedApprovals,
             status: paymentStatus
         });
+    }
 
-        const validatorRef = doc(db, "validators", user.uid);
-        await updateDoc(validatorRef, {
-            earnings: increment(1)
-        });
+    async function loadValidatorDashboard() {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) return;
+        earningsDisplay.textContent = `$${userSnap.data().totalEarnings || 0}`;
     }
 });
+
 </script>        
     
  <!-- Referral Section -->
