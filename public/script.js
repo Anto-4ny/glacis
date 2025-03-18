@@ -234,7 +234,7 @@ if (signupForm) {
                     membershipPaid: false,
                     membershipApproved: false,
                     paymentStatus: false,
-                    paymentApproved,
+                    paymentApproved: false,
                     isValidator: false,
                     validatorRequest: false,
                     registeredAt: new Date(),
