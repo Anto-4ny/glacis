@@ -151,11 +151,21 @@ async function loadReferredUsers(referrerId) {
 async function saveUserWithReferral(userId, email, referrerId) {
     const userRef = doc(db, "users", userId);
     await setDoc(userRef, {
+        firstName,
+        lastName,
         email,
         referralCode: referrerId || null,
-        paymentStatus: false,
+        referralLink,
+        amountPaid: 0,
         totalReferrals: 0,
-        totalEarnings: 0
+        totalEarnings: 0,
+        membershipPaid: false,
+        membershipApproved: false,
+        paymentStatus: false,
+        paymentApproved,
+        isValidator: false,
+        validatorRequest: false,
+        registeredAt: new Date(),
     }, { merge: true });
 
     console.log(`User ${userId} registered with referrer: ${referrerId}`);
