@@ -1,4 +1,4 @@
-import { awardReferrerOnPayment } from './referral.js'; 
+import { awardReferrerOnPayment, saveUserWithReferral } from './referral.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import {
     getAuth,
@@ -15,7 +15,7 @@ import {
     updateDoc,
     getDoc,
     query,
-    onSnapshot,
+    onSnapshot, // ✅ Keep only ONE onSnapshot import
     collection,
     where,
     getDocs,
@@ -54,6 +54,7 @@ export {
     getDocs,
     increment,
     setDoc,
+    onSnapshot, // ✅ Keep only this onSnapshot
     onAuthStateChanged,
     storage
 };
@@ -227,13 +228,12 @@ if (signupForm) {
                     email,
                     referralCode: validReferrerId, // Save only if valid
                     referralLink,
-                    paymentStatus: false,
                     amountPaid: 0,
                     totalEarnings: 0,
                     totalReferrals: 0,
-                    paymentApproved: false,
                     membershipPaid: false,
                     membershipApproved: false,
+                    paymentStatus: false,
                     registeredAt: new Date(),
                 });
 
@@ -271,28 +271,32 @@ if (signupForm) {
     }
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  const hamburgerIcon = document.getElementById("hamburger-icon");
-  const closeNav = document.getElementById("close-nav");
-  const mobileNav = document.getElementById("mobile-nav");
-  const overlay = document.getElementById("overlay");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeNav = document.getElementById("close-nav");
+    const mobileNav = document.getElementById("mobile-nav");
+    const overlay = document.getElementById("overlay");
 
-  // Function to open mobile navigation
-  const openNav = () => {
-      mobileNav.classList.remove("-translate-x-full");
-      overlay.classList.remove("hidden");
-  };
+    // Check if elements exist before adding event listeners
+    if (!hamburgerIcon || !closeNav || !mobileNav || !overlay) {
+        console.warn("Navigation elements not found. Skipping mobile nav setup.");
+        return;
+    }
 
-  // Function to close mobile navigation
-  const closeMobileNav = () => {
-      mobileNav.classList.add("-translate-x-full");
-      overlay.classList.add("hidden");
-  };
+    // Function to open mobile navigation
+    const openNav = () => {
+        mobileNav.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
+    };
 
-  // Event Listeners
-  hamburgerIcon.addEventListener("click", openNav);
-  closeNav.addEventListener("click", closeMobileNav);
-  overlay.addEventListener("click", closeMobileNav);
+    // Function to close mobile navigation
+    const closeMobileNav = () => {
+        mobileNav.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+    };
+
+    // Event Listeners
+    hamburgerIcon.addEventListener("click", openNav);
+    closeNav.addEventListener("click", closeMobileNav);
+    overlay.addEventListener("click", closeMobileNav);
 });
-

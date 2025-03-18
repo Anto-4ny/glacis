@@ -1,34 +1,42 @@
 import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged } from './script.js';
 
-// Wait for DOM to load
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("DOM fully loaded");
+    console.log("Page loaded");
+
+    const currentPath = window.location.pathname;
+    const isDashboard = currentPath.includes("dashboard");
 
     onAuthStateChanged(auth, async (user) => {
-        console.log("Checking authentication state...");
-
         if (user) {
             console.log("User logged in:", user.uid);
 
             const userDoc = await waitForUserDocument(user.uid);
             if (!userDoc) {
-                console.error("User document does not exist in Firestore.");
+                console.error("User document not found.");
                 return;
             }
 
-            console.log("User document found:", userDoc.data());
+            console.log("User document data:", userDoc.data());
+
+            // Restrict dashboard access
+            if (isDashboard) {
+                console.log("Dashboard detected, running dashboard scripts...");
+                checkPaymentStatus(user.uid);
+                loadReferredUsers(user.uid);
+            }
+
+            // Referral link should always display (all pages)
             displayReferralLink(user.uid);
-            await loadReferredUsers(user.uid);
         } else {
             console.log("No user is logged in.");
-
-            if (window.location.pathname !== "/" && window.location.pathname !== "/index") {
-                window.location.href = "/"; // Redirect to sign-up page
+            
+            if (isDashboard) {
+                window.location.href = "/"; // Redirect ONLY if on dashboard
             }
         }
     });
 
-    // Auto-fill referral code from URL if present
+    // Auto-fill referral code from URL if present (all pages)
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get("ref");
     if (refCode) {
@@ -48,16 +56,52 @@ async function waitForUserDocument(userId) {
 
     let attempts = 0;
     while (!userDoc.exists() && attempts < 5) {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 sec
+        await new Promise(resolve => setTimeout(resolve, 1000));
         userDoc = await getDoc(userRef);
         attempts++;
     }
-
     return userDoc.exists() ? userDoc : null;
 }
 
-// Display Referral Link
+// Check Payment Status & Hide Pop-Up (Only on Dashboard)
+async function checkPaymentStatus(userId) {
+    const userRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const paymentPopup = document.getElementById("payment-popup");
+
+        if (!paymentPopup) {
+            console.log("⚠️ Payment pop-up not found in DOM.");
+            return;
+        }
+
+        console.log("🔍 Checking payment status:", userData);
+
+        if (userData.membershipApproved) {
+            console.log("✅ Payment verified. Hiding pop-up.");
+            paymentPopup.style.opacity = "0";
+            paymentPopup.style.pointerEvents = "none";
+            paymentPopup.style.display = "none";
+            paymentPopup.classList.remove("flex");
+            paymentPopup.classList.add("hidden");
+        } else {
+            console.log("🚨 Payment not approved. Ensuring pop-up is visible.");
+            paymentPopup.style.opacity = "1";
+            paymentPopup.style.pointerEvents = "auto";
+            paymentPopup.style.display = "flex";
+            paymentPopup.classList.remove("hidden");
+        }
+    } else {
+        console.log("⚠️ User document not found.");
+    }
+}
+
+// Display Referral Link (All Pages)
 function displayReferralLink(userId) {
+    console.log("Displaying referral link for user:", userId);
+
     const referralLinkElement = document.getElementById("referral-link");
     const copyButton = document.getElementById("copy-link-button");
     const whatsappButton = document.getElementById("whatsapp-share-button");
@@ -78,9 +122,11 @@ function displayReferralLink(userId) {
     whatsappButton.href = `https://wa.me/?text=Join%20now%20using%20my%20referral%20link:%20${encodeURIComponent(referralLink)}`;
 }
 
-// Load Referred Users
+// Load Referred Users (Only on Dashboard)
 async function loadReferredUsers(referrerId) {
     if (!referrerId) return;
+
+    console.log("Loading referred users for:", referrerId);
 
     const referredUsersList = document.getElementById("referred-users-list");
     if (!referredUsersList) return;
@@ -115,45 +161,37 @@ async function saveUserWithReferral(userId, email, referrerId) {
     console.log(`User ${userId} registered with referrer: ${referrerId}`);
 
     if (referrerId) {
+        await updateDoc(doc(db, "users", referrerId), { totalReferrals: increment(1) });
         await loadReferredUsers(referrerId);
     }
 }
 
-// Award Referrer on Payment
+// Award Referral Earnings
 async function awardReferrerOnPayment(userId) {
-    if (!userId) return;
-
-    const userDoc = await waitForUserDocument(userId);
-    if (!userDoc) {
-        console.warn(`User document not found for ID: ${userId}`);
-        return;
-    }
-
-    const referrerId = userDoc.data().referralCode;
-    if (!referrerId) {
-        console.log(`User ${userId} was not referred by anyone.`);
-        return;
-    }
-
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, { paymentStatus: true });
 
-    const referrerRef = doc(db, "users", referrerId);
-    const referrerDoc = await getDoc(referrerRef);
-
-    if (referrerDoc.exists()) {
-        console.log(`Awarding referrer ${referrerId} with +10 earnings`);
-        await updateDoc(referrerRef, { totalEarnings: increment(10) });
-
-        const grandReferrerId = referrerDoc.data().referralCode;
-        if (grandReferrerId) {
-            console.log(`Awarding grand referrer ${grandReferrerId} with +5 earnings`);
-            const grandReferrerRef = doc(db, "users", grandReferrerId);
-            await updateDoc(grandReferrerRef, { totalEarnings: increment(5) });
-        }
-    } else {
-        console.warn(`Referrer document not found for ID: ${referrerId}`);
+    const userDoc = await getDoc(userRef);
+    const referrerId = userDoc.data().referralCode;
+    if (!referrerId) {
+        console.log(`User ${userId} has no referrer.`);
+        return;
     }
+
+    const referrerRef = doc(db, "users", referrerId);
+    await updateDoc(referrerRef, { totalEarnings: increment(2.5) });
+    console.log(`Referrer ${referrerId} earned +2.5.`);
+
+    const referrerDoc = await getDoc(referrerRef);
+    const grandReferrerId = referrerDoc.data().referralCode;
+    if (grandReferrerId) {
+        const grandReferrerRef = doc(db, "users", grandReferrerId);
+        await updateDoc(grandReferrerRef, { totalEarnings: increment(0.5) });
+        console.log(`Grand referrer ${grandReferrerId} earned +0.5.`);
+    }
+
+    // Verify and hide pop-up if it's in the dashboard
+    checkPaymentStatus(userId);
 }
 
-export { awardReferrerOnPayment };
+export { awardReferrerOnPayment, saveUserWithReferral };

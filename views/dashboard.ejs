@@ -76,6 +76,14 @@
 </nav>
 
 <body class="bg-gray-100 font-sans mt-20">
+<style>
+ .hidden {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+</style>
   
     <div id="payment-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300 ease-in-out">
         <div class="relative bg-white p-6 rounded-2xl shadow-2xl max-w-lg w-full sm:w-4/5 md:w-2/3 lg:w-1/3 h-[85vh] overflow-y-auto border border-gray-200">
@@ -87,17 +95,12 @@
             <div class="space-y-4">
                 <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition membership-option" data-type="common">
                     <h3 class="text-lg font-semibold text-gray-800">Common Member</h3>
-                    <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-green-600">$4</strong> to start earning.</p>
-                </div>
-            
-                <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition membership-option" data-type="validator">
-                    <h3 class="text-lg font-semibold text-gray-800">Validator</h3>
-                    <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-blue-600">$40</strong> to verify payments and earn extra.</p>
+                    <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-green-600">$6</strong> to start earning.</p>
                 </div>
             </div>            
     
             <h3 class="text-lg font-semibold mt-6">Payment Methods</h3>
-            <p class="text-gray-500 text-sm">Payments are done manually via <strong>Binance, OKX, Metamask, and TrustWallet</strong>.</p>
+            <p class="text-gray-500 text-sm">Payments are done manually via <strong>Binance</strong>.</p>
     
             <h3 class="text-lg font-semibold mt-6">Wallet Addresses</h3>
             <div class="space-y-2">
@@ -105,19 +108,15 @@
                     <span class="text-sm text-gray-700">Binance: <strong id="binance-wallet">bc1qxyz123</strong></span>
                     <button onclick="copyToClipboard('binance-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
                 </div>
-                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
-                    <span class="text-sm text-gray-700">OKX: <strong id="okx-wallet">0xabc456</strong></span>
-                    <button onclick="copyToClipboard('okx-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
-                </div>
-                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
-                    <span class="text-sm text-gray-700">Metamask: <strong id="metamask-wallet">0xdef789</strong></span>
-                    <button onclick="copyToClipboard('metamask-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
-                </div>
-                <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
-                    <span class="text-sm text-gray-700">TrustWallet: <strong id="trustwallet-wallet">0xghi101</strong></span>
-                    <button onclick="copyToClipboard('trustwallet-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
-                </div>
             </div>
+
+                          <!-- Success Message -->
+<div id="success-message" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
+</div>
+
+<!-- Error Message -->
+<div id="error-message" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
+</div>
     
             <h3 class="text-lg font-semibold mt-6">Payment Submission</h3>
             <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
@@ -127,21 +126,7 @@
                     <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
                     <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
                 </div>
-    
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
-                    <input type="file" id="screenshot" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-                </div>
 
-                <!-- Success Message -->
-<div id="success-message" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
-</div>
-
-<!-- Error Message -->
-<div id="error-message" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
-</div>
-
-    
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
                     <input type="text" id="wallet-address" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
@@ -158,14 +143,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Success Message -->
-<div id="success-message" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
-</div>
-
-<!-- Error Message -->
-<div id="error-message" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
-</div>
 
 
     <section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
@@ -340,65 +317,56 @@
        <script type="module" src="script.js"></script>
 <script type="module" src="referral.js"></script>
 <script type="module">
-import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, increment, onAuthStateChanged, onSnapshot } from "./script.js";
+import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, onAuthStateChanged, onSnapshot } from "./script.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("payment-popup");
     const errorMessageDiv = document.getElementById("error-message");
     const successMessageDiv = document.getElementById("success-message");
     const payBtn = document.getElementById("pay-btn");
-    const copyButtons = document.querySelectorAll(".copy-wallet");
     const txidInput = document.getElementById("txid");
     const walletAddressInput = document.getElementById("wallet-address");
+    const paymentDateInput = document.getElementById("payment-date");
+    const form = document.getElementById("payment-form");
+
+    const statusMessage = document.createElement("p");
+    statusMessage.id = "payment-status";
+    statusMessage.classList.add("text-sm", "text-gray-700", "mt-2");
+    form.appendChild(statusMessage);
 
     const showMessage = (message, type) => {
         const messageDiv = type === "success" ? successMessageDiv : errorMessageDiv;
         messageDiv.textContent = message;
-        messageDiv.classList.remove("hidden");
-        messageDiv.classList.add(type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700");
+        messageDiv.classList.remove("hidden", "bg-green-100", "text-green-700", "bg-red-100", "text-red-700");
 
-        setTimeout(() => {
-            messageDiv.classList.add("hidden");
-        }, 4000);
+        if (type === "success") {
+            messageDiv.classList.add("bg-green-100", "text-green-700");
+        } else {
+            messageDiv.classList.add("bg-red-100", "text-red-700");
+        }
+
+        setTimeout(() => messageDiv.classList.add("hidden"), 4000);
     };
 
-    // Copy wallet address functionality
-    copyButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            const walletAddress = button.getAttribute("data-wallet");
-            navigator.clipboard.writeText(walletAddress);
-            showMessage("Copied: " + walletAddress, "success");
+    window.copyToClipboard = (elementId) => {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            showMessage("Copied: " + text, "success");
+        }).catch(() => {
+            showMessage("Failed to copy", "error");
         });
-    });
+    };
 
-    // Monitor user authentication state
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const userRef = doc(db, "users", user.email);
-
-            // **Listen for real-time Firestore updates**
-            onSnapshot(userRef, (userSnap) => {
-                if (userSnap.exists()) {
-                    const userData = userSnap.data();
-
-                    if (userData.membershipApproved === true) {
-                        popup.classList.add("hidden"); // Hide pop-up when approved
-                        showMessage("✅ Membership approved! You now have access.", "success");
-                    }
-                }
-            });
-        }
-    });
-
-    if (payBtn) {
-        payBtn.addEventListener("click", async (event) => {
-            event.preventDefault(); // Prevent form reload
+    if (form) {
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
             const txid = txidInput.value.trim();
             const walletAddress = walletAddressInput.value.trim();
+            const paymentDate = paymentDateInput.value.trim();
             const user = auth.currentUser;
 
-            if (!txid || !walletAddress) {
+            if (!txid || !walletAddress || !paymentDate) {
                 showMessage("⚠️ All fields are required.", "error");
                 return;
             }
@@ -420,18 +388,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                         email: user.email,
                         txid,
                         walletAddress,
+                        paymentDate,
                         status: "pending",
                         assignedValidators,
                         approvals: 0,
                         type: "membership"
                     });
 
-                    // **Update Firestore that the user has paid**
                     const userRef = doc(db, "users", user.email);
                     await updateDoc(userRef, { membershipPaid: true });
 
-                    showMessage("✅ Payment submitted! Awaiting validation.", "success");
-                    popup.classList.add("hidden"); // Hide pop-up on successful submission
+                    statusMessage.textContent = "Awaiting validation... 0/2 approvals";
+
+                    form.reset();
+
+                    showMessage("✅ Payment submitted successfully!", "success");
+
                 } catch (error) {
                     showMessage(`❌ Error: ${error.message}`, "error");
                     console.error("Payment Submission Error:", error);
@@ -442,30 +414,67 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ✅ **Live Validator Approval Logic (Real-Time Updates)**
-    const paymentsQuery = query(collection(db, "payments"));
-    onSnapshot(paymentsQuery, async (snapshot) => {
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const userRef = doc(db, "users", user.email);
+        
+        onSnapshot(userRef, (userSnap) => {
+            if (userSnap.exists()) {
+                const userData = userSnap.data();
+                console.log("User Data:", userData);
+                // if (userData.membershipPaid && userData.membershipApproved) {
+                   // console.log("✅ Membership approved, hiding popup");
+                 //   setTimeout(() => {
+                  //      popup.classList.add("hidden"); // Ensure it doesn’t conflict with referral.js
+                 //   }, 500);
+               // }
+            }
+        });
+
+        const paymentQuery = query(collection(db, "payments"));
+        onSnapshot(paymentQuery, (snapshot) => {
+            snapshot.forEach((paymentDoc) => {
+                const paymentData = paymentDoc.data();
+                if (paymentData.email === user.email) {
+                    if (paymentData.status === "pending") {
+                        statusMessage.textContent = `Awaiting validation... ${paymentData.approvals}/2 approvals`;
+                    } else if (paymentData.status === "approved") {
+                        statusMessage.textContent = "✅ Membership approved!";
+                       // setTimeout(() => {
+                       //     popup.classList.add("hidden"); // Sync with referral.js
+                      //  }, 500);
+                    }
+                }
+            });
+        });
+    }
+});
+
+    onSnapshot(query(collection(db, "payments")), async (snapshot) => {
         snapshot.docChanges().forEach(async (change) => {
             if (change.type === "modified") {
                 const paymentData = change.doc.data();
-
                 if (paymentData.approvals >= 2 && paymentData.status !== "approved") {
                     const paymentDoc = doc(db, "payments", change.doc.id);
-
-                    // **Update payment status to approved**
                     await updateDoc(paymentDoc, { status: "approved" });
 
-                    // **Mark user as membership approved**
                     const userRef = doc(db, "users", paymentData.email);
                     await updateDoc(userRef, { membershipApproved: true });
 
-                    showMessage("✅ Payment approved successfully!", "success");
+                    statusMessage.textContent = "✅ Membership approved!";
+                    setTimeout(() => {
+                        popup.classList.add("hidden");
+                    }, 2000);
                 }
             }
         });
     });
 });
 
+</script>
+
+
+<script>
 document.getElementById("close-notification").addEventListener("click", function () {
         document.getElementById("notification-bar").style.display = "none";
     });
