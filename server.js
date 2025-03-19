@@ -1,7 +1,10 @@
 import express from "express";
 import path from "path";
+import axios from "axios";
+import dotenv from "dotenv";
 
-// Initialize express
+dotenv.config(); // Load environment variables
+
 const app = express();
 
 // Set EJS as the templating engine
@@ -10,54 +13,46 @@ app.set("views", path.join(process.cwd(), "views"));
 
 // Middleware to parse form data
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // Ensure JSON parsing is enabled
 
-// Serve static files (CSS, JS, images)
+// Serve static files
 app.use(express.static(path.join(process.cwd(), "public")));
 
 // Route for Home Page (Registration Page) with Referral Code Handling
 app.get("/", (req, res) => {
-    const referrerId = req.query.ref || ""; // Get referral ID from URL
-    res.render("index", { referrerId }); // Pass it to EJS template
+    const referrerId = req.query.ref || "";
+    res.render("index", { referrerId });
 });
 
-// Route for /index (Prevents 404 error)
-app.get("/index", (req, res) => {
-    res.redirect("/");
+// Route for Videos Page (Displays videos.ejs)
+app.get("/videos", (req, res) => {
+    res.render("videos", { user: "John Doe" });
 });
 
-// Route for Dashboard (After successful registration)
-app.get("/dashboard", (req, res) => {
-    res.render("dashboard", { user: "John Doe" });
-});
+// Fetch YouTube videos dynamically
+app.get("/api/videos", async (req, res) => {
+    try {
+        const response = await axios.get(
+            `https://www.googleapis.com/youtube/v3/search?key=${process.env.YOUTUBE_API_KEY}&channelId=${process.env.YOUTUBE_CHANNEL_ID}&part=snippet&type=video&maxResults=6`
+        );
 
-// Route for Earnings
-app.get("/earnings", (req, res) => {
-    res.render("earnings", { user: "John Doe" });
-});
+        console.log("YouTube API Response:", response.data); // Debugging line
 
-// Route for Help
-app.get("/help", (req, res) => {
-    res.render("help", { user: "John Doe" }); 
-});
+        if (!response.data.items) {
+            console.error("YouTube API returned no items");
+            return res.json([]);
+        }
 
-// Route for Validator
-app.get("/validator", (req, res) => {
-    res.render("validator", { user: "John Doe" }); 
-});
+        const videos = response.data.items.map((item) => ({
+            videoId: item.id?.videoId || "",
+            title: item.snippet?.title || "No Title",
+        }));
 
-// Route for Referral
-app.get("/referral", (req, res) => {
-    res.render("referral", { user: "John Doe" }); 
-});
-
-// Route for Withdraw
-app.get("/withdraw", (req, res) => {
-    res.render("withdraw", { user: "John Doe" }); 
-});
-
-// Route for Profile
-app.get("/profile", (req, res) => {
-    res.render("profile", { user: "John Doe" }); 
+        res.json(videos);
+    } catch (error) {
+        console.error("Error fetching videos:", error.response?.data || error.message);
+        res.status(500).json({ error: "Failed to fetch videos" });
+    }
 });
 
 // Start the server

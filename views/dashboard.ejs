@@ -21,69 +21,127 @@
 
 </head>
 
-<style>
+<!-- Header -->
+<header class="flex flex-col bg-gradient-to-r from-gray-900 via-gray-800 to-gray-100 shadow-lg fixed w-full top-0 z-50 border-b border-gray-300 h-28 px-6">
+ 
+<!-- Top Section with Icons (Hidden on Small Screens) -->
+<div class="hidden lg:flex items-center space-x-4 bg-white shadow-md rounded-full border border-gray-300 px-4 py-2 w-fit absolute right-6 top-0 mb-4">
+    <button id="theme-toggle" class="text-yellow-500 text-xl hover:text-yellow-600 transition">
+        <i class="fas fa-moon"></i>
+    </button>
+    <button id="language-toggle" class="text-blue-500 text-xl hover:text-blue-600 transition">
+        <i class="fas fa-language"></i>
+    </button>
+    <button id="notification-bar" class="relative text-green-500 text-xl hover:text-green-600 transition">
+        <i class="fas fa-bell"></i>
+        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
+    </button>
+</div>
+
+
+    <!-- Main Header Section -->
+    <div class="flex items-center justify-between py-1">
+        <a href="/" class="flex items-center space-x-3">
+            <img id="logo" src="/images/glacis-logo.jpg" alt="Logo" class="h-16 w-16 rounded-full shadow-md">  <!-- Increased size -->
+            <div class="flex items-center justify-center font-extrabold">
+                <span class="text-6xl text-blue-600">G</span>
+                <span class="text-4xl text-purple-500">l</span>
+                <span class="text-4xl text-pink-500">a</span>
+                <span class="text-4xl text-blue-800">c</span>
+                <span class="text-4xl text-yellow-500">i</span>
+                <span class="text-4xl text-green-600">s</span>
+            </div>                        
+        </a>
+
+       <!-- Desktop Navigation -->
+<nav class="hidden lg:flex space-x-8 bg-white px-10 py-3 shadow-md rounded-full border border-gray-300 mt-10">
+    <a href="dashboard" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Dashboard</a>
+    <a href="earnings" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Earnings</a>
+    <a href="validator" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Validator</a>
+    <a href="referral" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Referrals</a>
+    <a href="withdraw" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Withdraw</a>
+    <a href="videos" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Videos</a>
+    <a href="help" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Help</a>
+    <a href="profile" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Profile</a>
+    <button id="logout-button" class="text-red-500 font-semibold hover:text-red-700 transition duration-300">Log Out</button>
+</nav>
+
+
+        <!-- Mobile Navigation Icon -->
+        <button id="hamburger-icon" class="text-gray-900 text-2xl lg:hidden">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Overlay -->
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-30 hidden lg:hidden"></div>
+
+<!-- Mobile Navigation -->
+<nav id="mobile-nav" class="fixed left-0 top-0 h-full w-3/4 bg-white text-gray-900 shadow-2xl transform -translate-x-full transition-transform lg:hidden z-50 rounded-r-2xl">
+    <div class="p-6 border-b flex justify-between items-center">
+        <h3 class="text-xl font-semibold">Menu</h3>
+        <button id="close-nav" class="text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="p-6 flex flex-col space-y-4 text-lg">
+        <a href="dashboard" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+        </a>
+        <a href="earnings" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-dollar-sign"></i><span>Earnings</span>
+        </a>
+        <a href="validator" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-user-check"></i><span>Validator</span>
+        </a>
+        <a href="referral" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-user-friends"></i><span>Referrals</span>
+        </a>
+        <a href="withdraw" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-wallet"></i><span>Withdraw</span>
+        </a>
+        <a href="videos" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-info-circle"></i><span>Videos</span>
+        </a>
+        <a href="help" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-question-circle"></i><span>Help</span>
+        </a>
+        <a href="profile" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-user"></i><span>Profile</span>
+        </a>
+        <button id="logout-button" class="flex items-center space-x-3 text-red-500 hover:text-red-700">
+            <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+        </button>
+    </div>
+    
+    <!-- Mobile Icons Section (Now inside the menu for small screens) -->
+    <div class="p-6 border-t flex justify-around text-gray-700 text-xl bg-white shadow-md rounded-b-2xl">
+        <button id="theme-toggle" class="text-yellow-500 hover:text-yellow-600 transition">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button id="language-toggle" class="text-blue-500 hover:text-blue-600 transition">
+            <i class="fas fa-language"></i>
+        </button>
+        <button id="notification-bar" class="relative text-green-500 hover:text-green-600 transition">
+            <i class="fas fa-bell"></i>
+            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
+        </button>
+    </div>
+</nav>
+
+<body class="bg-gray-100 font-sans mt-20"></body>
+<!--<style>
 #payment-popup {
     z-index: 1000 !important;
     display: flex !important;
 }
-</style>
-      
- <!-- Header -->
-<header class="flex items-center justify-between p-4 bg-black shadow-md fixed w-full top-0 z-50">
-    <a href="/" class="flex items-center">
-        <img id="logo" src="/images/glacis-logo.jpg" alt="Glacis Logo" class="h-10">
-    </a>
 
-   <!-- Desktop Navigation -->
-<nav class="hidden lg:flex space-x-6 bg-black px-6 py-3 shadow-lg rounded-lg">
-    <a href="dashboard" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Dashboard</a>
-    <a href="earnings" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Earnings</a>
-    <a href="validator" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Validator</a>
-    <a href="referral" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Referrals</a>
-    <a href="withdraw" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Withdraw</a>
-    <a href="about" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">About Us</a>
-    <a href="help" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Help</a>
-    <a href="profile" class="text-white font-semibold hover:text-blue-400 transition duration-300 shadow-md">Profile</a>
-    <button id="logout-button" class="text-red-500 font-semibold hover:text-red-700 transition duration-300 shadow-md">Log Out</button>
-</nav>
-
-    <!-- Mobile Navigation Icon -->
-    <button id="hamburger-icon" class="text-gray-600 text-xl lg:hidden">
-        <i class="fas fa-bars"></i>
-    </button>
-</header>
-
-<!-- Overlay -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden"></div>
-
-<!-- Mobile Navigation -->
-<nav id="mobile-nav" class="fixed left-0 top-0 h-full w-1/4 bg-white shadow-lg transform -translate-x-full transition-transform lg:hidden z-50">
-    <div class="p-4 border-b flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Menu</h3>
-        <button id="close-nav" class="text-gray-600 text-xl"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="p-4 flex flex-col space-y-3">
-        <a href="dashboard" class="text-gray-700 hover:text-blue-600">Dashboard</a>
-        <a href="earnings" class="text-gray-700 hover:text-blue-600">Earnings</a>
-        <a href="validator" class="text-gray-700 hover:text-blue-600">Validator</a>
-        <a href="referral" class="text-gray-700 hover:text-blue-600">Referrals</a>
-        <a href="withdraw" class="text-gray-700 hover:text-blue-600">Withdraw</a>
-        <a href="about" class="text-gray-700 hover:text-blue-600">About Us</a>
-        <a href="help" class="text-gray-700 hover:text-blue-600">Help</a>
-        <a href="profile" class="text-gray-700 hover:text-blue-600">Profile</a>
-        <button id="logout-button" class="text-red-600 hover:text-red-800">Log Out</button>
-    </div>
-</nav>
-
-<body class="bg-gray-100 font-sans mt-20">
-<style>
  .hidden {
     display: none !important;
     opacity: 0 !important;
     pointer-events: none !important;
     visibility: hidden !important;
 }
-</style>
+</style>-->
 <div id="payment-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300 ease-in-out">
     <div class="relative bg-white p-6 rounded-2xl shadow-2xl max-w-lg w-full sm:w-4/5 md:w-2/3 lg:w-1/3 h-[85vh] overflow-y-auto border border-gray-200">
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">User Registration & Activation</h2>
@@ -144,55 +202,100 @@
 </div>
     </div>
 
+<!-- Spacer for Other Items -->
+<div class="h-8 md:h-14 lg:h-8"></div>
 
-    <section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
-        <!-- Dashboard Title -->
-        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
-            <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
-                       bg-gradient-to-r from-blue-500 to-purple-600 inline-block px-6">
-                Dashboard
-            </h2>
-        </div> 
+      <!-- Banner Area -->
+<section class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center text-center overflow-hidden bg-gradient-to-r from-white to-gray-100 shadow-lg rounded-2xl">
 
-         <!-- Notification Bar -->
+    <!-- Moving Shapes -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute w-14 h-14 md:w-20 md:h-20 bg-blue-400 rounded-full opacity-50 animate-float" style="top: 5%; left: 10%;"></div>
+        <div class="absolute w-24 h-24 md:w-28 md:h-28 bg-yellow-400 rounded-full opacity-50 animate-float-reverse" style="top: 10%; right: 15%;"></div>
+        <div class="absolute w-32 h-32 md:w-40 md:h-40 bg-red-400 rounded-full opacity-50 animate-float" style="bottom: 8%; left: 20%;"></div>
+        <div class="absolute w-20 h-20 md:w-28 md:h-28 bg-purple-500 rounded-md opacity-50 transform rotate-45 animate-float-reverse" style="bottom: 5%; right: 10%;"></div>
+        <div class="absolute w-10 h-10 md:w-16 md:h-16 bg-green-400 rounded-full opacity-50 animate-float" style="top: 50%; left: 50%;"></div>
+        <div class="absolute w-16 h-16 md:w-24 md:h-24 bg-orange-400 rounded-md opacity-50 transform rotate-12 animate-float" style="top: 20%; left: 40%;"></div>
+        <div class="absolute w-12 h-12 md:w-18 md:h-18 bg-pink-400 rounded-full opacity-50 animate-float-reverse" style="bottom: 15%; right: 30%;"></div>
+    </div>
+
+    <!-- Banner Content -->
+    <div class="relative z-10 px-6 lg:px-12">
+        <h1 class="text-gray-900 text-3xl md:text-5xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+            Welcome to Your Dashboard
+        </h1>
+        <p class="text-gray-700 text-lg md:text-xl mt-4 max-w-2xl mx-auto">
+            Track earnings, referrals, and validator progress effortlessly. Take control of your journey now!
+        </p>
+
+        <!-- Get Started Button -->
+        <div class="mt-6">
+            <a href="/validator" class="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-md hover:scale-105 transition-transform duration-300">
+                Get Started
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Floating Animations -->
+<style>
+    @keyframes float {
+        0% { transform: translateY(0px) translateX(0px); }
+        50% { transform: translateY(-30px) translateX(15px); }
+        100% { transform: translateY(0px) translateX(0px); }
+    }
+
+    @keyframes float-reverse {
+        0% { transform: translateY(0px) translateX(0px); }
+        50% { transform: translateY(30px) translateX(-15px); }
+        100% { transform: translateY(0px) translateX(0px); }
+    }
+
+    .animate-float {
+        animation: float 8s infinite ease-in-out alternate;
+    }
+
+    .animate-float-reverse {
+        animation: float-reverse 8s infinite ease-in-out alternate;
+    }
+</style>
+
+<section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
+
+        <section id="dashboard-info" class="p-6 bg-gray-100 min-h-screen">
+            <!-- Notification Bar -->
          <div id="notification-bar" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 relative shadow-lg rounded-md">
             <p class="font-semibold">Welcome back</p>
             <span class="absolute top-2 right-4 cursor-pointer text-xl font-bold" id="close-notification">&times;</span>
         </div>
-    
-        <!-- Welcome Box -->
-        <div class="bg-white shadow-2xl rounded-2xl p-8 mb-6 text-center">
-            <h2 class="text-2xl font-bold text-gray-800">It's good to have you on board, <span class="text-blue-600">Buddy</span></h2>
-        </div>
 
-        <section id="dashboard-info" class="p-6 bg-gray-100 min-h-screen">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- User Registration & Activation -->
                 <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-blue-500">
                     <h3 class="text-xl font-bold text-gray-800 mb-2">User Registration & Activation</h3>
-                    <p class="text-gray-600">Register as a common member with <strong>$4</strong> or as a validator with <strong>$40</strong>.</p>
+                    <p class="text-gray-600">Register as a common member with <strong>$6</strong> or as a validator with <strong>$40</strong>.</p>
                 </div>
                 
                 <!-- Validator Responsibilities -->
                 <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-yellow-500">
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Validator Responsibilities</h3>
-                    <p class="text-gray-600">Validators verify user payments and earn <strong>$3 per validation</strong>. At least two validators must approve a payment.</p>
+                    <p class="text-gray-600">Validators verify user payments and earn <strong>$2.5 per validation</strong>. At least two validators must approve a payment.</p>
                 </div>
                 
                 <!-- Referral System -->
                 <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-green-500">
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Referral Earnings</h3>
                     <ul class="list-disc pl-5 text-gray-600">
-                        <li>Direct referrals earn <strong>$10</strong> per activated account.</li>
+                        <li>Direct referrals earn <strong>$6</strong> per activated account.</li>
                         <li>Level 2 referrals earn <strong>$3</strong> per activation.</li>
-                        <li>If a referral registers as a validator, earn <strong>$30</strong> (direct) or <strong>$5</strong> (level 2).</li>
+                        <li>If a referral registers as a validator, earn <strong>$10</strong> (direct) or <strong>$5</strong> (level 2).</li>
                     </ul>
                 </div>
                 
                 <!-- Payment System -->
                 <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-purple-500">
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Payment System</h3>
-                    <p class="text-gray-600">Payments are done manually through <strong>Binance, OKX, Metamask, Trust Wallet</strong>.</p>
+                    <p class="text-gray-600">Payments are done manually through <strong>Binance & Metamask </strong>.</p>
                 </div>
                 
                 <!-- Transaction Proof Submission -->
@@ -219,55 +322,46 @@
             </div>
         </section>
         
-        <!-- Earnings Graph -->
-        <div class="bg-white shadow-2xl rounded-2xl p-8 mt-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Overview</h3>
-            <canvas id="earningsChart"></canvas>
-        </div>
-        
-        <!-- Additional Graphs Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div class="bg-white shadow-2xl rounded-2xl p-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Bar Chart</h3>
-                <canvas id="barChart"></canvas>
-            </div>
-            <div class="bg-white shadow-2xl rounded-2xl p-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Distribution</h3>
-                <canvas id="doughnutChart"></canvas>
-            </div>
+     <div>
             <div class="bg-white shadow-2xl rounded-2xl p-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Histogram</h3>
                 <canvas id="histogramChart"></canvas>
             </div>
         </div>
     
-        <!-- Referral Section -->
-        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto">
-            <h3 class="text-lg font-bold text-white mb-4">Your Referral Link</h3>
-            <div class="flex items-center space-x-4">
-                <p id="referral-link" class="flex-grow text-white bg-gray-700 px-4 py-2 rounded-md overflow-hidden text-ellipsis whitespace-nowrap border border-gray-500">Your Referral Link Here</p>
-                <button id="copy-link-button" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">Copy</button>
-                <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600">
-                    <i class="fab fa-whatsapp text-lg"></i>
-                </a>
-            </div>
-            
-            <!-- Referred Friends Section -->
-            <h3 class="text-lg font-bold text-white mt-6">Your Referred Friends</h3>
-            <div class="overflow-x-auto mt-4">
-                <table class="w-full border-collapse text-sm text-left">
-                    <thead>
-                        <tr class="bg-gray-700 border-b text-white">
-                            <th class="p-3">Email</th>
-                            <th class="p-3">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="referred-users-list" class="bg-gray-800 text-white">
-                        <!-- Referred users will be dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      <!-- Referral Section -->
+<div class="bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto border border-gray-200">
+    <h3 class="text-xl font-bold text-gray-900 mb-4">Your Referral Link</h3>
+    
+    <div class="flex items-center space-x-4 bg-gray-100 p-3 rounded-lg shadow-inner">
+        <p id="referral-link" class="flex-grow text-gray-800 bg-white px-4 py-2 rounded-md border border-gray-300 overflow-hidden text-ellipsis whitespace-nowrap">
+            Your Referral Link Here
+        </p>
+        <button id="copy-link-button" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+            Copy
+        </button>
+        <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300">
+            <i class="fab fa-whatsapp text-lg"></i>
+        </a>
+    </div>
+    
+    <!-- Referred Friends Section -->
+    <h3 class="text-xl font-bold text-gray-900 mt-6">Your Referred Friends</h3>
+    
+    <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
+        <table class="w-full border-collapse text-sm text-left">
+            <thead>
+                <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg">
+                    <th class="p-3 text-left">Email</th>
+                    <th class="p-3 text-left">Status</th>
+                </tr>
+            </thead>
+            <tbody id="referred-users-list" class="text-gray-800">
+                <!-- Referred users will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
     </section>
 
     <section>
@@ -474,32 +568,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
-</script>
 
-
-<script>
 document.getElementById("close-notification").addEventListener("click", function () {
-        document.getElementById("notification-bar").style.display = "none";
-    });
+    document.getElementById("notification-bar").style.display = "none";
+});
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const ctx1 = document.getElementById("earningsChart").getContext("2d");
-        const ctx2 = document.getElementById("barChart").getContext("2d");
-        const ctx3 = document.getElementById("doughnutChart").getContext("2d");
-        const ctx4 = document.getElementById("histogramChart").getContext("2d");
+document.addEventListener("DOMContentLoaded", async function () {
+    const ctx4 = document.getElementById("histogramChart").getContext("2d");
 
-        const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-        const earningsData = [500, 1200, 1800, 2400, 3200, 4100];
 
-        new Chart(ctx1, { type: "line", data: { labels, datasets: [{ label: "Earnings ($)", data: earningsData, borderColor: "#4CAF50", borderWidth: 2, fill: false, tension: 0.4 }] }, options: { responsive: true } });
+    try {
+        const usersRef = collection(db, "users");
+        const usersSnapshot = await getDocs(usersRef);
+        const earningsData = [];
+        const labels = [];
 
-        new Chart(ctx2, { type: "bar", data: { labels, datasets: [{ label: "Earnings ($)", data: earningsData, backgroundColor: "#ff9800" }] }, options: { responsive: true } });
+        usersSnapshot.forEach((doc) => {
+            const userData = doc.data();
+            if (userData.totalEarnings) {
+                earningsData.push(userData.totalEarnings);
+                labels.push(userData.firstName || "User"); // Default to "User" if no name
+            }
+        });
 
-        new Chart(ctx3, { type: "doughnut", data: { labels, datasets: [{ data: earningsData, backgroundColor: ["#4CAF50", "#ff9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0"] }] }, options: { responsive: true } });
+        if (earningsData.length === 0) {
+            console.warn("No earnings data found in Firestore.");
+        }
 
-        new Chart(ctx4, { type: "bar", data: { labels, datasets: [{ label: "Earnings Distribution", data: earningsData, backgroundColor: "#673AB7" }] }, options: { responsive: true } });
-    });
+        new Chart(ctx4, {
+            type: "bar",
+            data: {
+                labels,
+                datasets: [{
+                    label: "Earnings Distribution",
+                    data: earningsData,
+                    backgroundColor: "#673AB7"
+                }]
+            },
+            options: { responsive: true }
+        });
 
+    } catch (error) {
+        console.error("Error fetching earnings data:", error);
+    }
+});
 
     
   document.addEventListener("contextmenu", function (event) {

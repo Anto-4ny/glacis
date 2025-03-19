@@ -165,7 +165,10 @@ async function saveUserWithReferral(userId, email, referrerId) {
         paymentApproved: false,
         isValidator: false,
         validatorRequest: false,
+        videoEarnings,
+        likedVideos,
         registeredAt: new Date(),
+        watchedVideos
     }, { merge: true });
 
     console.log(`User ${userId} registered with referrer: ${referrerId}`);

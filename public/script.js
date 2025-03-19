@@ -20,7 +20,8 @@ import {
     where,
     getDocs,
     Timestamp,
-    increment, // ✅ Import increment
+    increment,
+    arrayUnion
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
@@ -56,7 +57,8 @@ export {
     setDoc,
     onSnapshot, // ✅ Keep only this onSnapshot
     onAuthStateChanged,
-    storage
+    storage,
+    arrayUnion
 };
 
 // Ensure user is authenticated
@@ -237,7 +239,10 @@ if (signupForm) {
                     paymentApproved: false,
                     isValidator: false,
                     validatorRequest: false,
+                    videoEarnings,
+                    likedVideos,
                     registeredAt: new Date(),
+                    watchedVideos
                 });
 
                 console.log("User signed up successfully:", userId);
