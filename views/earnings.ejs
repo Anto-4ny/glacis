@@ -235,7 +235,9 @@
 <script type="module" src="referral.js"></script>
 <script type="module" src="videos.js"></script>
 
-  <script>
+<script type="module">
+    import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, onAuthStateChanged, onSnapshot } from "./script.js";    
+
 document.addEventListener("DOMContentLoaded", async function () {
     const ctx4 = document.getElementById("histogramChart").getContext("2d");
 
