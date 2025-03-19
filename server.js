@@ -29,6 +29,41 @@ app.get("/videos", (req, res) => {
     res.render("videos", { user: "John Doe" });
 });
 
+// Route for Videos Page (Displays videos.ejs)
+app.get("/dashboard", (req, res) => {
+    res.render("dashboard", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
+app.get("/earnings", (req, res) => {
+    res.render("earnings", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
+app.get("/help", (req, res) => {
+    res.render("help", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
+app.get("/profile", (req, res) => {
+    res.render("profile", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
+app.get("/referral", (req, res) => {
+    res.render("referral", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
+app.get("/validator", (req, res) => {
+    res.render("validator", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
+app.get("/withdraw", (req, res) => {
+    res.render("withdraw", { user: "John Doe" });
+});
+
 // Fetch YouTube videos dynamically
 app.get("/api/videos", async (req, res) => {
     try {
