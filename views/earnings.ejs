@@ -238,7 +238,7 @@
 <script type="module">
     import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, onAuthStateChanged, onSnapshot } from "./script.js";    
 
-document.addEventListener("DOMContentLoaded", async function () {
+    document.addEventListener("DOMContentLoaded", async function () {
     const ctx4 = document.getElementById("histogramChart").getContext("2d");
 
 
@@ -278,7 +278,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
-
 document.addEventListener("contextmenu", function (event) {
     event.preventDefault(); // Disable right-click
   });
@@ -300,8 +299,6 @@ document.addEventListener("contextmenu", function (event) {
       event.preventDefault(); // Disable Print (Ctrl + P)
     }
   });
-
-
 </script>
 </body>
 </html>
