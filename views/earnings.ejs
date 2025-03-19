@@ -203,9 +203,11 @@
     </div>
 
     <!-- Earnings Graph -->
-    <div class="bg-white shadow-md rounded-lg p-6 mt-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Growth</h3>
-        <canvas id="earningsChart"></canvas>
+    <div>
+        <div class="bg-white shadow-2xl rounded-2xl p-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Histogram</h3>
+            <canvas id="histogramChart"></canvas>
+        </div>
     </div>
 </section>
 
@@ -234,31 +236,44 @@
 <script type="module" src="videos.js"></script>
 
   <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById("earningsChart").getContext("2d");
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-            datasets: [
-                {
-                    label: "Earnings ($)",
-                    data: [0, 100, 300, 600, 900, 1500],
-                    borderColor: "#4CAF50",
-                    backgroundColor: "rgba(76, 175, 80, 0.2)",
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true,
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true },
+document.addEventListener("DOMContentLoaded", async function () {
+    const ctx4 = document.getElementById("histogramChart").getContext("2d");
+
+
+    try {
+        const usersRef = collection(db, "users");
+        const usersSnapshot = await getDocs(usersRef);
+        const earningsData = [];
+        const labels = [];
+
+        usersSnapshot.forEach((doc) => {
+            const userData = doc.data();
+            if (userData.totalEarnings) {
+                earningsData.push(userData.totalEarnings);
+                labels.push(userData.firstName || "User"); // Default to "User" if no name
+            }
+        });
+
+        if (earningsData.length === 0) {
+            console.warn("No earnings data found in Firestore.");
+        }
+
+        new Chart(ctx4, {
+            type: "bar",
+            data: {
+                labels,
+                datasets: [{
+                    label: "Earnings Distribution",
+                    data: earningsData,
+                    backgroundColor: "#673AB7"
+                }]
             },
-        },
-    });
+            options: { responsive: true }
+        });
+
+    } catch (error) {
+        console.error("Error fetching earnings data:", error);
+    }
 });
 
 
