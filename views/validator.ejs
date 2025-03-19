@@ -390,9 +390,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 validatorList.push(doc.id);
             });
 
-            validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 2);
+            validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 1);
 
-            if (validatorList.length < 2) {
+            if (validatorList.length < 1) {
                 return displayMessage("error", "❌ Not enough validators available.");
             }
 
@@ -443,7 +443,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <td>${data.email}</td>
                     <td>${data.txid}</td>
                     <td>${paymentTime}</td>
-                    <td>${data.approvals.length}/2 Approved</td>
+                    <td>${data.approvals.length}/1 Approved</td>
                     <td>
                         <button class="approve-btn" data-id="${docSnap.id}" style="background-color: green; color: white;">Approve</button>
                     </td>
@@ -481,7 +481,7 @@ async function approvePayment(paymentId) {
     updatedApprovals.push(user.uid);
     let paymentStatus = "pending";
 
-    if (updatedApprovals.length >= 2) {
+    if (updatedApprovals.length >= 1) {
         paymentStatus = "approved";
         await updateDoc(doc(db, "users", paymentData.email), {
             paymentStatus: "approved",
