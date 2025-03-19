@@ -239,10 +239,10 @@ if (signupForm) {
                     paymentApproved: false,
                     isValidator: false,
                     validatorRequest: false,
-                    videoEarnings,
-                    likedVideos,
-                    registeredAt: new Date(),
-                    watchedVideos
+                   // videoEarnings,
+                    //likedVideos,
+                    //watchedVideos,
+                    registeredAt: new Date(), 
                 });
 
                 console.log("User signed up successfully:", userId);
