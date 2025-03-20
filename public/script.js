@@ -21,6 +21,7 @@ import {
     getDocs,
     Timestamp,
     increment,
+    limit,
     arrayUnion
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
@@ -58,7 +59,8 @@ export {
     onSnapshot, // ✅ Keep only this onSnapshot
     onAuthStateChanged,
     storage,
-    arrayUnion
+    arrayUnion,
+    limit
 };
 
 // Ensure user is authenticated
@@ -235,9 +237,7 @@ if (signupForm) {
                     totalReferrals: 0,
                     membershipPaid: false,
                     membershipApproved: false,
-                    paymentStatus: false,
                     paymentApproved: false,
-                    isValidator: false,
                     validatorRequest: false,
                    // videoEarnings,
                     //likedVideos,
