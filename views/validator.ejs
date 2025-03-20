@@ -273,7 +273,7 @@
 
 
     <script type="module">
-import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit } from './script.js';
+import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, serverTimestamp } from './script.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const validatorPopup = document.getElementById("validator-popup");
@@ -389,7 +389,7 @@ payBtn.addEventListener("click", async (event) => {
             assignedValidators: validatorList, // Assigned validators
             approvals: [],
             status: "pending",
-            timestamp: serverTimestamp() // Use Firestore server timestamp
+            timestamp: serverTimestamp()
         });
 
         displayMessage("success", "✅ Payment submitted and assigned to validators.");

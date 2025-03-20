@@ -22,6 +22,7 @@ import {
     Timestamp,
     increment,
     limit,
+    serverTimestamp,
     arrayUnion
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
@@ -60,7 +61,8 @@ export {
     onAuthStateChanged,
     storage,
     arrayUnion,
-    limit
+    limit,
+    serverTimestamp
 };
 
 // Ensure user is authenticated
