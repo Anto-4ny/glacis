@@ -1,4 +1,4 @@
-import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged } from './script.js';
+import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, limit, onAuthStateChanged } from './script.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Page loaded");
@@ -67,20 +67,44 @@ async function waitForUserDocument(userId) {
 async function checkPaymentStatus(userId) {
     const userRef = doc(db, "users", userId);
     const userDoc = await getDoc(userRef);
+    const paymentPopup = document.getElementById("payment-popup");
 
-    if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const paymentPopup = document.getElementById("payment-popup");
+    if (!paymentPopup) {
+        console.log("⚠️ Payment pop-up not found in DOM.");
+        return;
+    }
 
-        if (!paymentPopup) {
-            console.log("⚠️ Payment pop-up not found in DOM.");
-            return;
-        }
+    if (!userDoc.exists()) {
+        console.log("⚠️ User document not found.");
+        return;
+    }
 
-        console.log("🔍 Checking payment status:", userData);
+    const userData = userDoc.data();
+    console.log("🔍 Checking user details:", userData);
 
-        if (userData.membershipApproved) {
+    // ✅ Fetch latest payment record for the user
+    const paymentsQuery = query(
+        collection(db, "payments"),
+        where("email", "==", userData.email),
+        where("type", "==", "membership"),
+        //orderBy("timestamp", "desc"),
+        limit(1)
+    );
+
+    const paymentSnap = await getDocs(paymentsQuery);
+
+    if (!paymentSnap.empty) {
+        const paymentDoc = paymentSnap.docs[0];
+        const paymentData = paymentDoc.data();
+        console.log("🔍 Checking latest payment:", paymentData);
+
+        if (paymentData.paymentStatus === "approved") {
             console.log("✅ Payment verified. Hiding pop-up.");
+
+            // ✅ Update user membership approval
+            await updateDoc(userRef, { membershipApproved: true });
+
+            // ✅ Hide pop-up
             paymentPopup.style.opacity = "0";
             paymentPopup.style.pointerEvents = "none";
             paymentPopup.style.display = "none";
@@ -94,7 +118,11 @@ async function checkPaymentStatus(userId) {
             paymentPopup.classList.remove("hidden");
         }
     } else {
-        console.log("⚠️ User document not found.");
+        console.log("⚠️ No payment found. Pop-up remains visible.");
+        paymentPopup.style.opacity = "1";
+        paymentPopup.style.pointerEvents = "auto";
+        paymentPopup.style.display = "flex";
+        paymentPopup.classList.remove("hidden");
     }
 }
 
@@ -159,10 +187,7 @@ async function saveUserWithReferral(userId, email, referrerId) {
         amountPaid: 0,
         totalReferrals: 0,
         totalEarnings: 0,
-        membershipPaid: false,
         membershipApproved: false,
-        paymentApproved: false,
-        validatorRequest: false,
         //videoEarnings,
        // likedVideos,
        // watchedVideos,
@@ -201,8 +226,6 @@ async function awardReferrerOnPayment(userId) {
         console.log(`Grand referrer ${grandReferrerId} earned +0.5.`);
     }
 
-    // Verify and hide pop-up if it's in the dashboard
-    checkPaymentStatus(userId);
 }
 
 export { awardReferrerOnPayment, saveUserWithReferral };

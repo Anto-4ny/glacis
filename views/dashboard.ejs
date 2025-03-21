@@ -168,11 +168,11 @@
         </div>
 
                       <!-- Success Message -->
-<div id="success-message" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
+<div id="statusMessage" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
 </div>
 
 <!-- Error Message -->
-<div id="error-message" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
+<div id="statusMessage" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
 </div>
 
         <h3 class="text-lg font-semibold mt-6">Payment Submission</h3>
@@ -411,7 +411,7 @@
        <script type="module" src="script.js"></script>
 <script type="module" src="referral.js"></script>
 <script type="module">
-import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, onAuthStateChanged, onSnapshot } from "./script.js";
+import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, onAuthStateChanged, onSnapshot, where, serverTimestamp } from "./script.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const popup = document.getElementById("payment-popup");
@@ -428,131 +428,131 @@ document.addEventListener("DOMContentLoaded", async () => {
     statusMessage.classList.add("text-sm", "text-gray-700", "mt-2");
     if (form) form.appendChild(statusMessage);
 
-    const showMessage = (message, type) => {
-        const messageDiv = type === "success" ? successMessageDiv : errorMessageDiv;
-        if (!messageDiv) return;
-
-        messageDiv.textContent = message;
-        messageDiv.classList.remove("hidden", "bg-green-100", "text-green-700", "bg-red-100", "text-red-700");
-
-        if (type === "success") {
-            messageDiv.classList.add("bg-green-100", "text-green-700");
-        } else {
-            messageDiv.classList.add("bg-red-100", "text-red-700");
-        }
-
-        setTimeout(() => messageDiv.classList.add("hidden"), 4000);
-    };
-
-    window.copyToClipboard = (elementId) => {
-        const textElement = document.getElementById(elementId);
-        if (textElement) {
-            navigator.clipboard.writeText(textElement.textContent).then(() => {
-                showMessage("Copied: " + textElement.textContent, "success");
-            }).catch(() => {
-                showMessage("Failed to copy", "error");
-            });
-        }
-    };
-
-    if (!form) {
-        console.warn("⚠️ Payment form not found on this page.");
-    } else {
-        if (!txidInput || !walletAddressInput || !paymentDateInput || !payBtn) {
-            console.error("❌ Form elements missing! Check your HTML.");
-        } else {
-            form.addEventListener("submit", async (event) => {
-                event.preventDefault();
-
-                const txid = txidInput.value.trim();
-                const walletAddress = walletAddressInput.value.trim();
-                const paymentDate = paymentDateInput.value.trim();
-                const user = auth.currentUser;
-
-                if (!txid || !walletAddress || !paymentDate) {
-                    showMessage("⚠️ All fields are required.", "error");
-                    return;
-                }
-
-                if (!user?.email) {
-                    showMessage("❌ User not authenticated. Please log in.", "error");
-                    return;
-                }
-
-                try {
-                    // Get a single available validator
-                    const validatorsQuery = query(collection(db, "validators"));
-                    const validatorsSnapshot = await getDocs(validatorsQuery);
-                    let validators = validatorsSnapshot.docs.map(doc => doc.id);
-
-                    if (validators.length === 0) {
-                        showMessage("⚠️ No validators available. Please wait.", "error");
-                        return;
-                    }
-
-                    // Check if user already submitted a pending payment
-                    const existingPaymentQuery = query(collection(db, "payments"));
-                    const existingPayments = await getDocs(existingPaymentQuery);
-
-                    let hasPendingPayment = existingPayments.docs.some(paymentDoc => {
-                        const paymentData = paymentDoc.data();
-                        return paymentData.email === user.email && paymentData.status === "pending";
-                    });
-
-                    if (hasPendingPayment) {
-                        showMessage("⚠️ You already submitted a payment. Waiting for validation.", "error");
-                        return;
-                    }
-
-                    let assignedValidator = validators[Math.floor(Math.random() * validators.length)];
-
-                    await addDoc(collection(db, "payments"), {
-                        email: user.email,
-                        txid,
-                        walletAddress,
-                        paymentDate,
-                        status: "pending",
-                        assignedValidators: [assignedValidator],
-                        approvals: 0,
-                        type: "membership"
-                    });
-
-                    // Lock form after submission
-                    txidInput.disabled = true;
-                    walletAddressInput.disabled = true;
-                    paymentDateInput.disabled = true;
-                    payBtn.disabled = true;
-                    payBtn.textContent = "Submitted";
-
-                    statusMessage.textContent = `Awaiting validation... 0/1 approvals`;
-
-                    showMessage("✅ Payment submitted successfully!", "success");
-                } catch (error) {
-                    showMessage(`❌ Error: ${error.message}`, "error");
-                    console.error("Payment Submission Error:", error);
-                }
-            });
-        }
+// Function to show messages in the UI
+function showMessage(message, type) {
+    const messageDiv = document.getElementById("statusMessage");
+    
+    if (!messageDiv) {
+        console.warn("⚠️ Message div not found in DOM.");
+        return;
     }
 
-    // Listen for membership approval
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const paymentQuery = query(collection(db, "payments"));
-            onSnapshot(paymentQuery, (snapshot) => {
-                snapshot.forEach((paymentDoc) => {
-                    const paymentData = paymentDoc.data();
-                    if (paymentData.email === user.email && paymentData.type === "membership") {
-                        statusMessage.textContent = `Awaiting validation... ${paymentData.approvals}/1 approvals`;
-                        if (paymentData.status === "approved") {
-                            statusMessage.textContent = "✅ Membership approved!";
-                            popup.classList.add("hidden"); // Close membership pop-up
-                        }
+    messageDiv.textContent = message;
+    messageDiv.classList.remove("hidden", "bg-green-100", "text-green-700", "bg-red-100", "text-red-700");
+
+    if (type === "success") {
+        messageDiv.classList.add("bg-green-100", "text-green-700");
+    } else {
+        messageDiv.classList.add("bg-red-100", "text-red-700");
+    }
+
+    // Hide the message after 4 seconds
+    setTimeout(() => messageDiv.classList.add("hidden"), 4000);
+}
+
+// Handle form submission
+if (!form) {
+    console.warn("⚠️ Payment form not found on this page.");
+} else {
+    if (!txidInput || !walletAddressInput || !paymentDateInput || !payBtn) {
+        console.error("❌ Form elements missing! Check your HTML.");
+    } else {
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const txid = txidInput.value.trim();
+            const walletAddress = walletAddressInput.value.trim();
+            const paymentDate = paymentDateInput.value.trim();
+            const user = auth.currentUser;
+
+            if (!txid || !walletAddress || !paymentDate) {
+                showMessage("⚠️ All fields are required.", "error");
+                return;
+            }
+
+            if (!user?.email) {
+                showMessage("❌ User not authenticated. Please log in.", "error");
+                return;
+            }
+
+            try {
+                // Check if the user has already submitted a pending payment
+                const existingPaymentQuery = query(
+                    collection(db, "payments"),
+                    where("email", "==", user.email),
+                    where("paymentStatus", "==", "pending")
+                );
+                const existingPayments = await getDocs(existingPaymentQuery);
+
+                if (!existingPayments.empty) {
+                    showMessage("⚠️ You already submitted a payment. Waiting for validation.", "error");
+                    return;
+                }
+
+                // Fetch eligible validators (users with isValidator = true)
+                const validatorQuery = query(
+                    collection(db, "users"),
+                    where("isValidator", "==", true)
+                );
+                const validatorSnap = await getDocs(validatorQuery);
+                let validatorList = [];
+
+                validatorSnap.forEach((doc) => {
+                    validatorList.push(doc.id);
+                });
+
+                if (validatorList.length === 0) {
+                    showMessage("⚠️ No validators available. Please wait.", "error");
+                    return;
+                }
+
+                // Select one random validator
+                let assignedValidator = validatorList[Math.floor(Math.random() * validatorList.length)];
+
+                // Add the payment entry to Firestore
+                const paymentRef = await addDoc(collection(db, "payments"), {
+                    email: user.email,
+                    txid,
+                    walletAddress,
+                    paymentDate,
+                    paymentStatus: "pending", // ✅ Corrected field
+                    assignedValidators: [assignedValidator],
+                    approvals: [],
+                    type: "membership",
+                    timestamp: serverTimestamp(),
+                });
+
+                // Lock form inputs after submission
+                txidInput.disabled = true;
+                walletAddressInput.disabled = true;
+                paymentDateInput.disabled = true;
+                payBtn.disabled = true;
+                payBtn.textContent = "Submitted";
+
+                showMessage("✅ Payment submitted successfully! Awaiting approval.", "success");
+
+                // Listen for real-time updates on payment approval
+                const paymentDocRef = doc(db, "payments", paymentRef.id);
+                onSnapshot(paymentDocRef, async (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().paymentStatus === "approved") {
+                        // Update user document to set membershipApproved = true
+                        await updateDoc(doc(db, "users", user.uid), {
+                            membershipApproved: true
+                        });
+
+                        showMessage("✅ Payment approved! Welcome to the membership.", "success");
+
                     }
                 });
-            });
-        }
-    });
+
+            } catch (error) {
+                showMessage(`❌ Error: ${error.message}`, "error");
+                console.error("Payment Submission Error:", error);
+            }
+        });
+    }
+}
+
 });
 
 
