@@ -212,29 +212,6 @@
         </h2>
     </div>
 
-   <!-- Pending Transactions Table -->
-<div class="bg-white shadow-2xl rounded-2xl p-6 overflow-hidden">
-    <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
-    
-    <div class="overflow-x-auto">
-        <table class="w-full min-w-[800px] border-collapse rounded-lg">
-            <thead>
-                <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
-                    <th class="p-4 border border-gray-300">Username</th>
-                    <th class="p-4 border border-gray-300">Amount Paid</th>
-                    <th class="p-4 border border-gray-300">Transaction ID</th>
-                    <th class="p-4 border border-gray-300">Time Submitted</th>
-                    <th class="p-4 border border-gray-300">Validation Status</th>
-                    <th class="p-4 border border-gray-300">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
-                <!-- Transactions dynamically inserted here -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
     <!-- Validate Payment Panel -->
     <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
@@ -259,6 +236,30 @@
         </div>
     </div>
 
+   <!-- Pending Transactions Table -->
+<div class="bg-white shadow-2xl rounded-2xl p-6 overflow-hidden">
+    <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full min-w-[800px] border-collapse rounded-lg">
+            <thead>
+                <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+                    <th class="p-4 border border-gray-300">Username</th>
+                    <th class="p-4 border border-gray-300">Amount Paid</th>
+                    <th class="p-4 border border-gray-300">Transaction ID</th>
+                    <th class="p-4 border border-gray-300">Time Submitted</th>
+                    <th class="p-4 border border-gray-300">Validation Status</th>
+                    <th class="p-4 border border-gray-300">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
+                <!-- Transactions dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    
     <!-- Validation History -->
 <div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
