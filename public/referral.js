@@ -98,7 +98,7 @@ async function checkPaymentStatus(userId) {
         const paymentData = paymentDoc.data();
         console.log("🔍 Checking latest payment:", paymentData);
 
-        if (paymentData.paymentStatus === "approved") {
+        if (paymentData.paymentApproved === "approved") {
             console.log("✅ Payment verified. Hiding pop-up.");
 
             // ✅ Update user membership approval

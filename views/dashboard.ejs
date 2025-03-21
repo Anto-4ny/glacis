@@ -480,7 +480,7 @@ if (!form) {
                 const existingPaymentQuery = query(
                     collection(db, "payments"),
                     where("email", "==", user.email),
-                    where("paymentStatus", "==", "pending")
+                    where("paymentApproved", "==", "pending")
                 );
                 const existingPayments = await getDocs(existingPaymentQuery);
 
@@ -515,7 +515,7 @@ if (!form) {
                     txid,
                     walletAddress,
                     paymentDate,
-                    paymentStatus: "pending", // ✅ Corrected field
+                    paymentApproved: "pending", // ✅ Corrected field
                     assignedValidators: [assignedValidator],
                     approvals: [],
                     type: "membership",
@@ -534,7 +534,7 @@ if (!form) {
                 // Listen for real-time updates on payment approval
                 const paymentDocRef = doc(db, "payments", paymentRef.id);
                 onSnapshot(paymentDocRef, async (docSnap) => {
-                    if (docSnap.exists() && docSnap.data().paymentStatus === "approved") {
+                    if (docSnap.exists() && docSnap.data().paymentApproved === "approved") {
                         // Update user document to set membershipApproved = true
                         await updateDoc(doc(db, "users", user.uid), {
                             membershipApproved: true

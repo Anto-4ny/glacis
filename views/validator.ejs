@@ -457,6 +457,7 @@
         const q = query(
             collection(db, "payments"),
             where("status", "==", "pending"),
+            where("paymentapproved", "==", "pending"),
             where("assignedValidators", "array-contains", user.uid)
         );
     
