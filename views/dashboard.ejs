@@ -128,79 +128,73 @@
     </div>
 </nav>
 
-<body class="bg-gray-100 font-sans mt-20"></body>
-<style>
-#payment-popup {
-    z-index: 1000 !important;
-    display: flex !important;
-}
+<body class="bg-gray-100 font-sans mt-20">
+<!-- Validator Registration Popup -->
+<div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Become a member</h3>
+        <p class="text-gray-600 mb-2">To become an eligible member of Quantum Market, pay a one-time registration fee of <strong>$6</strong>.</p>
+        <p class="text-gray-800 font-semibold">Send payment to:</p>
 
- .hidden {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
-}
-</style>
-<div id="payment-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden transition-opacity duration-300 ease-in-out">
-    <div class="relative bg-white p-6 rounded-2xl shadow-2xl max-w-lg w-full sm:w-4/5 md:w-2/3 lg:w-1/3 h-[85vh] overflow-y-auto border border-gray-200">
-        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">User Registration & Activation</h2>
-        <p class="text-gray-500 text-sm text-center mb-6">
-            To fully activate your account, choose one of the following options:
-        </p>
-
-        <div class="space-y-4">
-            <div class="border p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition membership-option" data-type="common">
-                <h3 class="text-lg font-semibold text-gray-800">Common Member</h3>
-                <p class="text-gray-500 text-sm">Register with a one-time fee of <strong class="text-green-600">$6</strong> to start earning.</p>
-            </div>
-        </div>            
-
-        <h3 class="text-lg font-semibold mt-6">Payment Methods</h3>
-        <p class="text-gray-500 text-sm">Payments are done manually via <strong>Binance</strong>.</p>
-
-        <h3 class="text-lg font-semibold mt-6">Wallet Addresses</h3>
+        <!-- Wallet Addresses -->
         <div class="space-y-2">
             <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
                 <span class="text-sm text-gray-700">Binance: <strong id="binance-wallet">821693759</strong></span>
                 <button onclick="copyToClipboard('binance-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
             </div>
         </div>
+        <div id="message-boxx"></div>
 
-                      <!-- Success Message -->
-<div id="statusMessage" class="hidden text-green-700 bg-green-100 border-l-4 border-green-500 p-3 rounded-md my-2">
-</div>
-
-<!-- Error Message -->
-<div id="statusMessage" class="hidden text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-md my-2">
-</div>
-
-        <h3 class="text-lg font-semibold mt-6">Payment Submission</h3>
+        <h3 class="text-lg font-semibold mt-6">Submit Payment Details</h3>
         <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
 
-<form id="payment-form" class="space-y-4">
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
-        <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-    </div>
+        <!-- Payment Submission Form -->
+        <form id="payment-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
+                <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>
+   
+            <!--<div>
+                <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
+                <input type="file" id="screenshot" accept="image/*" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>-->
 
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
-        <input type="text" id="wallet-address" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-    </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
+                <input type="text" id="wallet-used" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>
 
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
-        <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
+                <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>
+            <div id="message-box"></div>
+            <button id="pay-validator-btn" class="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-700 transition">
+                Submit Payment
+            </button>
+        </form>
     </div>
-
-    <!-- FIX: Corrected button type to "submit" -->
-    <button type="submit" id="pay-btn" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-lg font-semibold">
-        Submit for Verification
-    </button>
-</form>
 </div>
-    </div>
+<script>
+    function copyToClipboard(id) {
+        const text = document.getElementById(id).textContent;
+        const messageBoxx = document.getElementById("message-boxx");
+
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                messageBoxx.innerHTML = `<p class="bg-green-100 text-green-700 p-2 rounded-md text-center">✅ Wallet Address Copied!</p>`;
+            })
+            .catch(() => {
+                messageBoxx.innerHTML = `<p class="bg-red-100 text-red-700 p-2 rounded-md text-center">❌ Failed to copy address.</p>`;
+            });
+
+        // Clear message after 3 seconds
+        setTimeout(() => {
+            messageBoxx.innerHTML = "";
+        }, 3000);
+    }
+</script>
 
 <!-- Spacer for Other Items -->
 <div class="h-8 md:h-14 lg:h-8"></div>
@@ -322,7 +316,88 @@
             </div>
         </section>
         
-     <div>
+
+        <section id="validators" class="p-6 bg-gray-100 min-h-screen">
+            <!-- Validators Page Title -->
+            <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
+                <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
+                           bg-gradient-to-r from-green-500 to-blue-600 inline-block px-6">
+                    Validators Panel
+                </h2>
+            </div>
+        
+            <!-- Validate Payment Panel -->
+            <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
+                <p class="text-gray-600 mb-4">Review and approve/reject payments.</p>
+                  
+            <!-- Earnings Tracker for Validators -->
+            <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Tracker</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-green-100 p-4 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
+                        <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
+                    </div>
+                    <div class="bg-blue-100 p-4 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
+                        <p id="total-earnings" class="text-2xl font-bold text-blue-700">$0</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
+                        <p id="pending-earnings" class="text-2xl font-bold text-gray-600">$0</p>
+                    </div>
+                </div>
+            </div>
+        
+           <!-- Pending Transactions Table -->
+        <div class="bg-white shadow-2xl rounded-2xl p-6 overflow-hidden">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[800px] border-collapse rounded-lg">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+                            <th class="p-4 border border-gray-300">Username</th>
+                            <th class="p-4 border border-gray-300">Amount Paid</th>
+                            <th class="p-4 border border-gray-300">Transaction ID</th>
+                            <th class="p-4 border border-gray-300">Time Submitted</th>
+                            <th class="p-4 border border-gray-300">Validation Status</th>
+                            <th class="p-4 border border-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
+                        <!-- Transactions dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+            
+            <!-- Validation History -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
+            <p class="text-gray-600 mb-4">View previously validated payments.</p>
+            <div class="w-full overflow-x-auto">
+                <table class="w-full min-w-max border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-3 border">Username</th>
+                            <th class="p-3 border">Amount</th>
+                            <th class="p-3 border">Transaction ID</th>
+                            <th class="p-3 border">Status</th>
+                            <th class="p-3 border">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="validation-history">
+                        <!-- Approved transactions will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </section>
+
+        <div>
             <div class="bg-white shadow-2xl rounded-2xl p-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Histogram</h3>
                 <canvas id="histogramChart"></canvas>
@@ -410,153 +485,378 @@
        <!-- Your custom script -->
        <script type="module" src="script.js"></script>
 <script type="module" src="referral.js"></script>
+
 <script type="module">
-import { auth, db, doc, getDoc, updateDoc, query, collection, getDocs, addDoc, onAuthStateChanged, onSnapshot, where, serverTimestamp } from "./script.js";
-
-document.addEventListener("DOMContentLoaded", async () => {
-    const popup = document.getElementById("payment-popup");
-    const errorMessageDiv = document.getElementById("error-message");
-    const successMessageDiv = document.getElementById("success-message");
-    const payBtn = document.getElementById("pay-btn");
-    const txidInput = document.getElementById("txid");
-    const walletAddressInput = document.getElementById("wallet-address");
-    const paymentDateInput = document.getElementById("payment-date");
-    const form = document.getElementById("payment-form");
-
-    const statusMessage = document.createElement("p");
-    statusMessage.id = "payment-status";
-    statusMessage.classList.add("text-sm", "text-gray-700", "mt-2");
-    if (form) form.appendChild(statusMessage);
-
-// Function to show messages in the UI
-function showMessage(message, type) {
-    const messageDiv = document.getElementById("statusMessage");
+    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp } from './script.js';
     
-    if (!messageDiv) {
-        console.warn("⚠️ Message div not found in DOM.");
-        return;
-    }
-
-    messageDiv.textContent = message;
-    messageDiv.classList.remove("hidden", "bg-green-100", "text-green-700", "bg-red-100", "text-red-700");
-
-    if (type === "success") {
-        messageDiv.classList.add("bg-green-100", "text-green-700");
-    } else {
-        messageDiv.classList.add("bg-red-100", "text-red-700");
-    }
-
-    // Hide the message after 4 seconds
-    setTimeout(() => messageDiv.classList.add("hidden"), 4000);
-}
-
-// Handle form submission
-if (!form) {
-    console.warn("⚠️ Payment form not found on this page.");
-} else {
-    if (!txidInput || !walletAddressInput || !paymentDateInput || !payBtn) {
-        console.error("❌ Form elements missing! Check your HTML.");
-    } else {
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            const txid = txidInput.value.trim();
-            const walletAddress = walletAddressInput.value.trim();
-            const paymentDate = paymentDateInput.value.trim();
-            const user = auth.currentUser;
-
-            if (!txid || !walletAddress || !paymentDate) {
-                showMessage("⚠️ All fields are required.", "error");
-                return;
-            }
-
-            if (!user?.email) {
-                showMessage("❌ User not authenticated. Please log in.", "error");
-                return;
-            }
-
-            try {
-                // Check if the user has already submitted a pending payment
-                const existingPaymentQuery = query(
-                    collection(db, "payments"),
-                    where("email", "==", user.email),
-                    where("paymentApproved", "==", "pending")
-                );
-                const existingPayments = await getDocs(existingPaymentQuery);
-
-                if (!existingPayments.empty) {
-                    showMessage("⚠️ You already submitted a payment. Waiting for validation.", "error");
-                    return;
-                }
-
-                // Fetch eligible validators (users with isValidator = true)
-                const validatorQuery = query(
-                    collection(db, "users"),
-                    where("isValidator", "==", true)
-                );
-                const validatorSnap = await getDocs(validatorQuery);
-                let validatorList = [];
-
-                validatorSnap.forEach((doc) => {
-                    validatorList.push(doc.id);
-                });
-
-                if (validatorList.length === 0) {
-                    showMessage("⚠️ No validators available. Please wait.", "error");
-                    return;
-                }
-
-                // Select one random validator
-                let assignedValidator = validatorList[Math.floor(Math.random() * validatorList.length)];
-
-                // Add the payment entry to Firestore
-                const paymentRef = await addDoc(collection(db, "payments"), {
-                    email: user.email,
-                    txid,
-                    walletAddress,
-                    paymentDate,
-                    paymentApproved: "pending", // ✅ Corrected field
-                    assignedValidators: [assignedValidator],
-                    approvals: [],
-                    type: "membership",
-                    timestamp: serverTimestamp(),
-                });
-
-                // Lock form inputs after submission
-                txidInput.disabled = true;
-                walletAddressInput.disabled = true;
-                paymentDateInput.disabled = true;
-                payBtn.disabled = true;
-                payBtn.textContent = "Submitted";
-
-                showMessage("✅ Payment submitted successfully! Awaiting approval.", "success");
-
-                // Listen for real-time updates on payment approval
-                const paymentDocRef = doc(db, "payments", paymentRef.id);
-                onSnapshot(paymentDocRef, async (docSnap) => {
-                    if (docSnap.exists() && docSnap.data().paymentApproved === "approved") {
-                        // Update user document to set membershipApproved = true
-                        await updateDoc(doc(db, "users", user.uid), {
-                            membershipApproved: true
-                        });
-
-                        showMessage("✅ Payment approved! Welcome to the membership.", "success");
-
-                    }
-                });
-
-            } catch (error) {
-                showMessage(`❌ Error: ${error.message}`, "error");
-                console.error("Payment Submission Error:", error);
+    document.addEventListener("DOMContentLoaded", async () => {
+        const validatorPopup = document.getElementById("validator-popup");
+        const payBtn = document.getElementById("pay-validator-btn");
+        const transactionTable = document.getElementById("pending-transactions");
+        const earningsDisplay = document.getElementById("total-earnings");
+        const txidInput = document.getElementById("txid");
+        const walletUsedInput = document.getElementById("wallet-used");
+        const paymentDateInput = document.getElementById("payment-date");
+        const messageBox = document.getElementById("message-box"); // UI message box
+        const pendingEarningsElem = document.getElementById("pending-earnings");
+        
+        let user;
+    
+        onAuthStateChanged(auth, async (currentUser) => {
+            if (currentUser) {
+                user = currentUser;
+                await updateUserToValidator();
+                checkValidatorStatus();
+                loadValidatorDashboard();
+                fetchTotalValidations();
+                loadValidationHistory();
+            } else {
+                window.location.href = "/";
             }
         });
+    
+        function displayMessage(type, text) {
+            const color = type === "success" ? "green" : "red";
+            messageBox.innerHTML = `<div class="message" style="color: ${color}; font-weight: bold;">${text}</div>`;
+            setTimeout(() => {
+                messageBox.innerHTML = "";
+            }, 5000);
+        }
+    
+        //CHECKING IF THE USER IS FULLY VALIDATED
+        async function updateUserToValidator() {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+    
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+    
+            // Check if the user's payment has been approved
+            const paymentsQuery = query(collection(db, "payments"), 
+                                        where("email", "==", user.email), 
+                                        where("status", "==", "approved"));
+            const paymentsSnap = await getDocs(paymentsQuery);
+    
+            if (!userData.isValidator && !paymentsSnap.empty) {
+                // ✅ Update user to become a validator
+                await updateDoc(userRef, {
+                    isValidator: true
+                });
+    
+                console.log("✅ User is now a validator.");
+            }
+        }
     }
-}
+    
+    
+        //HIDING AND DISPLAYING OF POP-UP CONTAINER
+        async function checkValidatorStatus() {
+        const paymentQuery = query(
+            collection(db, "payments"),
+            where("email", "==", user.email),
+            where("status", "==", "approved"),
+            limit(1)
+        );
+    
+        const paymentSnap = await getDocs(paymentQuery);
+    
+        if (!paymentSnap.empty) {
+            console.log("✅ Payment is approved. Hiding pop-up.");
+            validatorPopup.classList.add("hidden");
+            loadAssignedTransactions();
+        } else {
+            console.log("❌ Payment not approved yet. Showing pop-up.");
+            validatorPopup.classList.remove("hidden");
+        }
+    }
+    
+    // RUN CHECK ON PAGE LOAD
+    document.addEventListener("DOMContentLoaded", checkValidatorStatus);
+    
+    
+    // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
+    payBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+    
+        if (!user) return displayMessage("error", "❌ Not authenticated!");
+    
+        const txid = txidInput.value.trim();
+        const walletUsed = walletUsedInput.value.trim();
+        const paymentDate = paymentDateInput.value;
+    
+        if (!txid || !walletUsed || !paymentDate) {
+            return displayMessage("error", "❌ Please fill in all fields.");
+        }
+    
+        try {
+            // Disable form inputs & button to prevent multiple submissions
+            payBtn.disabled = true;
+            txidInput.disabled = true;
+            walletUsedInput.disabled = true;
+            paymentDateInput.disabled = true;
+    
+            // Fetch all validators from USERS collection
+            const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
+            const validatorSnap = await getDocs(validatorQuery);
+            let validatorList = [];
+    
+            validatorSnap.forEach(doc => {
+                validatorList.push(doc.id);
+            });
+    
+            // Randomly pick one validator
+            validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 1);
+    
+            if (validatorList.length < 1) {
+                return displayMessage("error", "❌ Not enough validators available.");
+            }
+    
+            const chosenValidator = validatorList[0];
+    
+            // Store payment details in Firestore
+            const paymentRef = doc(collection(db, "payments"));
+            await setDoc(paymentRef, {
+                email: user.email,
+                txid,
+                walletAddress: walletUsed,
+                paymentDate,
+                assignedValidators: [chosenValidator], // Assigned validator
+                approvals: [],
+                status: "pending",
+                timestamp: serverTimestamp()
+            });
+    
+            // ✅ Update user document to set isValidator = true (Pending Approval)
+            await updateDoc(doc(db, "users", user.uid), {
+                isValidator: true
+            });
+    
+            displayMessage("success", "✅ Payment submitted. Waiting for approval.");
+    
+            // 🔹 Call Cloud Function to send email to validator
+            //await fetch("https://YOUR_CLOUD_FUNCTION_URL/sendApprovalEmail", {
+              //  method: "POST",
+               // headers: {
+              //      "Content-Type": "application/json"
+              //  },
+              //  body: JSON.stringify({ validatorEmail: chosenValidator, txid })
+          //  });
+    
+        } catch (error) {
+            console.error("Error submitting payment:", error);
+    
+            // Enable the form again for retry
+            payBtn.disabled = false;
+            txidInput.disabled = false;
+            walletUsedInput.disabled = false;
+            paymentDateInput.disabled = false;
+    
+            displayMessage("error", "❌ Submission failed. Try again.");
+        }
+    });
+    
+     // LOADING THE ASSIGNED TRANSACTIONS
+     async function loadAssignedTransactions() {
+        const q = query(
+            collection(db, "payments"),
+            where("status", "==", "pending"),
+            //where("paymentapproved", "==", "pending"),
+            where("assignedValidators", "array-contains", user.uid)
+        );
+    
+        const querySnapshot = await getDocs(q);
+        let transactionHTML = "";
+    
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const paymentId = docSnap.id;
+    
+            let paymentTime = "N/A";
+            if (data.timestamp?.seconds) {
+                paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
+            }
+    
+            transactionHTML += `
+                <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
+                    <td class="p-4 border border-gray-300">${data.email}</td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid}</td>
+                    <td class="p-4 border border-gray-300">${data.txid}</td>
+                    <td class="p-4 border border-gray-300">${paymentTime}</td>
+                    <td class="p-4 border border-gray-300 text-center">
+                        <span class="px-3 py-1 rounded-full text-white text-xs ${data.approvals.length >= 1 ? 'bg-green-500' : 'bg-red-500'}">
+                            ${data.approvals.length >= 1 ? "Approved" : "Pending"}
+                        </span>
+                    </td>
+                    <td class="p-4 border border-gray-300 text-center">
+                        <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
+                            data-id="${paymentId}">
+                            Approve
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    
+        document.getElementById("pending-transactions").innerHTML = transactionHTML;
+    
+        transactionTable.innerHTML = transactionHTML;
+    
+         // Attach event listeners to approval buttons
+        document.querySelectorAll(".approve-btn").forEach(button => {
+            button.addEventListener("click", () => approvePayment(button.dataset.id));
+        });
+    }
+    
+    // APPROVING PAYMENTS
+    async function approvePayment(paymentId) {
+        const button = document.querySelector(`[data-id='${paymentId}']`);
+        if (!button) return;
+    
+        button.textContent = "Approving...";
+        button.disabled = true;
+    
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentDoc = await getDoc(paymentRef);
+    
+        if (!paymentDoc.exists()) return;
+        const paymentData = paymentDoc.data();
+    
+        if (paymentData.approvals.includes(user.uid)) {
+            button.textContent = "Already Approved";
+            return;
+        }
+    
+        // Update approvals and set payment to "approved" if at least 1 validator approves
+        const updatedApprovals = [...paymentData.approvals, user.uid];
+        const paymentStatus = "approved"; // Since only 1 validator is needed
+    
+        await updateDoc(paymentRef, {
+            approvals: updatedApprovals,
+            status: paymentStatus
+        });
+    
+        // Increment total earnings for the validator (add $1)
+        const validatorRef = doc(db, "users", user.uid);
+        await updateDoc(validatorRef, {
+            totalEarnings: increment(1)
+        });
+    
+        // Hide pop-up after approval
+        validatorPopup.classList.add("hidden");
+    
+        button.textContent = "Approved";
+        button.classList.add("bg-gray-400");
+    
+        // Remove from pending transactions table
+        const row = button.closest("tr");
+        if (row) row.remove();
+    
+        // Add to validation history dynamically
+        const historyTable = document.getElementById("validation-history");
+        let paymentTime = "N/A";
+        if (paymentData.timestamp?.seconds) {
+            paymentTime = new Date(paymentData.timestamp.seconds * 1000).toLocaleString();
+        }
+    
+        historyTable.innerHTML += `
+            <tr>
+                <td class="p-3 border">${paymentData.email}</td>
+                <td class="p-3 border">$${paymentData.amountPaid}</td>
+                <td class="p-3 border">${paymentData.txid}</td>
+                <td class="p-3 border text-green-600 font-bold">Approved</td>
+                <td class="p-3 border">${paymentTime}</td>
+            </tr>
+        `;
+    
+        // Reload validator's earnings display
+        loadValidatorDashboard();
+    }
+    
+    // LOAD VALIDATOR DASHBOARD
+    async function loadValidatorDashboard() {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) return;
+    
+        earningsDisplay.textContent = `$${userSnap.data().totalEarnings || 0}`;
+    }
+    
+    // FETCH TOTAL VALIDATIONS DONE BY THE LOGGED-IN VALIDATOR
+    async function fetchTotalValidations() {
+        if (!user) return;
+    
+        const totalValidationsDisplay = document.getElementById("total-validations");
+    
+        const approvalsQuery = query(
+            collection(db, "payments"),
+            where("approvals", "array-contains", user.email),
+            where("status", "==", "approved") // Only count approved payments
+        );
+    
+        const approvalsSnap = await getDocs(approvalsQuery);
+        const totalValidations = approvalsSnap.size; // Count total documents
+    
+        // Update UI
+        totalValidationsDisplay.textContent = totalValidations;
+    }
+    
+    // LOAD VALIDATION HISTORY AND TOTAL VALIDATIONS
+    async function loadValidationHistory() {
+        const historyTable = document.getElementById("validation-history");
+    
+        if (!user) return;
+    
+        const q = query(collection(db, "payments"), where("status", "==", "approved"));
+    
+        // Listen for real-time updates
+        onSnapshot(q, async (querySnapshot) => {
+            let historyHTML = "";
+    
+            if (querySnapshot.empty) {
+                historyHTML = `
+                    <tr>
+                        <td colspan="5" class="p-3 text-center text-gray-500">No approved payments yet.</td>
+                    </tr>
+                `;
+            } else {
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    let paymentTime = "N/A";
+    
+                    if (data.timestamp?.seconds) {
+                        paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
+                    }
+    
+                    historyHTML += `
+                        <tr>
+                            <td class="p-3 border">${data.email}</td>
+                            <td class="p-3 border">$${data.amountPaid || 4}</td>
+                            <td class="p-3 border">${data.txid}</td>
+                            <td class="p-3 border text-green-600 font-bold">Approved</td>
+                            <td class="p-3 border">${paymentTime}</td>
+                        </tr>
+                    `;
+                });
+            }
+    
+            historyTable.innerHTML = historyHTML;
+    
+            // Fetch the total validations after loading the history
+            fetchTotalValidations();
+        });
+    }
 
+    
+    // LOAD VALIDATION HISTORY ON PAGE LOAD
+    document.addEventListener("DOMContentLoaded", () => {
+        loadValidationHistory();
+    });
 });
+    </script>
 
-
-
+<script type="module">
+    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp } from './script.js';
+    
 document.getElementById("close-notification").addEventListener("click", function () {
     document.getElementById("notification-bar").style.display = "none";
 });
