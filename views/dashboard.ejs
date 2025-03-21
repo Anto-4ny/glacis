@@ -132,11 +132,21 @@
 <!-- Validator Registration Popup -->
 <div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Become a member</h3>
-        <p class="text-gray-600 mb-2">To become an eligible member of Quantum Market, pay a one-time registration fee of <strong>$6</strong>.</p>
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Become a member or a validator</h3>
+        <p class="text-gray-600 mb-2">To become an eligible member of Quantum Market, pay a one-time registration fee.</p>
+        
+        <!-- Membership Type Selection -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Select Membership Type</label>
+            <select id="membership-type" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+                <option value="common">$6 - Common Member</option>
+                <option value="validator">$40 - Validator</option>
+            </select>
+        </div>
+
         <p class="text-gray-800 font-semibold">Send payment to:</p>
 
-        <!-- Wallet Addresses -->
+        <!-- Wallet Address (Locked) -->
         <div class="space-y-2">
             <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
                 <span class="text-sm text-gray-700">Binance: <strong id="binance-wallet">821693759</strong></span>
@@ -154,21 +164,17 @@
                 <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
                 <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
-   
-            <!--<div>
-                <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
-                <input type="file" id="screenshot" accept="image/*" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-            </div>-->
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
-                <input type="text" id="wallet-used" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+                <input type="text" id="wallet-used" value="821693759" class="w-full p-3 border rounded-lg bg-gray-200 text-gray-600 cursor-not-allowed" readonly>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
                 <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
+
             <div id="message-box"></div>
             <button id="pay-validator-btn" class="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-700 transition">
                 Submit Payment
@@ -176,6 +182,7 @@
         </form>
     </div>
 </div>
+
 <script>
     function copyToClipboard(id) {
         const text = document.getElementById(id).textContent;
