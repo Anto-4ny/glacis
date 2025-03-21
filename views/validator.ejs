@@ -457,7 +457,7 @@
         const q = query(
             collection(db, "payments"),
             where("status", "==", "pending"),
-            where("paymentapproved", "==", "pending"),
+            //where("paymentapproved", "==", "pending"),
             where("assignedValidators", "array-contains", user.uid)
         );
     
@@ -642,12 +642,13 @@
             fetchTotalValidations();
         });
     }
+});
     
     // LOAD VALIDATION HISTORY ON PAGE LOAD
     document.addEventListener("DOMContentLoaded", () => {
         loadValidationHistory();
     });
-    });
+    
     </script>        
  
 <!-- Referral Section -->
