@@ -130,7 +130,7 @@
 
 <body class="bg-gray-100 font-sans mt-20">
 <!-- Validator Registration Popup -->
-<div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+<div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
         <h3 class="text-xl font-bold text-gray-800 mb-4">Become a member or a validator</h3>
         <p class="text-gray-600 mb-2">To become an eligible member of Quantum Market, pay a one-time registration fee.</p>
@@ -207,7 +207,7 @@
 <div class="h-8 md:h-14 lg:h-8"></div>
 
       <!-- Banner Area -->
-<section class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center text-center overflow-hidden bg-gradient-to-r from-white to-gray-100 shadow-lg rounded-2xl">
+      <section class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center text-center overflow-hidden bg-gradient-to-r from-white to-gray-100 shadow-lg rounded-2xl z-0">
 
     <!-- Moving Shapes -->
     <div class="absolute inset-0 overflow-hidden">
@@ -356,7 +356,10 @@
                     </div>
                 </div>
             </div>
-        
+
+        <!-- Spacer for Other Items -->
+<div class="h-8 md:h-14 lg:h-8"></div>
+
            <!-- Pending Transactions Table -->
         <div class="bg-white shadow-2xl rounded-2xl p-6 overflow-hidden">
             <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
@@ -384,7 +387,7 @@
             <!-- Validation History -->
         <div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
-            <p class="text-gray-600 mb-4">View previously validated payments.</p>
+            <p class="text-gray-600 mb-4">View previously validated people world wide.</p>
             <div class="w-full overflow-x-auto">
                 <table class="w-full min-w-max border-collapse border border-gray-300">
                     <thead>
@@ -541,13 +544,13 @@
             // Check if the user's payment has been approved
             const paymentsQuery = query(collection(db, "payments"), 
                                         where("email", "==", user.email), 
-                                        where("status", "==", "approved"));
+                                        where("statuss", "==", "approved"));
             const paymentsSnap = await getDocs(paymentsQuery);
     
-            if (!userData.isValidator && !paymentsSnap.empty) {
+            if (!userData.isVvalidator && !paymentsSnap.empty) {
                 // ✅ Update user to become a validator
                 await updateDoc(userRef, {
-                    isValidator: true
+                    isVvalidator: true
                 });
     
                 console.log("✅ User is now a validator.");
@@ -561,7 +564,7 @@
         const paymentQuery = query(
             collection(db, "payments"),
             where("email", "==", user.email),
-            where("status", "==", "approved"),
+            where("statuss", "==", "approved"),
             limit(1)
         );
     
@@ -570,7 +573,7 @@
         if (!paymentSnap.empty) {
             console.log("✅ Payment is approved. Hiding pop-up.");
             validatorPopup.classList.add("hidden");
-            loadAssignedTransactions();
+            //loadAssignedTransactions();
         } else {
             console.log("❌ Payment not approved yet. Showing pop-up.");
             validatorPopup.classList.remove("hidden");
@@ -603,7 +606,7 @@
             paymentDateInput.disabled = true;
     
             // Fetch all validators from USERS collection
-            const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
+            const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
             const validatorSnap = await getDocs(validatorQuery);
             let validatorList = [];
     
@@ -629,13 +632,13 @@
                 paymentDate,
                 assignedValidators: [chosenValidator], // Assigned validator
                 approvals: [],
-                status: "pending",
+                statuss: "pending",
                 timestamp: serverTimestamp()
             });
     
-            // ✅ Update user document to set isValidator = true (Pending Approval)
+            // ✅ Update user document to set isVvalidator = true (Pending Approval)
             await updateDoc(doc(db, "users", user.uid), {
-                isValidator: true
+                isVvalidator: true
             });
     
             displayMessage("success", "✅ Payment submitted. Waiting for approval.");
@@ -666,8 +669,7 @@
      async function loadAssignedTransactions() {
         const q = query(
             collection(db, "payments"),
-            where("status", "==", "pending"),
-            //where("paymentapproved", "==", "pending"),
+            where("statuss", "==", "pending"),
             where("assignedValidators", "array-contains", user.uid)
         );
     
@@ -739,13 +741,13 @@
     
         await updateDoc(paymentRef, {
             approvals: updatedApprovals,
-            status: paymentStatus
+            statuss: paymentStatus
         });
     
-        // Increment total earnings for the validator (add $1)
+        // Increment total earnings for the validator (add $0.5)
         const validatorRef = doc(db, "users", user.uid);
         await updateDoc(validatorRef, {
-            totalEarnings: increment(1)
+            totalEarnings: increment(0.5)
         });
     
         // Hide pop-up after approval
@@ -797,7 +799,7 @@
         const approvalsQuery = query(
             collection(db, "payments"),
             where("approvals", "array-contains", user.email),
-            where("status", "==", "approved") // Only count approved payments
+            where("statuss", "==", "approved") // Only count approved payments
         );
     
         const approvalsSnap = await getDocs(approvalsQuery);
@@ -813,7 +815,7 @@
     
         if (!user) return;
     
-        const q = query(collection(db, "payments"), where("status", "==", "approved"));
+        const q = query(collection(db, "payments"), where("statuss", "==", "approved"));
     
         // Listen for real-time updates
         onSnapshot(q, async (querySnapshot) => {

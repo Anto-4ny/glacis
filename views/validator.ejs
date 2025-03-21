@@ -263,7 +263,7 @@
     <!-- Validation History -->
 <div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
-    <p class="text-gray-600 mb-4">View previously validated payments.</p>
+    <p class="text-gray-600 mb-4">View previously validated payments world wide.</p>
     <div class="w-full overflow-x-auto">
         <table class="w-full min-w-max border-collapse border border-gray-300">
             <thead>
@@ -600,55 +600,58 @@
     
     // LOAD VALIDATION HISTORY AND TOTAL VALIDATIONS
     async function loadValidationHistory() {
-        const historyTable = document.getElementById("validation-history");
-    
-        if (!user) return;
-    
-        const q = query(collection(db, "payments"), where("status", "==", "approved"));
-    
-        // Listen for real-time updates
-        onSnapshot(q, async (querySnapshot) => {
-            let historyHTML = "";
-    
-            if (querySnapshot.empty) {
-                historyHTML = `
+    const historyTable = document.getElementById("validation-history");
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Query only the approved payments assigned to the logged-in user
+    const q = query(
+        collection(db, "payments"),
+        where("status", "==", "approved"),  // ✅ Fixed status field
+        where("assignedValidators", "array-contains", user.uid) // ✅ Show only validations for this user
+    );
+
+    // Listen for real-time updates
+    onSnapshot(q, async (querySnapshot) => {
+        let historyHTML = "";
+
+        if (querySnapshot.empty) {
+            historyHTML = `
+                <tr>
+                    <td colspan="5" class="p-3 text-center text-gray-500">No approved payments found for you.</td>
+                </tr>
+            `;
+        } else {
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                let paymentTime = "N/A";
+
+                if (data.timestamp?.seconds) {
+                    paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
+                }
+
+                historyHTML += `
                     <tr>
-                        <td colspan="5" class="p-3 text-center text-gray-500">No approved payments yet.</td>
+                        <td class="p-3 border">${data.email}</td>
+                        <td class="p-3 border">$${data.amountPaid || 40}</td>
+                        <td class="p-3 border">${data.txid}</td>
+                        <td class="p-3 border text-green-600 font-bold">Approved</td>
+                        <td class="p-3 border">${paymentTime}</td>
                     </tr>
                 `;
-            } else {
-                querySnapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    let paymentTime = "N/A";
-    
-                    if (data.timestamp?.seconds) {
-                        paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
-                    }
-    
-                    historyHTML += `
-                        <tr>
-                            <td class="p-3 border">${data.email}</td>
-                            <td class="p-3 border">$${data.amountPaid || 4}</td>
-                            <td class="p-3 border">${data.txid}</td>
-                            <td class="p-3 border text-green-600 font-bold">Approved</td>
-                            <td class="p-3 border">${paymentTime}</td>
-                        </tr>
-                    `;
-                });
-            }
-    
-            historyTable.innerHTML = historyHTML;
-    
-            // Fetch the total validations after loading the history
-            fetchTotalValidations();
-        });
-    }
-});
-    
-    // LOAD VALIDATION HISTORY ON PAGE LOAD
-    document.addEventListener("DOMContentLoaded", () => {
-        loadValidationHistory();
+            });
+        }
+
+        historyTable.innerHTML = historyHTML;
+
+        // Fetch the total validations after loading the history
+        fetchTotalValidations();
     });
+}
+
+});
+
     
     </script>        
  
