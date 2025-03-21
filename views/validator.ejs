@@ -147,6 +147,7 @@
                 <button onclick="copyToClipboard('binance-wallet')" class="bg-blue-500 text-white px-2 py-1 rounded">Copy</button>
             </div>
         </div>
+        <div id="message-boxx"></div>
 
         <h3 class="text-lg font-semibold mt-6">Submit Payment Details</h3>
         <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
@@ -167,25 +168,35 @@
                 <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
                 <input type="text" id="wallet-used" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
-<div id="message-box"></div>
+
             <div>
                 <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
                 <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
-
+            <div id="message-box"></div>
             <button id="pay-validator-btn" class="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-700 transition">
                 Submit Payment
             </button>
         </form>
     </div>
 </div>
-
 <script>
     function copyToClipboard(id) {
         const text = document.getElementById(id).textContent;
+        const messageBoxx = document.getElementById("message-boxx");
+
         navigator.clipboard.writeText(text)
-            .then(() => alert("✅ Wallet Address Copied!"))
-            .catch(() => alert("❌ Failed to copy address."));
+            .then(() => {
+                messageBoxx.innerHTML = `<p class="bg-green-100 text-green-700 p-2 rounded-md text-center">✅ Wallet Address Copied!</p>`;
+            })
+            .catch(() => {
+                messageBoxx.innerHTML = `<p class="bg-red-100 text-red-700 p-2 rounded-md text-center">❌ Failed to copy address.</p>`;
+            });
+
+        // Clear message after 3 seconds
+        setTimeout(() => {
+            messageBoxx.innerHTML = "";
+        }, 3000);
     }
 </script>
 
@@ -273,7 +284,7 @@
 
 
     <script type="module">
-import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, serverTimestamp } from './script.js';
+import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp } from './script.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const validatorPopup = document.getElementById("validator-popup");
@@ -291,9 +302,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
             user = currentUser;
-            await ensureValidatorDocument();
+            await updateUserToValidator();
             checkValidatorStatus();
             loadValidatorDashboard();
+            fetchTotalValidations();
         } else {
             window.location.href = "/";
         }
@@ -307,21 +319,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 5000);
     }
 
-    async function ensureValidatorDocument() {
-        const validatorRef = doc(db, "validators", user.uid);
-        const validatorSnap = await getDoc(validatorRef);
+    //CHECKING IF THE USER IS FULLY VALIDATED
+    async function updateUserToValidator() {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
-        if (!validatorSnap.exists()) {
-            await setDoc(validatorRef, {
-                email: user.email,
-                status: "pending",
-                approvals: 0,
-                assignedPayments: [],
-                earnings: 0,
-                timestamp: new Date()
+    if (userSnap.exists()) {
+        const userData = userSnap.data();
+
+        // Check if the user's payment has been approved
+        const paymentsQuery = query(collection(db, "payments"), 
+                                    where("email", "==", user.email), 
+                                    where("status", "==", "approved"));
+        const paymentsSnap = await getDocs(paymentsQuery);
+
+        if (!userData.isValidator && !paymentsSnap.empty) {
+            // ✅ Update user to become a validator
+            await updateDoc(userRef, {
+                isValidator: true
             });
+
+            console.log("✅ User is now a validator.");
         }
     }
+}
+
 
     //HIDING AND DISPLAYING OF POP-UP CONTAINER
     async function checkValidatorStatus() {
@@ -363,6 +385,12 @@ payBtn.addEventListener("click", async (event) => {
     }
 
     try {
+        // Disable form inputs & button to prevent multiple submissions
+        payBtn.disabled = true;
+        txidInput.disabled = true;
+        walletUsedInput.disabled = true;
+        paymentDateInput.disabled = true;
+
         // Fetch all validators from USERS collection
         const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
         const validatorSnap = await getDocs(validatorQuery);
@@ -372,12 +400,14 @@ payBtn.addEventListener("click", async (event) => {
             validatorList.push(doc.id);
         });
 
-        // Randomly pick two validators
+        // Randomly pick one validator
         validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 1);
 
         if (validatorList.length < 1) {
             return displayMessage("error", "❌ Not enough validators available.");
         }
+
+        const chosenValidator = validatorList[0];
 
         // Store payment details in Firestore
         const paymentRef = doc(collection(db, "payments"));
@@ -386,19 +416,40 @@ payBtn.addEventListener("click", async (event) => {
             txid,
             walletAddress: walletUsed,
             paymentDate,
-            assignedValidators: validatorList, // Assigned validators
+            assignedValidators: [chosenValidator], // Assigned validator
             approvals: [],
             status: "pending",
             timestamp: serverTimestamp()
         });
 
-        displayMessage("success", "✅ Payment submitted and assigned to validators.");
+        // ✅ Update user document to set isValidator = true (Pending Approval)
+        await updateDoc(doc(db, "users", user.uid), {
+            isValidator: true
+        });
+
+        displayMessage("success", "✅ Payment submitted. Waiting for approval.");
+
+        // 🔹 Call Cloud Function to send email to validator
+        //await fetch("https://YOUR_CLOUD_FUNCTION_URL/sendApprovalEmail", {
+          //  method: "POST",
+           // headers: {
+          //      "Content-Type": "application/json"
+          //  },
+          //  body: JSON.stringify({ validatorEmail: chosenValidator, txid })
+      //  });
+
     } catch (error) {
         console.error("Error submitting payment:", error);
+
+        // Enable the form again for retry
+        payBtn.disabled = false;
+        txidInput.disabled = false;
+        walletUsedInput.disabled = false;
+        paymentDateInput.disabled = false;
+
         displayMessage("error", "❌ Submission failed. Try again.");
     }
 });
-
 
  // LOADING THE ASSIGNED TRANSACTIONS
  async function loadAssignedTransactions() {
@@ -525,14 +576,35 @@ async function loadValidatorDashboard() {
     earningsDisplay.textContent = `$${userSnap.data().totalEarnings || 0}`;
 }
 
-// REAL-TIME VALIDATION HISTORY
+// FETCH TOTAL VALIDATIONS DONE BY THE LOGGED-IN VALIDATOR
+async function fetchTotalValidations() {
+    if (!user) return;
+
+    const totalValidationsDisplay = document.getElementById("total-validations");
+
+    const approvalsQuery = query(
+        collection(db, "payments"),
+        where("approvals", "array-contains", user.email),
+        where("status", "==", "approved") // Only count approved payments
+    );
+
+    const approvalsSnap = await getDocs(approvalsQuery);
+    const totalValidations = approvalsSnap.size; // Count total documents
+
+    // Update UI
+    totalValidationsDisplay.textContent = totalValidations;
+}
+
+// LOAD VALIDATION HISTORY AND TOTAL VALIDATIONS
 async function loadValidationHistory() {
     const historyTable = document.getElementById("validation-history");
+
+    if (!user) return;
 
     const q = query(collection(db, "payments"), where("status", "==", "approved"));
 
     // Listen for real-time updates
-    onSnapshot(q, (querySnapshot) => {
+    onSnapshot(q, async (querySnapshot) => {
         let historyHTML = "";
 
         if (querySnapshot.empty) {
@@ -544,9 +616,8 @@ async function loadValidationHistory() {
         } else {
             querySnapshot.forEach((docSnap) => {
                 const data = docSnap.data();
-
-                // Ensure timestamp is properly formatted
                 let paymentTime = "N/A";
+
                 if (data.timestamp?.seconds) {
                     paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
                 }
@@ -564,14 +635,17 @@ async function loadValidationHistory() {
         }
 
         historyTable.innerHTML = historyHTML;
+
+        // Fetch the total validations after loading the history
+        fetchTotalValidations();
     });
 }
 
 // LOAD VALIDATION HISTORY ON PAGE LOAD
-document.addEventListener("DOMContentLoaded", loadValidationHistory);
+document.addEventListener("DOMContentLoaded", () => {
+    loadValidationHistory();
 });
-
-
+});
 </script>        
  
 <!-- Referral Section -->

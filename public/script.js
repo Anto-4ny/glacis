@@ -57,7 +57,8 @@ export {
     getDocs,
     increment,
     setDoc,
-    onSnapshot, // ✅ Keep only this onSnapshot
+    onSnapshot,
+    getFirestore,
     onAuthStateChanged,
     storage,
     arrayUnion,
