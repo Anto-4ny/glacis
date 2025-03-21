@@ -457,7 +457,6 @@
         const q = query(
             collection(db, "payments"),
             where("status", "==", "pending"),
-            where("paymentStatus", "==", "pending"),
             where("assignedValidators", "array-contains", user.uid)
         );
     
@@ -587,8 +586,7 @@
         const approvalsQuery = query(
             collection(db, "payments"),
             where("approvals", "array-contains", user.email),
-            where("status", "==", "approved"), // Only count approved payments
-            where("paymentStatus", "==", "approved")
+            where("status", "==", "approved") // Only count approved payments
         );
     
         const approvalsSnap = await getDocs(approvalsQuery);
