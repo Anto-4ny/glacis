@@ -134,94 +134,392 @@
     </nav>
 
 <body class="bg-gray-100 font-sans mt-20">
-<section id="withdrawal" class="p-6 bg-gray-100 min-h-screen">
-    <!-- Withdrawal Page Title -->
-    <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
-        <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
-                   bg-gradient-to-r from-yellow-500 to-orange-600 inline-block px-6">
-            Withdrawal
-        </h2>
-    </div>
-
-    <!-- Withdrawal Summary -->
-    <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal Summary</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div class="bg-blue-100 p-4 rounded-lg">
-                <h4 class="text-lg font-semibold text-gray-700">Total Balance</h4>
-                <p class="text-2xl font-bold text-blue-700">$0</p>
-            </div>
-            <div class="bg-yellow-100 p-4 rounded-lg">
-                <h4 class="text-lg font-semibold text-gray-700">Pending Withdrawals</h4>
-                <p class="text-2xl font-bold text-yellow-700">$0</p>
-            </div>
-            <div class="bg-green-100 p-4 rounded-lg">
-                <h4 class="text-lg font-semibold text-gray-700">Minimum Withdrawal</h4>
-                <p class="text-2xl font-bold text-green-700">$1</p>
+    <section id="withdrawal" class="p-6 bg-gray-100 min-h-screen">
+        <!-- Withdrawal Page Title -->
+        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
+            <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
+                       bg-gradient-to-r from-yellow-500 to-orange-600 inline-block px-6">
+                Withdrawal
+            </h2>
+        </div>
+    
+        <!-- Withdrawal Summary -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal Summary</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-blue-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700">Total Balance</h4>
+                    <p id="total-balance" class="text-2xl font-bold text-blue-700">$0</p>
+                </div>
+                <div class="bg-yellow-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700">Pending Withdrawals</h4>
+                    <p id="pending-withdrawals" class="text-2xl font-bold text-yellow-700">$0</p>
+                </div>
+                <div class="bg-green-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700">Minimum Withdrawal</h4>
+                    <p id="minimum-withdrawal" class="text-2xl font-bold text-green-700">$1</p>
+                </div>
             </div>
         </div>
-    </div>
+    
+        <!-- Withdrawal Request Form -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal Request</h3>
+            <form id="withdrawal-form">
+                <label class="block text-gray-700 font-medium mb-2">Amount to Withdraw</label>
+                <input type="number" id="withdraw-amount" placeholder="Enter amount" 
+                       class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-600">
+                
+                <label class="block text-gray-700 font-medium mb-2">Wallet Address</label>
+                <input type="text" id="wallet-address" placeholder="Your Wallet Address" 
+                       class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-600">
+    
+                <button type="submit" class="w-full bg-yellow-500 text-white py-2 rounded-lg 
+                                          hover:bg-yellow-600 transition">
+                    Submit Withdrawal
+                </button>
+            </form>
+        </div>
+    
+        <!-- Withdrawal History -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal History</h3>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 border">Date</th>
+                        <th class="p-3 border">Amount</th>
+                        <th class="p-3 border">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawal-history-body">
+                    <!-- Withdrawal history will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Withdrawal Rules -->
+        <div class="bg-yellow-100 p-4 rounded-lg mt-6 text-gray-800">
+            <h4 class="font-semibold mb-2">Withdrawal Rules</h4>
+            <ul class="list-disc list-inside">
+                <li>Withdrawals are processed within <span class="font-bold">24 hours</span>.</li>
+                <li>No refunds once payment is made.</li>
+                <li>Ensure the correct wallet address is used.</li>
+            </ul>
+        </div>
+    </section>
 
-    <!-- Withdrawal Request Form -->
-    <div class="bg-white shadow-lg rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal Request</h3>
-        <form>
-            <label class="block text-gray-700 font-medium mb-2">Amount to Withdraw</label>
-            <input type="number" placeholder="Enter amount" 
-                   class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-600">
-            
-            <label class="block text-gray-700 font-medium mb-2">Wallet Address</label>
-            <input type="text" placeholder="Your Wallet Address" 
-                   class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-600">
+    <!-- Admin Panel (Visible Only to Admin) -->
+<div id="admin-panel" class="bg-white shadow-lg rounded-lg p-6 mt-8 hidden">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Admin Panel - Approve Withdrawals</h3>
+    <table class="w-full border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="p-3 border">User Email</th>
+                <th class="p-3 border">Amount</th>
+                <th class="p-3 border">Wallet Address</th>
+                <th class="p-3 border">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="admin-withdrawals-body">
+            <!-- Withdrawal requests will be added here dynamically -->
+        </tbody>
+    </table>
+</div>
 
-            <button type="submit" class="w-full bg-yellow-500 text-white py-2 rounded-lg 
-                                      hover:bg-yellow-600 transition">
-                Submit Withdrawal
-            </button>
-        </form>
-    </div>
+    
+<script type="module">
+    import { auth, db, doc, getDoc, collection, getDocs, addDoc, onAuthStateChanged, runTransaction, deleteDoc } from "./script.js"; // Import Firestore utilities
 
-    <!-- Withdrawal History -->
-    <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal History</h3>
-        <table class="w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-3 border">Date</th>
-                    <th class="p-3 border">Amount</th>
-                    <th class="p-3 border">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="text-center">
-                    <td class="p-3 border">2025-02-20</td>
-                    <td class="p-3 border">$100</td>
-                    <td class="p-3 border text-yellow-600">Pending</td>
-                </tr>
-                <tr class="text-center">
-                    <td class="p-3 border">2025-02-18</td>
-                    <td class="p-3 border">$300</td>
-                    <td class="p-3 border text-green-600">Approved</td>
-                </tr>
-                <tr class="text-center">
-                    <td class="p-3 border">2025-02-15</td>
-                    <td class="p-3 border">$150</td>
-                    <td class="p-3 border text-red-600">Rejected</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    //const db = getFirestore();
 
-    <!-- Withdrawal Rules -->
-    <div class="bg-yellow-100 p-4 rounded-lg mt-6 text-gray-800">
-        <h4 class="font-semibold mb-2">Withdrawal Rules</h4>
-        <ul class="list-disc list-inside">
-            <li>Withdrawals are processed within <span class="font-bold">24 hours</span>.</li>
-            <li>No refunds once payment is made.</li>
-            <li>Ensure the correct wallet address is used.</li>
-        </ul>
-    </div>
-</section>
+async function loadWithdrawalData() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.warn("No authenticated user.");
+        return;
+    }
+
+    try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            console.log("User Data:", userData); // Debugging: Check retrieved data
+
+            // Fetch earnings data from Firestore
+            const totalEarnings = userData.totalEarnings || 0;
+            const referralEarnings = userData.referralEarnings || 0;
+            const pendingWithdrawals = userData.pendingWithdrawals || 0; // Ensure this field exists in Firestore
+            const minimumWithdrawal = 1; // Set minimum withdrawal amount
+
+            // Compute total balance
+            const totalBalance = totalEarnings + referralEarnings;
+
+            console.log("Total Balance:", totalBalance);
+            console.log("Pending Withdrawals:", pendingWithdrawals);
+
+            // Update UI
+            document.getElementById("total-balance").textContent = `$${totalBalance.toFixed(2)}`;
+            document.getElementById("pending-withdrawals").textContent = `$${pendingWithdrawals.toFixed(2)}`;
+            document.getElementById("minimum-withdrawal").textContent = `$${minimumWithdrawal.toFixed(2)}`;
+
+            // Load withdrawal history
+            loadWithdrawalHistory(user.uid);
+         // Check if the logged-in user is admin
+         checkIfAdmin(user.email);
+        } else {
+            console.warn("User document not found in Firestore.");
+        }
+    } catch (error) {
+        console.error("Error fetching withdrawal data:", error);
+    }
+}
+// SUBMISSION OF WITHDRAWAL
+async function submitWithdrawal(event) {
+    event.preventDefault();
+
+    const user = auth.currentUser;
+    if (!user) {
+        console.warn("No authenticated user.");
+        return;
+    }
+
+    const amountInput = document.getElementById("withdraw-amount");
+    const walletInput = document.getElementById("wallet-address");
+
+    const amount = parseFloat(amountInput.value);
+    const walletAddress = walletInput.value.trim();
+
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid withdrawal amount.");
+        return;
+    }
+
+    // Reference to the user document
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+        // Use Firestore transaction to update balance safely
+        await runTransaction(db, async (transaction) => {
+            const userSnap = await transaction.get(userRef);
+            if (!userSnap.exists()) {
+                throw new Error("User data not found.");
+            }
+
+            const userData = userSnap.data();
+            const totalEarnings = userData.totalEarnings || 0;
+            const pendingWithdrawals = userData.pendingWithdrawals || 0;
+            const minimumWithdrawal = 1;
+
+            if (amount > totalEarnings) {
+                throw new Error("Insufficient balance for withdrawal.");
+            }
+
+            if (amount < minimumWithdrawal) {
+                throw new Error(`Minimum withdrawal amount is $${minimumWithdrawal}.`);
+            }
+
+            if (!walletAddress) {
+                throw new Error("Please enter a valid wallet address.");
+            }
+
+            // Update Firestore: Deduct from totalEarnings and increase pendingWithdrawals
+            transaction.update(userRef, {
+                totalEarnings: totalEarnings - amount,
+                pendingWithdrawals: pendingWithdrawals + amount
+            });
+
+            // Save withdrawal request to Firestore
+            const withdrawalsRef = collection(db, "withdrawals");
+            await addDoc(withdrawalsRef, {
+                userId: user.uid,
+                amount: amount,
+                walletAddress: walletAddress,
+                status: "Pending",
+                requestedAt: new Date().toISOString(),
+            });
+        });
+
+        alert("Withdrawal request submitted successfully!");
+        amountInput.value = "";
+        walletInput.value = "";
+
+        // Refresh UI with updated balances
+        loadWithdrawalData();
+    } catch (error) {
+        console.error("Error submitting withdrawal request:", error);
+        alert(error.message || "Error processing your withdrawal. Please try again.");
+    }
+}
+
+// Function to load withdrawal history
+async function loadWithdrawalHistory(userId) {
+    try {
+        const withdrawalsRef = collection(db, "withdrawals");
+        const withdrawalsSnap = await getDocs(withdrawalsRef);
+
+        const withdrawalTableBody = document.getElementById("withdrawal-history-body");
+        withdrawalTableBody.innerHTML = ""; // Clear previous history
+
+        withdrawalsSnap.forEach((doc) => {
+            const data = doc.data();
+            if (data.userId === userId) {
+                const row = `
+                    <tr class="text-center">
+                        <td class="p-3 border">${new Date(data.requestedAt).toLocaleDateString()}</td>
+                        <td class="p-3 border">$${data.amount.toFixed(2)}</td>
+                        <td class="p-3 border ${data.status === "Approved" ? "text-green-600" : data.status === "Rejected" ? "text-red-600" : "text-yellow-600"}">
+                            ${data.status}
+                        </td>
+                    </tr>
+                `;
+                withdrawalTableBody.innerHTML += row;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching withdrawal history:", error);
+    }
+}
+
+// Ensure withdrawal data loads when the user logs in
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("User authenticated:", user.uid);
+        loadWithdrawalData();
+    } else {
+        console.warn("User not logged in.");
+    }
+});
+
+// Attach form submission event listener
+document.getElementById("withdrawal-form").addEventListener("submit", submitWithdrawal);
+
+// Function to check if user is an admin
+function checkIfAdmin(email) {
+    if (email === "marketquantum25@gmail.com") {
+        document.getElementById("admin-panel").classList.remove("hidden");
+        loadPendingWithdrawals();
+    }
+}
+
+// Load pending withdrawals for the admin
+async function loadPendingWithdrawals() {
+    try {
+        const withdrawalsRef = collection(db, "withdrawals");
+        const withdrawalsSnap = await getDocs(withdrawalsRef);
+        const adminTableBody = document.getElementById("admin-withdrawals-body");
+        adminTableBody.innerHTML = ""; // Clear table before adding new entries
+
+        withdrawalsSnap.forEach((docSnap) => {
+            const data = docSnap.data();
+            if (data.status === "Pending") {
+                const row = `
+                    <tr class="text-center">
+                        <td class="p-3 border">${data.userEmail || "Unknown"}</td>
+                        <td class="p-3 border">$${data.amount.toFixed(2)}</td>
+                        <td class="p-3 border">${data.walletAddress}</td>
+                        <td class="p-3 border">
+                            <button onclick="approveWithdrawal('${docSnap.id}', '${data.userId}', ${data.amount})" 
+                                class="bg-green-500 text-white px-3 py-1 rounded-lg mr-2">Approve</button>
+                            <button onclick="rejectWithdrawal('${docSnap.id}', '${data.userId}', ${data.amount})" 
+                                class="bg-red-500 text-white px-3 py-1 rounded-lg">Reject</button>
+                        </td>
+                    </tr>
+                `;
+                adminTableBody.innerHTML += row;
+            }
+        });
+    } catch (error) {
+        console.error("Error loading pending withdrawals:", error);
+    }
+}
+
+// Approve withdrawal
+async function approveWithdrawal(withdrawalId, userId, amount) {
+    try {
+        const withdrawalRef = doc(db, "withdrawals", withdrawalId);
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            console.warn("User not found.");
+            return;
+        }
+
+        const userData = userSnap.data();
+        const pendingWithdrawals = userData.pendingWithdrawals || 0;
+
+        // Update Firestore: Deduct pending withdrawals
+        await updateDoc(userRef, {
+            pendingWithdrawals: pendingWithdrawals - amount
+        });
+
+        // Mark withdrawal as approved
+        await updateDoc(withdrawalRef, {
+            status: "Approved",
+            adminProcessedBy: auth.currentUser.email,
+            processedAt: new Date().toISOString()
+        });
+
+        alert("Withdrawal approved successfully!");
+        loadPendingWithdrawals(); // Refresh admin panel
+        loadWithdrawalData(); // Refresh user data
+    } catch (error) {
+        console.error("Error approving withdrawal:", error);
+        alert("Error processing approval. Try again.");
+    }
+}
+
+// Reject withdrawal
+async function rejectWithdrawal(withdrawalId, userId, amount) {
+    try {
+        const withdrawalRef = doc(db, "withdrawals", withdrawalId);
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            console.warn("User not found.");
+            return;
+        }
+
+        const userData = userSnap.data();
+        const totalEarnings = userData.totalEarnings || 0;
+        const pendingWithdrawals = userData.pendingWithdrawals || 0;
+
+        // Refund rejected withdrawal back to total earnings
+        await updateDoc(userRef, {
+            totalEarnings: totalEarnings + amount,
+            pendingWithdrawals: pendingWithdrawals - amount
+        });
+
+        // Mark withdrawal as rejected
+        await updateDoc(withdrawalRef, {
+            status: "Rejected",
+            adminProcessedBy: auth.currentUser.email,
+            processedAt: new Date().toISOString()
+        });
+
+        alert("Withdrawal rejected successfully!");
+        loadPendingWithdrawals(); // Refresh admin panel
+        loadWithdrawalData(); // Refresh user data
+    } catch (error) {
+        console.error("Error rejecting withdrawal:", error);
+        alert("Error processing rejection. Try again.");
+    }
+}
+
+// Ensure data loads on auth state change
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loadWithdrawalData();
+    } else {
+        console.warn("User not logged in.");
+    }
+});
+
+</script>
 
 <footer class="bg-gray-900 text-white text-center py-4">
     <p class="copyright-text text-sm">

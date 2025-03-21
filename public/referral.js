@@ -63,68 +63,6 @@ async function waitForUserDocument(userId) {
     return userDoc.exists() ? userDoc : null;
 }
 
-// Check Payment Status & Hide Pop-Up (Only on Dashboard)
-async function checkPaymentStatus(userId) {
-    const userRef = doc(db, "users", userId);
-    const userDoc = await getDoc(userRef);
-    const paymentPopup = document.getElementById("payment-popup");
-
-    if (!paymentPopup) {
-        console.log("⚠️ Payment pop-up not found in DOM.");
-        return;
-    }
-
-    if (!userDoc.exists()) {
-        console.log("⚠️ User document not found.");
-        return;
-    }
-
-    const userData = userDoc.data();
-    console.log("🔍 Checking user details:", userData);
-
-    // ✅ Fetch latest payment record for the user
-    const paymentsQuery = query(
-        collection(db, "payments"),
-        where("email", "==", userData.email),
-        where("type", "==", "membership"),
-        //orderBy("timestamp", "desc"),
-        limit(1)
-    );
-
-    const paymentSnap = await getDocs(paymentsQuery);
-
-    if (!paymentSnap.empty) {
-        const paymentDoc = paymentSnap.docs[0];
-        const paymentData = paymentDoc.data();
-        console.log("🔍 Checking latest payment:", paymentData);
-
-        if (paymentData.paymentApproved === "approved") {
-            console.log("✅ Payment verified. Hiding pop-up.");
-
-            // ✅ Update user membership approval
-            await updateDoc(userRef, { membershipApproved: true });
-
-            // ✅ Hide pop-up
-            paymentPopup.style.opacity = "0";
-            paymentPopup.style.pointerEvents = "none";
-            paymentPopup.style.display = "none";
-            paymentPopup.classList.remove("flex");
-            paymentPopup.classList.add("hidden");
-        } else {
-            console.log("🚨 Payment not approved. Ensuring pop-up is visible.");
-            paymentPopup.style.opacity = "1";
-            paymentPopup.style.pointerEvents = "auto";
-            paymentPopup.style.display = "flex";
-            paymentPopup.classList.remove("hidden");
-        }
-    } else {
-        console.log("⚠️ No payment found. Pop-up remains visible.");
-        paymentPopup.style.opacity = "1";
-        paymentPopup.style.pointerEvents = "auto";
-        paymentPopup.style.display = "flex";
-        paymentPopup.classList.remove("hidden");
-    }
-}
 
 // Display Referral Link (All Pages)
 function displayReferralLink(userId) {
@@ -188,9 +126,9 @@ async function saveUserWithReferral(userId, email, referrerId) {
         totalReferrals: 0,
         totalEarnings: 0,
         membershipApproved: false,
-        //videoEarnings,
-       // likedVideos,
-       // watchedVideos,
+        referralEarnings: 0,
+        likedVideos: 0,
+        watchedVideos: 0,
         registeredAt: new Date(),
     }, { merge: true });
 

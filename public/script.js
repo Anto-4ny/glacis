@@ -22,6 +22,8 @@ import {
     Timestamp,
     increment,
     limit,
+    deleteDoc,
+    runTransaction,
     serverTimestamp,
     arrayUnion
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
@@ -63,6 +65,8 @@ export {
     storage,
     arrayUnion,
     limit,
+    deleteDoc,
+    runTransaction,
     serverTimestamp
 };
 
@@ -240,9 +244,9 @@ if (signupForm) {
                     totalReferrals: 0,
                     membershipApproved: false,
                     paymentApproved: false,
-                   // videoEarnings,
-                    //likedVideos,
-                    //watchedVideos,
+                    referralEarnings: 0,
+                    likedVideos: 0,
+                    watchedVideos: 0,
                     registeredAt: new Date(), 
                 });
 
