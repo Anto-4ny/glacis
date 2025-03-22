@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Glacis || Dashboard</title>
+    <title>Quantum Market || Dashboard</title>
     <meta name="description" content="Glacis offers an online earning platform where users make money by inviting others, helping verify new users, selling ebooks, advertising, and more.">
     <meta property="og:title" content="Glacis">
     <meta property="og:description" content="Join Glacis to earn money through various online opportunities including referrals, verifications, and advertising.">
@@ -132,7 +132,6 @@
             <label class="block text-sm font-medium text-gray-700">Select Membership Type</label>
             <select id="membership-type" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
                 <option value="common">$6 - Common Member</option>
-                <option value="validator">$40 - Validator</option>
             </select>
         </div>
 
@@ -838,7 +837,7 @@
                     historyHTML += `
                         <tr>
                             <td class="p-3 border">${data.email}</td>
-                            <td class="p-3 border">$${data.amountPaid || 4}</td>
+                            <td class="p-3 border">$${data.amountPaid || 6}</td>
                             <td class="p-3 border">${data.txid}</td>
                             <td class="p-3 border text-green-600 font-bold">Approved</td>
                             <td class="p-3 border">${paymentTime}</td>
