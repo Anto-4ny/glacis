@@ -571,7 +571,7 @@
         if (!paymentSnap.empty) {
             console.log("✅ Payment is approved. Hiding pop-up.");
             validatorPopup.classList.add("hidden");
-            //loadAssignedTransactions();
+            loadAssignedTransactions();
         } else {
             console.log("❌ Payment not approved yet. Showing pop-up.");
             validatorPopup.classList.remove("hidden");
