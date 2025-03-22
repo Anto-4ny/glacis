@@ -209,27 +209,31 @@
         </div>
     </section>
 
-    <!-- Admin Panel (Visible Only to Admin) -->
+<!-- Admin Panel (Visible Only to Admin) -->
 <div id="admin-panel" class="bg-white shadow-lg rounded-lg p-6 mt-8 hidden">
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Admin Panel - Approve Withdrawals</h3>
-    <table class="w-full border-collapse border border-gray-300">
-        <thead>
-            <tr class="bg-gray-200">
-                <th class="p-3 border">User Email</th>
-                <th class="p-3 border">Amount</th>
-                <th class="p-3 border">Wallet Address</th>
-                <th class="p-3 border">Actions</th>
-            </tr>
-        </thead>
-        <tbody id="admin-withdrawals-body">
-            <!-- Withdrawal requests will be added here dynamically -->
-        </tbody>
-    </table>
+
+    <!-- Responsive Wrapper -->
+    <div class="overflow-x-auto w-full">
+        <table class="w-full min-w-[600px] border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3 border">User Email</th>
+                    <th class="p-3 border">Amount</th>
+                    <th class="p-3 border">Wallet Address</th>
+                    <th class="p-3 border">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="admin-withdrawals-body">
+                <!-- Withdrawal requests will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
     
 <script type="module">
-    import { auth, db, doc, getDoc, collection, getDocs, addDoc, onAuthStateChanged, runTransaction, deleteDoc } from "./script.js"; // Import Firestore utilities
+    import { auth, db, doc, getDoc, collection, getDocs, addDoc, onAuthStateChanged, runTransaction, deleteDoc, updateDoc } from "./script.js"; // Import Firestore utilities
 
     //const db = getFirestore();
 
@@ -410,14 +414,26 @@ async function loadPendingWithdrawals() {
         const withdrawalsRef = collection(db, "withdrawals");
         const withdrawalsSnap = await getDocs(withdrawalsRef);
         const adminTableBody = document.getElementById("admin-withdrawals-body");
-        adminTableBody.innerHTML = ""; // Clear table before adding new entries
+        adminTableBody.innerHTML = ""; // Clear the table before adding new entries
 
-        withdrawalsSnap.forEach((docSnap) => {
+        for (const docSnap of withdrawalsSnap.docs) {
             const data = docSnap.data();
             if (data.status === "Pending") {
+                let userEmail = "Unknown"; // Default value
+
+                // Fetch user email using userId
+                if (data.userId) {
+                    const userRef = doc(db, "users", data.userId);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        userEmail = userSnap.data().email || "Unknown";
+                    }
+                }
+
+                // Append the row dynamically
                 const row = `
                     <tr class="text-center">
-                        <td class="p-3 border">${data.userEmail || "Unknown"}</td>
+                        <td class="p-3 border">${userEmail}</td>
                         <td class="p-3 border">$${data.amount.toFixed(2)}</td>
                         <td class="p-3 border">${data.walletAddress}</td>
                         <td class="p-3 border">
@@ -430,7 +446,7 @@ async function loadPendingWithdrawals() {
                 `;
                 adminTableBody.innerHTML += row;
             }
-        });
+        }
     } catch (error) {
         console.error("Error loading pending withdrawals:", error);
     }
@@ -451,12 +467,12 @@ async function approveWithdrawal(withdrawalId, userId, amount) {
         const userData = userSnap.data();
         const pendingWithdrawals = userData.pendingWithdrawals || 0;
 
-        // Update Firestore: Deduct pending withdrawals
+        // Ensure Firestore transaction updates correctly
         await updateDoc(userRef, {
-            pendingWithdrawals: pendingWithdrawals - amount
+            pendingWithdrawals: Math.max(0, pendingWithdrawals - amount) // Prevent negative values
         });
 
-        // Mark withdrawal as approved
+        // Update withdrawal request status
         await updateDoc(withdrawalRef, {
             status: "Approved",
             adminProcessedBy: auth.currentUser.email,
@@ -491,7 +507,7 @@ async function rejectWithdrawal(withdrawalId, userId, amount) {
         // Refund rejected withdrawal back to total earnings
         await updateDoc(userRef, {
             totalEarnings: totalEarnings + amount,
-            pendingWithdrawals: pendingWithdrawals - amount
+            pendingWithdrawals: Math.max(0, pendingWithdrawals - amount) // Prevent negative values
         });
 
         // Mark withdrawal as rejected
@@ -510,6 +526,7 @@ async function rejectWithdrawal(withdrawalId, userId, amount) {
     }
 }
 
+
 // Ensure data loads on auth state change
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -518,6 +535,10 @@ onAuthStateChanged(auth, (user) => {
         console.warn("User not logged in.");
     }
 });
+
+// Make functions globally accessible for onclick events
+window.approveWithdrawal = approveWithdrawal;
+window.rejectWithdrawal = rejectWithdrawal;
 
 </script>
 

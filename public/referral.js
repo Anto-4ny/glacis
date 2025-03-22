@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Restrict dashboard access
             if (isDashboard) {
                 console.log("Dashboard detected, running dashboard scripts...");
-                checkPaymentStatus(user.uid);
+                //checkPaymentStatus(user.uid);
                 loadReferredUsers(user.uid);
             }
 
@@ -71,8 +71,9 @@ function displayReferralLink(userId) {
     const referralLinkElement = document.getElementById("referral-link");
     const copyButton = document.getElementById("copy-link-button");
     const whatsappButton = document.getElementById("whatsapp-share-button");
+    const messageContainer = document.getElementById("copy-message"); // UI message element
 
-    if (!referralLinkElement || !copyButton || !whatsappButton) {
+    if (!referralLinkElement || !copyButton || !whatsappButton || !messageContainer) {
         console.error("One or more referral elements are missing!");
         return;
     }
@@ -80,12 +81,36 @@ function displayReferralLink(userId) {
     const referralLink = `${window.location.origin}/?ref=${userId}`;
     referralLinkElement.textContent = referralLink;
 
-    copyButton.addEventListener("click", () => {
-        navigator.clipboard.writeText(referralLink);
-        alert("Referral link copied!");
+    copyButton.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(referralLink);
+            showMessage("Referral link copied!", "success");
+        } catch (error) {
+            console.error("Copy failed:", error);
+            showMessage("Failed to copy link!", "error");
+        }
     });
 
     whatsappButton.href = `https://wa.me/?text=Join%20now%20using%20my%20referral%20link:%20${encodeURIComponent(referralLink)}`;
+}
+
+// Function to show success/error message in the UI
+function showMessage(message, type) {
+    const messageContainer = document.getElementById("copy-message");
+    messageContainer.textContent = message;
+
+    if (type === "success") {
+        messageContainer.className = "text-green-600 font-semibold mt-2";
+    } else {
+        messageContainer.className = "text-red-600 font-semibold mt-2";
+    }
+
+    messageContainer.style.display = "block";
+    
+    // Hide message after 3 seconds
+    setTimeout(() => {
+        messageContainer.style.display = "none";
+    }, 3000);
 }
 
 // Load Referred Users (Only on Dashboard)
@@ -107,7 +132,7 @@ async function loadReferredUsers(referrerId) {
         referredUsersList.innerHTML += `
             <tr class="border-b border-gray-600">
                 <td class="p-3">${userData.email}</td>
-                <td class="p-3">${userData.paymentStatus ? "Paid" : "Unpaid"}</td>
+                <td class="p-3">${userData.isVvalidator ? "Member" : "Not-a-Member"}</td>
             </tr>
         `;
     });
@@ -117,11 +142,11 @@ async function loadReferredUsers(referrerId) {
 async function saveUserWithReferral(userId, email, referrerId) {
     const userRef = doc(db, "users", userId);
     await setDoc(userRef, {
-        firstName,
-        lastName,
+        firstName: "",
+        lastName: "",
         email,
         referralCode: referrerId || null,
-        referralLink,
+        referralLink: `${window.location.origin}/?ref=${userId}`,
         amountPaid: 0,
         totalReferrals: 0,
         totalEarnings: 0,
@@ -129,6 +154,8 @@ async function saveUserWithReferral(userId, email, referrerId) {
         referralEarnings: 0,
         likedVideos: 0,
         watchedVideos: 0,
+        isValidator: false,
+        isVvalidator: false,
         registeredAt: new Date(),
     }, { merge: true });
 
@@ -140,13 +167,37 @@ async function saveUserWithReferral(userId, email, referrerId) {
     }
 }
 
-// Award Referral Earnings
+// Award Referral Earnings with Updated Conditions
 async function awardReferrerOnPayment(userId) {
     const userRef = doc(db, "users", userId);
-    await updateDoc(userRef, { paymentStatus: true });
-
     const userDoc = await getDoc(userRef);
-    const referrerId = userDoc.data().referralCode;
+    
+    if (!userDoc.exists()) {
+        console.log(`User ${userId} not found.`);
+        return;
+    }
+
+    const userData = userDoc.data();
+
+    // Check if the user is a validator
+    if (!userData.isVvalidator) {
+        console.log(`User ${userId} is not a validator.`);
+        return;
+    }
+
+    // Check if the payment is approved in the payments collection
+    const paymentsQuery = query(collection(db, "payments"), 
+                                where("email", "==", userData.email),
+                                where("statuss", "==", "approved"));
+    const paymentsSnapshot = await getDocs(paymentsQuery);
+
+    if (paymentsSnapshot.empty) {
+        console.log(`No approved payment found for ${userData.email}.`);
+        return;
+    }
+
+    // If all conditions are met, award the referrer
+    const referrerId = userData.referralCode;
     if (!referrerId) {
         console.log(`User ${userId} has no referrer.`);
         return;
@@ -156,14 +207,15 @@ async function awardReferrerOnPayment(userId) {
     await updateDoc(referrerRef, { totalEarnings: increment(2.5) });
     console.log(`Referrer ${referrerId} earned +2.5.`);
 
+    // Award grand referrer if available
     const referrerDoc = await getDoc(referrerRef);
-    const grandReferrerId = referrerDoc.data().referralCode;
+    const grandReferrerId = referrerDoc.exists() ? referrerDoc.data().referralCode : null;
+    
     if (grandReferrerId) {
         const grandReferrerRef = doc(db, "users", grandReferrerId);
         await updateDoc(grandReferrerRef, { totalEarnings: increment(0.5) });
         console.log(`Grand referrer ${grandReferrerId} earned +0.5.`);
     }
-
 }
 
 export { awardReferrerOnPayment, saveUserWithReferral };

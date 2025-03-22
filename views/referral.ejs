@@ -143,109 +143,161 @@
             </h2>
         </div>
     
-       <!-- Referral Section -->
+<!-- Referral Section -->
 <div class="bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto border border-gray-200">
     <h3 class="text-xl font-bold text-gray-900 mb-4">Your Referral Link</h3>
     
     <div class="flex items-center space-x-4 bg-gray-100 p-3 rounded-lg shadow-inner">
         <p id="referral-link" class="flex-grow text-gray-800 bg-white px-4 py-2 rounded-md border border-gray-300 overflow-hidden text-ellipsis whitespace-nowrap">
-            Your Referral Link Here
+            Loading...
         </p>
         <button id="copy-link-button" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
             Copy
         </button>
+
         <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300">
             <i class="fab fa-whatsapp text-lg"></i>
         </a>
     </div>
 </div>
-    
-        <!-- Referral Statistics -->
-        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Referral Statistics</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div class="bg-blue-100 p-4 rounded-lg">
-                    <h4 class="text-lg font-semibold text-gray-700">Total Referrals</h4>
-                    <p class="text-2xl font-bold text-blue-700">45</p>
-                </div>
-                <div class="bg-green-100 p-4 rounded-lg">
-                    <h4 class="text-lg font-semibold text-gray-700">Earnings from Referrals</h4>
-                    <p class="text-2xl font-bold text-green-700">$420</p>
-                </div>
-                <div class="bg-purple-100 p-4 rounded-lg">
-                    <h4 class="text-lg font-semibold text-gray-700">Validator Sign-ups</h4>
-                    <p class="text-2xl font-bold text-purple-700">10</p>
-                </div>
-            </div>
-        </div>
 
-    
-        <!-- List of Referred Users -->
-        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">List of Referred Users</h3>
-            <table class="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="p-3 border">Username</th>
-                        <th class="p-3 border">Activation Status</th>
-                        <th class="p-3 border">Joined Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="text-center">
-                        <td class="p-3 border">JohnDoe</td>
-                        <td class="p-3 border text-red-500">Pending Activation</td>
-                        <td class="p-3 border">2025-02-22</td>
-                    </tr>
-                    <tr class="text-center">
-                        <td class="p-3 border">JaneSmith</td>
-                        <td class="p-3 border text-green-600">Activated</td>
-                        <td class="p-3 border">2025-02-20</td>
-                    </tr>
-                    <tr class="text-center">
-                        <td class="p-3 border">MikeLee</td>
-                        <td class="p-3 border text-yellow-600">Validator</td>
-                        <td class="p-3 border">2025-02-18</td>
-                    </tr>
-                </tbody>
-            </table>
+<p id="copy-message" class="hidden text-sm"></p>
+
+<!-- Referral Statistics -->
+<div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Referral Statistics</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div class="bg-blue-100 p-4 rounded-lg">
+            <h4 class="text-lg font-semibold text-gray-700">Total Referrals</h4>
+            <p id="total-referrals" class="text-2xl font-bold text-blue-700">0</p>
         </div>
-    
-        <!-- Leaderboard (Optional) -->
-        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Referrers This Month</h3>
-            <table class="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="p-3 border">Rank</th>
-                        <th class="p-3 border">Username</th>
-                        <th class="p-3 border">Total Referrals</th>
-                        <th class="p-3 border">Earnings</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="text-center">
-                        <td class="p-3 border text-yellow-500">🥇</td>
-                        <td class="p-3 border">ReferralKing</td>
-                        <td class="p-3 border">120</td>
-                        <td class="p-3 border">$1500</td>
-                    </tr>
-                    <tr class="text-center">
-                        <td class="p-3 border text-gray-500">🥈</td>
-                        <td class="p-3 border">JohnDoe</td>
-                        <td class="p-3 border">90</td>
-                        <td class="p-3 border">$1100</td>
-                    </tr>
-                    <tr class="text-center">
-                        <td class="p-3 border text-brown-500">🥉</td>
-                        <td class="p-3 border">JaneSmith</td>
-                        <td class="p-3 border">75</td>
-                        <td class="p-3 border">$950</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="bg-green-100 p-4 rounded-lg">
+            <h4 class="text-lg font-semibold text-gray-700">Earnings from Referrals</h4>
+            <p id="earnings-referrals" class="text-2xl font-bold text-green-700">$0</p>
         </div>
+        <div class="bg-purple-100 p-4 rounded-lg">
+            <h4 class="text-lg font-semibold text-gray-700">Validator Sign-ups</h4>
+            <p id="validator-signups" class="text-2xl font-bold text-purple-700">0</p>
+        </div>
+    </div>
+</div>
+
+<!-- List of Referred Users -->
+<div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">List of Referred Users</h3>
+    <table class="w-full border-collapse border border-gray-300 min-w-max">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="p-3 border">Username</th>
+                <th class="p-3 border">Activation Status</th>
+                <th class="p-3 border">Joined Date</th>
+            </tr>
+        </thead>
+        <tbody id="referred-users">
+            <tr class="text-center">
+                <td class="p-3 border text-gray-500" colspan="3">No referrals yet. Share your link to start earning!</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Leaderboard -->
+<div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Referrers This Month</h3>
+    <table class="w-full border-collapse border border-gray-300 min-w-max">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="p-3 border">Rank</th>
+                <th class="p-3 border">Username</th>
+                <th class="p-3 border">Total Referrals</th>
+                <th class="p-3 border">Earnings</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard">
+            <tr class="text-center">
+                <td class="p-3 border text-gray-500" colspan="4">No rankings yet. Keep sharing your link to get ranked!</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
     </section>
+
+    <script type="module">
+import { auth, db, doc, getDoc, query, collection, where, getDocs } from "./script.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const user = auth.currentUser;
+        if (!user) return;
+        const userId = user.uid;
+
+        // Fetch user data
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) return;
+        const userData = userSnap.data();
+        
+        // Update Referral Link
+        const referralLink = userData.referralLink;
+        document.getElementById("referral-link").textContent = referralLink;
+        document.getElementById("whatsapp-share-button").href = `https://wa.me/?text=Join%20using%20my%20referral%20link:%20${referralLink}`;
+
+        // Fetch referred users
+        const referredUsersQuery = query(collection(db, "users"), where("referrerId", "==", userId));
+        const referredUsersSnap = await getDocs(referredUsersQuery);
+        const referredUsers = referredUsersSnap.docs.map(doc => doc.data());
+
+        // Update Statistics
+        document.querySelector(".bg-blue-100 p.text-2xl").textContent = referredUsers.length;
+        document.querySelector(".bg-green-100 p.text-2xl").textContent = `$${userData.totalEarnings}`;
+        document.querySelector(".bg-purple-100 p.text-2xl").textContent = referredUsers.filter(u => u.isValidator).length;
+
+        // Populate Referred Users Table
+        const tbody = document.querySelector("table tbody");
+        tbody.innerHTML = "";
+
+        if (referredUsers.length === 0) {
+            tbody.innerHTML = `<tr><td colspan='3' class='p-3 text-center text-gray-500'>No referrals yet. Share your link to start earning!</td></tr>`;
+        } else {
+            referredUsers.forEach(user => {
+                const row = `<tr class='text-center'>
+                    <td class='p-3 border'>${user.firstName} ${user.lastName}</td>
+                    <td class='p-3 border ${user.paymentStatus === 'Approved' ? 'text-green-600' : 'text-red-500'}'>${user.paymentStatus || 'Pending'}</td>
+                    <td class='p-3 border'>${new Date(user.registeredAt).toLocaleDateString()}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Fetch and populate Leaderboard
+        const leaderboardQuery = query(collection(db, "users"));
+        const leaderboardSnap = await getDocs(leaderboardQuery);
+        const leaderboardData = leaderboardSnap.docs.map(doc => doc.data());
+        leaderboardData.sort((a, b) => b.totalReferrals - a.totalReferrals);
+
+        const leaderboardBody = document.querySelector(".bg-white.shadow-lg:nth-of-type(4) tbody");
+        leaderboardBody.innerHTML = "";
+
+        if (leaderboardData.length === 0) {
+            leaderboardBody.innerHTML = `<tr><td colspan='4' class='p-3 text-center text-gray-500'>No rankings yet. Keep sharing your link to get ranked!</td></tr>`;
+        } else {
+            const medals = ["🥇", "🥈", "🥉"];
+            leaderboardData.slice(0, 3).forEach((user, index) => {
+                const row = `<tr class='text-center'>
+                    <td class='p-3 border text-yellow-500'>${medals[index] || index + 1}</td>
+                    <td class='p-3 border'>${user.firstName}</td>
+                    <td class='p-3 border'>${user.totalReferrals}</td>
+                    <td class='p-3 border'>$${user.totalEarnings}</td>
+                </tr>`;
+                leaderboardBody.innerHTML += row;
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching referral data:", error);
+    }
+});
+
+    </script>
     
     <script>
         function copyLink() {

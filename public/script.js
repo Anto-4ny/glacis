@@ -15,7 +15,7 @@ import {
     updateDoc,
     getDoc,
     query,
-    onSnapshot, // ✅ Keep only ONE onSnapshot import
+    onSnapshot,
     collection,
     where,
     getDocs,
@@ -237,7 +237,7 @@ if (signupForm) {
                     firstName,
                     lastName,
                     email,
-                    referralCode: validReferrerId, // Save only if valid
+                    referralCode: validReferrerId, 
                     referralLink,
                     amountPaid: 0,
                     totalEarnings: 0,

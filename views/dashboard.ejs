@@ -264,11 +264,11 @@
 <section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
 
         <section id="dashboard-info" class="p-6 bg-gray-100 min-h-screen">
-            <!-- Notification Bar -->
+            <!-- Notification Bar 
          <div id="notification-bar" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 relative shadow-lg rounded-md">
             <p class="font-semibold">Welcome back</p>
             <span class="absolute top-2 right-4 cursor-pointer text-xl font-bold" id="close-notification">&times;</span>
-        </div>
+        </div>-->
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- User Registration & Activation -->
@@ -329,7 +329,7 @@
             <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
                 <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
                            bg-gradient-to-r from-green-500 to-blue-600 inline-block px-6">
-                    Validators Panel
+                    Membership Validators Panel
                 </h2>
             </div>
         
@@ -337,11 +337,12 @@
             <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
                 <p class="text-gray-600 mb-4">Review and approve/reject payments.</p>
-                  
+            </div>
+        
             <!-- Earnings Tracker for Validators -->
             <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Tracker</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     <div class="bg-green-100 p-4 rounded-lg text-center">
                         <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
                         <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
@@ -356,56 +357,59 @@
                     </div>
                 </div>
             </div>
-
-        <!-- Spacer for Other Items -->
-<div class="h-8 md:h-14 lg:h-8"></div>
-
-           <!-- Pending Transactions Table -->
-        <div class="bg-white shadow-2xl rounded-2xl p-6 overflow-hidden">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[800px] border-collapse rounded-lg">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
-                            <th class="p-4 border border-gray-300">Username</th>
-                            <th class="p-4 border border-gray-300">Amount Paid</th>
-                            <th class="p-4 border border-gray-300">Transaction ID</th>
-                            <th class="p-4 border border-gray-300">Time Submitted</th>
-                            <th class="p-4 border border-gray-300">Validation Status</th>
-                            <th class="p-4 border border-gray-300">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
-                        <!-- Transactions dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
         
-            
-            <!-- Validation History -->
-        <div class="bg-white shadow-lg rounded-lg p-6 mt-8 overflow-x-auto">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
-            <p class="text-gray-600 mb-4">View previously validated people world wide.</p>
-            <div class="w-full overflow-x-auto">
-                <table class="w-full min-w-max border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="p-3 border">Username</th>
-                            <th class="p-3 border">Amount</th>
-                            <th class="p-3 border">Transaction ID</th>
-                            <th class="p-3 border">Status</th>
-                            <th class="p-3 border">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="validation-history">
-                        <!-- Approved transactions will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        </section>
+            <!-- Spacer for Other Items -->
+            <div class="h-8 md:h-14 lg:h-8"></div>
+        
+           <!-- Pending Transactions Table -->
+<div class="bg-white shadow-2xl rounded-2xl p-6">
+    <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
+
+    <!-- Responsive Table Wrapper -->
+    <div class="overflow-x-auto">
+        <table class="w-full min-w-full border-collapse rounded-lg text-sm">
+            <thead>
+                <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-left">
+                    <th class="p-4 border border-gray-300">Username</th>
+                    <th class="p-4 border border-gray-300">Amount Paid</th>
+                    <th class="p-4 border border-gray-300">Transaction ID</th>
+                    <th class="p-4 border border-gray-300">Time Submitted</th>
+                    <th class="p-4 border border-gray-300">Validation Status</th>
+                    <th class="p-4 border border-gray-300">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
+                <!-- Transactions dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Validation History -->
+<div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
+    <p class="text-gray-600 mb-4">View previously validated people worldwide.</p>
+
+    <!-- Responsive Table Wrapper -->
+    <div class="overflow-x-auto">
+        <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
+            <thead>
+                <tr class="bg-gray-200 text-left">
+                    <th class="p-3 border">Username</th>
+                    <th class="p-3 border">Amount</th>
+                    <th class="p-3 border">Transaction ID</th>
+                    <th class="p-3 border">Status</th>
+                    <th class="p-3 border">Date</th>
+                </tr>
+            </thead>
+            <tbody id="validation-history">
+                <!-- Approved transactions will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+        </section>        
 
         <div>
             <div class="bg-white shadow-2xl rounded-2xl p-8">
@@ -425,10 +429,13 @@
         <button id="copy-link-button" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
             Copy
         </button>
+        
         <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300">
             <i class="fab fa-whatsapp text-lg"></i>
         </a>
     </div>
+
+    <p id="copy-message" class="hidden text-sm"></p>
     
     <!-- Referred Friends Section -->
     <h3 class="text-xl font-bold text-gray-900 mt-6">Your Referred Friends</h3>
@@ -866,9 +873,9 @@
 <script type="module">
     import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp } from './script.js';
     
-document.getElementById("close-notification").addEventListener("click", function () {
-    document.getElementById("notification-bar").style.display = "none";
-});
+//document.getElementById("close-notification").addEventListener("click", function () {
+  //  document.getElementById("notification-bar").style.display = "none";
+//});
 
 document.addEventListener("DOMContentLoaded", async function () {
     const ctx4 = document.getElementById("histogramChart").getContext("2d");
