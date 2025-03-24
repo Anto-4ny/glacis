@@ -313,3 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
     closeNav.addEventListener("click", closeMobileNav);
     overlay.addEventListener("click", closeMobileNav);
 });
+
+document.getElementById("logout-button").addEventListener("click", () => {
+    window.location.href = "/";
+});

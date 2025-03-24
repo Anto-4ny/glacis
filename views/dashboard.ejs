@@ -130,7 +130,7 @@
         <!-- Membership Type Selection -->
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700">Select Membership Type</label>
-            <select id="membership-type" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            <select id="amountPaid" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
                 <option value="common">$6 - Common Member</option>
             </select>
         </div>
@@ -252,154 +252,140 @@
     }
 </style>
 
-<section id="dashboard" class="p-6 bg-gray-100 min-h-screen">
-
-        <section id="dashboard-info" class="p-6 bg-gray-100 min-h-screen">
-            <!-- Notification Bar 
-         <div id="notification-bar" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 relative shadow-lg rounded-md">
-            <p class="font-semibold">Welcome back</p>
-            <span class="absolute top-2 right-4 cursor-pointer text-xl font-bold" id="close-notification">&times;</span>
-        </div>-->
-
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-blue-500 w-full sm:w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+<section id="dashboard-info" class="p-4 bg-gray-100 min-h-screen">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- User Registration & Activation -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-blue-500">
             <h3 class="text-xl font-bold text-gray-800 mb-2">User Registration & Activation</h3>
             <p class="text-gray-600">Register as a common member with <strong>$6</strong> or as a validator with <strong>$40</strong>.</p>
         </div>
-                  
-        
-            <!-- Validator Responsibilities -->
-            <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-yellow-500 w-full">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Validator Responsibilities</h3>
-                <p class="text-gray-600">Validators verify user payments and earn <strong>$2.5 per validation</strong>. At least two validators must approve a payment.</p>
-            </div>
-        
-            <!-- Referral System -->
-            <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-green-500 w-full">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Referral Earnings</h3>
-                <ul class="list-disc pl-5 text-gray-600">
-                    <li>Direct referrals earn <strong>$6</strong> per activated account.</li>
-                    <li>Level 2 referrals earn <strong>$3</strong> per activation.</li>
-                    <li>If a referral registers as a validator, earn <strong>$10</strong> (direct) or <strong>$5</strong> (level 2).</li>
-                </ul>
-            </div>
-        
-            <!-- Payment System -->
-            <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-purple-500 w-full">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Payment System</h3>
-                <p class="text-gray-600">Payments are done manually through <strong>Binance & Metamask </strong>.</p>
-            </div>
-        
-            <!-- Transaction Proof Submission -->
-            <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-red-500 w-full">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Transaction Proof Submission</h3>
-                <ul class="list-disc pl-5 text-gray-600">
-                    <li>Transaction Hash (TXID)</li>
-                    <li>Screenshot of completed transaction</li>
-                    <li>Payment method used</li>
-                    <li>Sender and receiver wallet addresses</li>
-                </ul>
-            </div>
-        
-            <!-- Dashboard Features -->
-            <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-indigo-500 w-full">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Dashboard Features</h3>
-                <ul class="list-disc pl-5 text-gray-600">
-                    <li>Account activation & verification status</li>
-                    <li>Unique referral link</li>
-                    <li>Validator panel for pending verifications</li>
-                    <li>Wallet withdrawals (min: $1, 24hr approval)</li>
-                </ul>
-            </div>
-        </div>
-        </section>
-        
 
-        <section id="validators" class="p-6 bg-gray-100 min-h-screen">
-            <!-- Validators Page Title -->
-            <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 mb-8 text-center">
-                <h2 class="text-3xl text-white font-extrabold tracking-wide uppercase py-4 shadow-lg rounded-xl 
-                           bg-gradient-to-r from-green-500 to-blue-600 inline-block px-6">
-                    Membership Validators Panel
-                </h2>
-            </div>
-        
-            <!-- Validate Payment Panel -->
-            <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Validate Payment</h3>
-                <p class="text-gray-600 mb-4">Review and approve/reject payments.</p>
-            </div>
-        
-            <!-- Earnings Tracker for Validators -->
-            <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Tracker</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <div class="bg-green-100 p-4 rounded-lg text-center">
-                        <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
-                        <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
-                    </div>
-                    <div class="bg-blue-100 p-4 rounded-lg text-center">
-                        <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
-                        <p id="total-earnings" class="text-2xl font-bold text-blue-700">$0</p>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-center">
-                        <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
-                        <p id="pending-earnings" class="text-2xl font-bold text-gray-600">$0</p>
-                    </div>
+        <!-- Validator Responsibilities -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-yellow-500">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Validator Responsibilities</h3>
+            <p class="text-gray-600">Validators verify user payments and earn <strong>$2.5 per validation</strong>. At least two validators must approve a payment.</p>
+        </div>
+
+        <!-- Referral System -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-green-500">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Referral Earnings</h3>
+            <ul class="list-disc pl-5 text-gray-600">
+                <li>Direct referrals earn <strong>$2.5</strong> per activated account.</li>
+                <li>Level 2 referrals earn <strong>$0.5</strong> per activation.</li>
+                <li>If a referral registers as a validator, earn <strong>$1</strong> (direct) or <strong>$0.5</strong> (level 2).</li>
+            </ul>
+        </div>
+
+        <!-- Payment System -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-purple-500">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Payment System</h3>
+            <p class="text-gray-600">Payments are done manually through <strong>Binance</strong>.</p>
+        </div>
+
+        <!-- Transaction Proof Submission -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-red-500">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Transaction Proof Submission</h3>
+            <ul class="list-disc pl-5 text-gray-600">
+                <li>Transaction Hash (TXID)</li>
+                <li>Screenshot of completed transaction</li>
+                <li>Payment method used</li>
+                <li>Sender and receiver wallet addresses</li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Features -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-indigo-500">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Dashboard Features</h3>
+            <ul class="list-disc pl-5 text-gray-600">
+                <li>Account activation & verification status</li>
+                <li>Unique referral link</li>
+                <li>Validator panel for pending verifications</li>
+                <li>Wallet withdrawals (min: $1, 24hr approval)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="validators" class="p-4 bg-gray-100 min-h-screen">
+    <div class="space-y-6">  
+        <!-- Validators Page Title -->
+        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-6 text-center">
+            <h2 class="text-2xl sm:text-3xl text-white font-extrabold tracking-wide uppercase py-3 rounded-xl 
+                       bg-gradient-to-r from-green-500 to-blue-600 inline-block px-4 sm:px-6">
+                Membership Validators Panel
+            </h2>
+        </div>
+
+        <!-- Validate Payment Panel -->
+        <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Validate Payment</h3>
+            <p class="text-gray-600">Review and approve/reject payments.</p>
+        </div>
+
+        <!-- Earnings Tracker for Validators -->
+        <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Earnings Tracker</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-green-100 p-3 sm:p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
+                    <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
+                </div>
+                <div class="bg-blue-100 p-3 sm:p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
+                    <p id="total-earnings" class="text-2xl font-bold text-blue-700">$0</p>
+                </div>
+                <div class="bg-gray-100 p-3 sm:p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
+                    <p id="pending-earnings" class="text-2xl font-bold text-gray-600">$0</p>
                 </div>
             </div>
-        
-            <!-- Spacer for Other Items -->
-            <div class="h-8 md:h-14 lg:h-8"></div>
-        
-           <!-- Pending Transactions Table -->
-<div class="bg-white shadow-2xl rounded-2xl p-6">
-    <h3 class="text-xl font-bold text-gray-900 mb-4">Pending Transactions</h3>
+        </div>
 
-    <!-- Responsive Table Wrapper -->
-    <div class="overflow-x-auto">
-        <table class="w-full min-w-full border-collapse rounded-lg text-sm">
-            <thead>
-                <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-left">
-                    <th class="p-4 border border-gray-300">Username</th>
-                    <th class="p-4 border border-gray-300">Amount Paid</th>
-                    <th class="p-4 border border-gray-300">Transaction ID</th>
-                    <th class="p-4 border border-gray-300">Time Submitted</th>
-                    <th class="p-4 border border-gray-300">Validation Status</th>
-                    <th class="p-4 border border-gray-300">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
-                <!-- Transactions dynamically inserted here -->
-            </tbody>
-        </table>
+        <!-- Pending Transactions Table -->
+        <div class="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 w-full">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-3">Pending Transactions</h3>
+            <div class="overflow-x-auto w-full">
+                <table class="w-full min-w-full border-collapse text-sm shadow-md">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Username</th>
+                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Amount Paid</th>
+                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Transaction ID</th>
+                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Time Submitted</th>
+                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Status</th>
+                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
+                        <!-- Transactions dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Validation History -->
+        <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Validation History</h3>
+            <p class="text-gray-600">View previously validated people worldwide.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-2 sm:p-3 border">Username</th>
+                            <th class="p-2 sm:p-3 border">Amount</th>
+                            <th class="p-2 sm:p-3 border">Transaction ID</th>
+                            <th class="p-2 sm:p-3 border">Status</th>
+                            <th class="p-2 sm:p-3 border">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="validation-history">
+                        <!-- Approved transactions will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
-
-<!-- Validation History -->
-<div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-    <h3 class="text-lg font-semibold text-gray-800 mb-4">Validation History</h3>
-    <p class="text-gray-600 mb-4">View previously validated people worldwide.</p>
-
-    <!-- Responsive Table Wrapper -->
-    <div class="overflow-x-auto">
-        <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
-            <thead>
-                <tr class="bg-gray-200 text-left">
-                    <th class="p-3 border">Username</th>
-                    <th class="p-3 border">Amount</th>
-                    <th class="p-3 border">Transaction ID</th>
-                    <th class="p-3 border">Status</th>
-                    <th class="p-3 border">Date</th>
-                </tr>
-            </thead>
-            <tbody id="validation-history">
-                <!-- Approved transactions will be inserted here -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-        </section>        
+</section>   
 
         <div>
             <div class="bg-white shadow-2xl rounded-2xl p-8">
@@ -408,7 +394,7 @@
             </div>
         </div>
     
-      <!-- Referral Section -->
+         <!-- Referral Section -->
 <div class="bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto border border-gray-200">
     <h3 class="text-xl font-bold text-gray-900 mb-4">Your Referral Link</h3>
     
@@ -428,25 +414,23 @@
     <p id="copy-message" class="hidden text-sm"></p>
 
     <!-- Referred Friends Section -->
-    <h3 class="text-xl font-bold text-gray-900 mt-6">Your Referred Friends</h3>
-    
-    <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
-        <table class="w-full border-collapse text-sm text-left">
-            <thead>
-                <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg">
-                    <th class="p-3 text-left">Email</th>
-                    <th class="p-3 text-left">Status</th>
-                </tr>
-            </thead>
-            <tbody id="referred-users-list" class="text-gray-800">
-                <!-- Referred users will be dynamically inserted here -->
-            </tbody>
-        </table>
-    </div>
-</div>
-    </section>
+<h3 class="text-xl font-bold text-gray-900 mt-6">Your Referred Friends</h3>
 
-    <section>
+<div class="w-full sm:w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
+    <table class="w-full border-collapse text-sm text-left">
+        <thead>
+            <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                <th class="p-3 text-left">Email</th>
+                <th class="p-3 text-left">Status</th>
+            </tr>
+        </thead>
+        <tbody id="referred-users-list" class="text-gray-800">
+            <!-- Referred users will be dynamically inserted here -->
+        </tbody>
+    </table>
+</div>
+</div>
+
         <!-- Social Media Links -->
     <div class="bg-white shadow-md rounded-lg p-6 mt-6 max-w-3xl mx-auto text-center">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Follow Us on Social Media</h3>
@@ -454,13 +438,13 @@
             <!--<a href="https://t.me/yourchannel" target="_blank" class="text-blue-500 text-2xl hover:text-blue-700">
                 <i class="fab fa-telegram-plane"></i>-->
             </a>
-            <a href="https://x.com/GlaciasO25?t=O5kjLwkcjx_dVI_KsOSmwQ&s=09" target="_blank" class="text-blue-400 text-2xl hover:text-blue-600">
+            <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09" target="_blank" class="text-blue-400 text-2xl hover:text-blue-600">
                 <i class="fab fa-twitter"></i>
             </a>
-            <a href="https://www.facebook.com/profile.php?id=100076146367834" target="_blank" class="text-blue-600 text-2xl hover:text-blue-800">
+            <a href="https://www.facebook.com/profile.php?id=61564678751322" target="_blank" class="text-blue-600 text-2xl hover:text-blue-800">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="https://www.instagram.com/tonyasembo?igsh=YzljYTk1ODg3Zg==" target="_blank" class="text-pink-500 text-2xl hover:text-pink-700">
+            <a href=" https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg==" target="_blank" class="text-pink-500 text-2xl hover:text-pink-700">
                 <i class="fab fa-instagram"></i>
             </a>
             <a href="https://www.tiktok.com/@antonytheeson?_t=ZM-8uB5WCMpRBd&_r=1" target="_blank" class="text-black text-2xl hover:text-gray-700 mx-2">
@@ -469,7 +453,6 @@
             
         </div>
     </div>
-    </section>
     
     <footer class="bg-gray-900 text-white text-center py-4">
         <p class="copyright-text text-sm">
@@ -662,100 +645,158 @@
         }
     });
     
-     // LOADING THE ASSIGNED TRANSACTIONS
-     async function loadAssignedTransactions() {
-        const q = query(
-            collection(db, "payments"),
-            where("statuss", "==", "pending"),
-            where("assignedValidators", "array-contains", user.uid)
-        );
-    
-        const querySnapshot = await getDocs(q);
-        let transactionHTML = "";
-    
-        querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const paymentId = docSnap.id;
-    
-            let paymentTime = "N/A";
-            if (data.timestamp?.seconds) {
-                paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
-            }
-    
-            transactionHTML += `
-                <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
-                    <td class="p-4 border border-gray-300">${data.email}</td>
-                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid}</td>
-                    <td class="p-4 border border-gray-300">${data.txid}</td>
-                    <td class="p-4 border border-gray-300">${paymentTime}</td>
-                    <td class="p-4 border border-gray-300 text-center">
-                        <span class="px-3 py-1 rounded-full text-white text-xs ${data.approvals.length >= 1 ? 'bg-green-500' : 'bg-red-500'}">
-                            ${data.approvals.length >= 1 ? "Approved" : "Pending"}
-                        </span>
-                    </td>
-                    <td class="p-4 border border-gray-300 text-center">
-                        <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
-                            data-id="${paymentId}">
-                            Approve
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-    
-        document.getElementById("pending-transactions").innerHTML = transactionHTML;
-    
-        transactionTable.innerHTML = transactionHTML;
-    
-         // Attach event listeners to approval buttons
-        document.querySelectorAll(".approve-btn").forEach(button => {
-            button.addEventListener("click", () => approvePayment(button.dataset.id));
-        });
-    }
-    
-    // APPROVING PAYMENTS
-    async function approvePayment(paymentId) {
-        const button = document.querySelector(`[data-id='${paymentId}']`);
-        if (!button) return;
-    
-        button.textContent = "Approving...";
-        button.disabled = true;
-    
-        const paymentRef = doc(db, "payments", paymentId);
-        const paymentDoc = await getDoc(paymentRef);
-    
-        if (!paymentDoc.exists()) return;
-        const paymentData = paymentDoc.data();
-    
-        if (paymentData.approvals.includes(user.uid)) {
-            button.textContent = "Already Approved";
-            return;
+    // LOADING THE ASSIGNED TRANSACTIONS
+async function loadAssignedTransactions() {
+    const q = query(
+        collection(db, "payments"),
+        where("statuss", "==", "pending"),
+        where("assignedValidators", "array-contains", user.uid)
+    );
+
+    const querySnapshot = await getDocs(q);
+    let transactionHTML = "";
+
+    querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const paymentId = docSnap.id;
+
+        let paymentTime = "N/A";
+        if (data.timestamp?.seconds) {
+            paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
         }
-    
-        // Update approvals and set payment to "approved" if at least 1 validator approves
-        const updatedApprovals = [...paymentData.approvals, user.uid];
-        const paymentStatus = "approved"; // Since only 1 validator is needed
-    
-        await updateDoc(paymentRef, {
-            approvals: updatedApprovals,
-            statuss: paymentStatus
-        });
-    
-        // Increment total earnings for the validator (add $0.5)
-        const validatorRef = doc(db, "users", user.uid);
-        await updateDoc(validatorRef, {
-            totalEarnings: increment(0.5)
-        });
-    
-        // Hide pop-up after approval
-        validatorPopup.classList.add("hidden");
-    
-        button.textContent = "Approved";
+
+        transactionHTML += `
+            <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
+                <td class="p-4 border border-gray-300">${data.email}</td>
+                <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
+                <td class="p-4 border border-gray-300">${data.txid}</td>
+                <td class="p-4 border border-gray-300">${paymentTime}</td>
+                <td class="p-4 border border-gray-300 text-center">
+                    <span class="px-3 py-1 rounded-full text-white text-xs ${data.approvals.length >= 1 ? 'bg-green-500' : 'bg-red-500'}">
+                        ${data.approvals.length >= 1 ? "Approved" : "Pending"}
+                    </span>
+                </td>
+                <td class="p-4 border border-gray-300 text-center">
+                    <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
+                        data-id="${paymentId}">
+                        Approve
+                    </button>
+                    <button class="reject-btn px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition"
+                        data-id="${paymentId}">
+                        Reject
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("pending-transactions").innerHTML = transactionHTML;
+
+    transactionTable.innerHTML = transactionHTML;
+
+    // Attach event listeners to approval and rejection buttons
+    document.querySelectorAll(".approve-btn").forEach(button => {
+        button.addEventListener("click", () => approvePayment(button.dataset.id));
+    });
+
+    document.querySelectorAll(".reject-btn").forEach(button => {
+        button.addEventListener("click", () => rejectPayment(button.dataset.id));
+    });
+}
+
+// APPROVING PAYMENTS
+async function approvePayment(paymentId) {
+    const button = document.querySelector(`[data-id='${paymentId}']`);
+    if (!button) return;
+
+    button.textContent = "Approving...";
+    button.disabled = true;
+
+    const paymentRef = doc(db, "payments", paymentId);
+    const paymentDoc = await getDoc(paymentRef);
+
+    if (!paymentDoc.exists()) return;
+    const paymentData = paymentDoc.data();
+
+    if (paymentData.approvals.includes(user.uid)) {
+        button.textContent = "Already Approved";
+        return;
+    }
+
+    // Update approvals and set payment to "approved"
+    const updatedApprovals = [...paymentData.approvals, user.uid];
+    const paymentStatus = "approved"; // Since only 1 validator is needed
+
+    await updateDoc(paymentRef, {
+        approvals: updatedApprovals,
+        statuss: paymentStatus
+    });
+
+    // Increment total earnings for the validator (add $0.5)
+    const validatorRef = doc(db, "users", user.uid);
+    await updateDoc(validatorRef, {
+        totalEarnings: increment(0.5)
+    });
+
+    // Hide pop-up after approval
+    validatorPopup.classList.add("hidden");
+
+    button.textContent = "Approved";
+    button.classList.add("bg-gray-400");
+
+    // Remove from pending transactions table
+    const row = button.closest("tr");
+    if (row) row.remove();
+}
+
+// REJECTING PAYMENTS & REASSIGNING TO ANOTHER VALIDATOR
+async function rejectPayment(paymentId) {
+    const button = document.querySelector(`[data-id='${paymentId}']`);
+    if (!button) return;
+
+    button.textContent = "Rejecting...";
+    button.disabled = true;
+
+    const paymentRef = doc(db, "payments", paymentId);
+    const paymentDoc = await getDoc(paymentRef);
+
+    if (!paymentDoc.exists()) return;
+    const paymentData = paymentDoc.data();
+
+    // Remove current validator
+    let updatedValidators = paymentData.assignedValidators.filter(uid => uid !== user.uid);
+
+    // Get a new validator
+    const validatorQuery = query(
+        collection(db, "users"),
+        where("isVvalidator", "==", true)
+    );
+
+    const validatorSnapshot = await getDocs(validatorQuery);
+    let availableValidators = validatorSnapshot.docs
+        .map(docSnap => docSnap.id)
+        .filter(uid => !updatedValidators.includes(uid));
+
+    if (availableValidators.length === 0) {
+        button.textContent = "No Available Validators";
         button.classList.add("bg-gray-400");
-    
-        // Remove from pending transactions table
-        const row = button.closest("tr");
-        if (row) row.remove();
+        return;
+    }
+
+    const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
+    updatedValidators.push(newValidator);
+
+    // Update Firestore
+    await updateDoc(paymentRef, {
+        assignedValidators: updatedValidators
+    });
+
+    button.textContent = "Rejected";
+    button.classList.add("bg-gray-400");
+
+    // Remove from pending transactions table
+    const row = button.closest("tr");
+    if (row) row.remove();
     
         // Add to validation history dynamically
         const historyTable = document.getElementById("validation-history");
