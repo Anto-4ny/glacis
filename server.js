@@ -90,6 +90,20 @@ app.get("/api/videos", async (req, res) => {
     }
 });
 
+// API route to fetch an Unsplash image securely
+app.get("/api/getProfileImage", async (req, res) => {
+    try {
+        const response = await fetch(
+            `https://api.unsplash.com/photos/random?query=face,portrait&client_id=${process.env.UNSPLASH_ACCESS_KEY}`
+        );
+        const data = await response.json();
+        res.json({ imageUrl: data.urls.small });
+    } catch (error) {
+        console.error("Error fetching image:", error);
+        res.status(500).json({ error: "Failed to fetch image" });
+    }
+});
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

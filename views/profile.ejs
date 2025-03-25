@@ -132,17 +132,26 @@
 <section id="profile" class="p-6 bg-gray-100 min-h-screen flex justify-center">
     <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center">
     
-        <!-- Profile Picture -->
+     <!-- Profile Picture -->
 <div class="relative inline-block">
-    <img id="profileImage" src="" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto shadow-lg">
+    <img id="profileImage" src="" alt="User Avatar" 
+         class="w-24 h-24 rounded-full mx-auto shadow-lg">
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const profileImage = document.getElementById("profileImage");
 
-    // Fetch a random profile image from Unsplash
-    profileImage.src = "https://source.unsplash.com/100x100/?face,portrait";
-});
+<!-- JavaScript for Unsplash Image -->
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        const profileImage = document.getElementById("profileImage");
+
+        try {
+            const response = await fetch("https://quantumincome.org/api/getProfileImage");
+            const data = await response.json();
+            profileImage.src = data.imageUrl;
+        } catch (error) {
+            console.error("Error fetching image:", error);
+            profileImage.src = "https://via.placeholder.com/150"; // Fallback image
+        }
+    });
 </script>
 
         <!-- Username -->
@@ -163,14 +172,39 @@
                 Become a Validator
             </button>
   
-            <button id="userDetails" class="w-full bg-gray-700 text-white py-2 rounded-lg 
-                           hover:bg-gray-800 transition">
-                User Details
-            </button>
-  
             <button id="withdrawEarnings" class="w-full bg-green-600 text-white py-2 rounded-lg 
                            hover:bg-green-700 transition">
                 Withdraw Earnings
+            </button>
+        </div>
+
+        <!-- User Details Section -->
+        <h3 class="text-lg font-bold text-gray-800 mt-6">User Details</h3>
+
+        <div class="mt-4 space-y-4">
+            <button id="userEarnings" class="w-full bg-purple-600 text-white py-2 rounded-lg 
+                           hover:bg-purple-700 transition">
+                User Earnings
+            </button>
+
+            <button id="referralCorner" class="w-full bg-orange-600 text-white py-2 rounded-lg 
+                           hover:bg-orange-700 transition">
+                Referral Corner
+            </button>
+
+            <button id="membershipValidation" class="w-full bg-teal-600 text-white py-2 rounded-lg 
+                           hover:bg-teal-700 transition">
+                Membership Validation
+            </button>
+
+            <button id="validatorPanel" class="w-full bg-red-600 text-white py-2 rounded-lg 
+                           hover:bg-red-700 transition">
+                Validator Panel
+            </button>
+
+            <button id="videos" class="w-full bg-gray-700 text-white py-2 rounded-lg 
+                           hover:bg-gray-800 transition">
+                Videos
             </button>
         </div>
     </div>
@@ -233,12 +267,28 @@
                 }
             });
 
-            document.getElementById("userDetails").addEventListener("click", () => {
-                window.location.href = "/profile";
+            document.getElementById("membershipValidation").addEventListener("click", () => {
+                window.location.href = "/dashboard";
             });
 
             document.getElementById("withdrawEarnings").addEventListener("click", () => {
                 window.location.href = "/withdraw";
+            });
+
+            document.getElementById("userEarnings").addEventListener("click", () => {
+                window.location.href = "/earnings";
+            });
+
+            document.getElementById("referralCorner").addEventListener("click", () => {
+                window.location.href = "/referral";
+            });
+
+            document.getElementById("validatorPanel").addEventListener("click", () => {
+                window.location.href = "/validator";
+            });
+
+            document.getElementById("videos").addEventListener("click", () => {
+                window.location.href = "/videos";
             });
 
         } else {
