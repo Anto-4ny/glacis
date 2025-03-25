@@ -133,7 +133,7 @@
 <div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
         <h3 class="text-xl font-bold text-gray-800 mb-4">Become a Validator</h3>
-        <p class="text-gray-600 mb-2">To become a validator, pay a one-time registration fee of <strong>$40</strong>.</p>
+        <p class="text-gray-600 mb-2">To become a validator, pay a one-time registration fee of <strong>$30</strong>.</p>
         <p class="text-gray-800 font-semibold">Send payment to:</p>
 
         <!-- Wallet Addresses -->
@@ -478,7 +478,7 @@
             transactionHTML += `
             <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                 <td class="p-4 border border-gray-300">${data.email}</td>
-                <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 40}</td>
+                <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 30}</td>
                 <td class="p-4 border border-gray-300">${data.txid}</td>
                 <td class="p-4 border border-gray-300">${paymentTime}</td>
                 <td class="p-4 border border-gray-300 text-center">
@@ -693,7 +693,7 @@ async function rejectPayment(paymentId) {
                 historyHTML += `
                     <tr>
                         <td class="p-3 border">${data.email}</td>
-                        <td class="p-3 border">$${data.amountPaid || 40}</td>
+                        <td class="p-3 border">$${data.amountPaid || 30}</td>
                         <td class="p-3 border">${data.txid}</td>
                         <td class="p-3 border text-green-600 font-bold">Approved</td>
                         <td class="p-3 border">${paymentTime}</td>
