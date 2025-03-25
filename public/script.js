@@ -314,6 +314,12 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.addEventListener("click", closeMobileNav);
 });
 
-document.getElementById("logout-button").addEventListener("click", () => {
+// Function to handle logout (reusable for both buttons)
+function handleLogout() {
     window.location.href = "/";
-});
+}
+
+// Attach event listeners to both buttons
+document.getElementById("logout-button-mobile")?.addEventListener("click", handleLogout);
+document.getElementById("logout-button-desktop")?.addEventListener("click", handleLogout);
+
