@@ -242,8 +242,6 @@ if (signupForm) {
                     amountPaid: 0,
                     totalEarnings: 0,
                     totalReferrals: 0,
-                    membershipApproved: false,
-                    paymentApproved: false,
                     referralEarnings: 0,
                     likedVideos: 0,
                     watchedVideos: 0,

@@ -229,6 +229,7 @@
     </div>
 </section>
 
+
 <!-- Floating Animations -->
 <style>
     @keyframes float {
@@ -339,6 +340,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- Admin Panel -->
+     <div id="admin-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Pending membership Validator Approvals</h3>
+        
+        <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
+            <table class="w-full border-collapse text-sm text-left">
+                <thead>
+                    <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                        <th class="p-3 text-left">Email</th>
+                        <th class="p-3 text-left">Amount</th>
+                        <th class="p-3 text-left">TXID</th>
+                        <th class="p-3 text-left">Validator</th>
+                        <th class="p-3 text-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-approval-list" class="text-gray-800">
+                    <!-- Pending validator approvals will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
         <!-- Pending Transactions Table -->
         <div class="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 w-full">
@@ -543,7 +566,7 @@
         const paymentQuery = query(
             collection(db, "payments"),
             where("email", "==", user.email),
-            where("statuss", "==", "approved"),
+            where("statuss", "==", "approved-admin"),
             limit(1)
         );
     
@@ -644,189 +667,498 @@
         }
     });
     
-    // LOADING THE ASSIGNED TRANSACTIONS
-async function loadAssignedTransactions() {
-    const q = query(
-        collection(db, "payments"),
-        where("statuss", "==", "pending"),
-        where("assignedValidators", "array-contains", user.uid)
-    );
+       //LOADING ASSIGNED TRANSACTIONS
+       async function loadAssignedTransactions() {
+    try {
+        const q = query(
+            collection(db, "payments"),
+            where("statuss", "==", "pending"),
+            where("assignedValidators", "array-contains", user.uid)
+        );
 
-    const querySnapshot = await getDocs(q);
-    let transactionHTML = "";
+        const querySnapshot = await getDocs(q);
+        let transactionHTML = "";
 
-    querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const paymentId = docSnap.id;
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const paymentId = docSnap.id;
 
-        let paymentTime = "N/A";
-        if (data.timestamp?.seconds) {
-            paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
-        }
+            let paymentTime = "N/A";
+            if (data.timestamp?.seconds) {
+                paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
+            }
+            // Determine the correct status
+            let statusText = "Pending Validation";
+            let statusClass = "text-blue-500";
 
-        transactionHTML += `
-            <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
-                <td class="p-4 border border-gray-300">${data.email}</td>
-                <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
-                <td class="p-4 border border-gray-300">${data.txid}</td>
-                <td class="p-4 border border-gray-300">${paymentTime}</td>
-                <td class="p-4 border border-gray-300 text-center">
-                    <span class="px-3 py-1 rounded-full text-white text-xs ${data.approvals.length >= 1 ? 'bg-green-500' : 'bg-red-500'}">
-                        ${data.approvals.length >= 1 ? "Approved" : "Pending"}
-                    </span>
-                </td>
-                <td class="p-4 border border-gray-300 text-center">
-                    <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
-                        data-id="${paymentId}">
-                        Approve
-                    </button>
-                    <button class="reject-btn px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition"
-                        data-id="${paymentId}">
-                        Reject
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
+            if (data.statuss === "pending-admin") {
+                statusText = "Pending Admin Approval";
+                statusClass = "text-yellow-500";
+            } else if (data.statuss === "reassigned") {
+                statusText = "Reassigned";
+                statusClass = "text-orange-500";
+            } else if (data.statuss === "approved-admin") {
+                statusText = "Approved";
+                statusClass = "text-green-600";
+            }
 
-    document.getElementById("pending-transactions").innerHTML = transactionHTML;
+            transactionHTML += `
+                <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
+                    <td class="p-4 border border-gray-300">${data.email}</td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
+                    <td class="p-4 border border-gray-300">${data.txid}</td>
+                    <td class="p-4 border border-gray-300">${paymentTime}</td>
+                    <td class="p-4 border border-gray-300 status-cell ${statusClass}">${statusText}</td>
+                    <td class="p-4 border border-gray-300 text-center">
+                        <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
+                            data-id="${paymentId}">
+                            Approve
+                        </button>
+                        <button class="reject-btn px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition"
+                            data-id="${paymentId}">
+                            Reject
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
 
-    transactionTable.innerHTML = transactionHTML;
+        document.getElementById("pending-transactions").innerHTML = transactionHTML;
 
-    // Attach event listeners to approval and rejection buttons
-    document.querySelectorAll(".approve-btn").forEach(button => {
-        button.addEventListener("click", () => approvePayment(button.dataset.id));
-    });
+        document.querySelectorAll(".approve-btn").forEach(button => {
+            button.addEventListener("click", () => approvePayment(button.dataset.id));
+        });
 
-    document.querySelectorAll(".reject-btn").forEach(button => {
-        button.addEventListener("click", () => rejectPayment(button.dataset.id));
+        document.querySelectorAll(".reject-btn").forEach(button => {
+            button.addEventListener("click", () => rejectPayment(button.dataset.id));
+        });
+
+        // Start listening for real-time updates
+        listenForTransactionUpdates();
+    } catch (error) {
+        console.error("Error loading transactions:", error);
+    }
+}
+
+function listenForTransactionUpdates() {
+    const paymentsRef = collection(db, "payments");
+
+    onSnapshot(paymentsRef, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            const data = change.doc.data();
+            const paymentId = change.doc.id;
+            let row = document.getElementById(`transaction-${paymentId}`);
+
+            if (row) {
+                let statusCell = row.querySelector(".status-cell");
+
+                if (data.statuss === "approved-admin") {
+                    statusCell.innerHTML = `<span class="text-green-600 font-semibold">Approved</span>`;
+                    updateValidationHistory(paymentId, data);
+                    row.remove(); // Move to history
+                } else if (data.statuss === "pending-admin") {
+                    statusCell.innerHTML = `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
+                } else if (data.statuss === "reassigned") {
+                    statusCell.innerHTML = `<span class="text-orange-500 font-semibold">Reassigned</span>`;
+                }
+            }
+        });
     });
 }
 
-// APPROVING PAYMENTS
+// Call this function after loading transactions
+listenForTransactionUpdates();
+
+
+// APPROVE PAYMENT (Send to Admin)
 async function approvePayment(paymentId) {
-    const button = document.querySelector(`[data-id='${paymentId}']`);
-    if (!button) return;
+    try {
+        const button = document.querySelector(`[data-id='${paymentId}']`);
+        if (!button) return;
 
-    button.textContent = "Approving...";
-    button.disabled = true;
+        button.textContent = "Sending to Admin...";
+        button.disabled = true;
 
-    const paymentRef = doc(db, "payments", paymentId);
-    const paymentDoc = await getDoc(paymentRef);
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentDoc = await getDoc(paymentRef);
 
-    if (!paymentDoc.exists()) return;
-    const paymentData = paymentDoc.data();
+        if (!paymentDoc.exists()) return;
+        const paymentData = paymentDoc.data();
 
-    if (paymentData.approvals.includes(user.uid)) {
-        button.textContent = "Already Approved";
-        return;
+        if (paymentData?.approvals?.includes(user.uid)) {
+            button.textContent = "Already Sent";
+            return;
+        }
+
+        await updateDoc(paymentRef, {
+            approvals: [...(paymentData?.approvals || []), user.uid],
+            statuss: "pending-admin",
+            validator: user.uid
+        });
+
+        button.textContent = "Sent to Admin";
+        button.classList.add("bg-gray-400");
+
+        // Update row status instead of removing it
+        const row = button.closest("tr");
+        if (row) {
+            row.querySelector(".status-cell").innerHTML = `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
+        }
+    } catch (error) {
+        console.error("Error approving payment:", error);
     }
+}
 
-    // Update approvals and set payment to "approved"
-    const updatedApprovals = [...paymentData.approvals, user.uid];
-    const paymentStatus = "approved"; // Since only 1 validator is needed
+// REJECT PAYMENT (Reassign Validator)
+async function rejectPayment(paymentId) {
+    try {
+        const button = document.querySelector(`[data-id='${paymentId}']`);
+        if (!button) return;
 
-    await updateDoc(paymentRef, {
-        approvals: updatedApprovals,
-        statuss: paymentStatus
+        button.textContent = "Rejecting...";
+        button.disabled = true;
+
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentDoc = await getDoc(paymentRef);
+
+        if (!paymentDoc.exists()) return;
+        const paymentData = paymentDoc.data();
+
+        let updatedValidators = (paymentData?.assignedValidators || []).filter(uid => uid !== user.uid);
+
+        const validatorQuery = query(
+            collection(db, "users"),
+            where("isVvalidator", "==", true)
+        );
+
+        const validatorSnapshot = await getDocs(validatorQuery);
+        let availableValidators = validatorSnapshot.docs
+            .map(docSnap => docSnap.id)
+            .filter(uid => !updatedValidators.includes(uid));
+
+        if (availableValidators.length === 0) {
+            button.textContent = "No Available Validators";
+            button.classList.add("bg-gray-400");
+            return;
+        }
+
+        const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
+        updatedValidators.push(newValidator);
+
+        await updateDoc(paymentRef, {
+            assignedValidators: updatedValidators,
+            statuss: "reassigned"
+        });
+
+        button.textContent = "Rejected";
+        button.classList.add("bg-gray-400");
+
+        // Update row status instead of removing it
+        const row = button.closest("tr");
+        if (row) {
+            row.querySelector(".status-cell").innerHTML = `<span class="text-orange-500 font-semibold">Reassigned</span>`;
+        }
+    } catch (error) {
+        console.error("Error rejecting payment:", error);
+    }
+}
+
+    //LISTEN FOR REAL-TIME UPDATES
+function listenForAdminApproval() {
+    const paymentsRef = collection(db, "payments");
+
+    onSnapshot(paymentsRef, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            const data = change.doc.data();
+            const paymentId = change.doc.id;
+            let row = document.getElementById(`payment-${paymentId}`);
+
+            if (!row) {
+                // If row does not exist, create it dynamically
+              //  row = document.createElement("tr");
+              //  row.id = `payment-${paymentId}`;
+               // row.innerHTML = `
+                //    <td class="p-4 border">${data.email}</td>
+                 //   <td class="p-4 border text-green-600 font-semibold">$${data.amountPaid || 6}</td>
+                 //   <td class="p-4 border">${data.txid}</td>
+                 //   <td class="p-4 border status-cell">Pending Validation</td>
+                  //  <td class="p-4 border text-center">
+                  //   <div class="flex justify-center gap-4">
+                  //    <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
+                  //     data-id="${paymentId}">
+                   //       Approve
+                   //  </button>
+                  //   <button class="reject-btn px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition"
+                  //    data-id="${paymentId}">
+                 //        Reject
+                 //   </button>
+                // </div>
+               // </td>
+               // `;
+                document.getElementById("pending-transactions").appendChild(row);
+
+                // Add event listeners for new rows
+                row.querySelector(".approve-btn").addEventListener("click", () => approvePayment(paymentId));
+                row.querySelector(".reject-btn").addEventListener("click", () => rejectPayment(paymentId));
+            }
+
+            let statusCell = row.querySelector(".status-cell");
+
+            // Update the status dynamically
+            if (data.statuss === "approved-admin") {
+                statusCell.innerHTML = `<span class="text-green-600 font-semibold">Approved</span>`;
+                updateValidationHistory(paymentId, data);
+                row.remove(); // Move it to history
+            } else if (data.statuss === "pending-admin") {
+                statusCell.innerHTML = `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
+            } else if (data.statuss === "reassigned") {
+                statusCell.innerHTML = `<span class="text-orange-500 font-semibold">Reassigned</span>`;
+            }
+        });
     });
+}
 
-    // Increment total earnings for the validator (add $0.5)
-    const validatorRef = doc(db, "users", user.uid);
-    await updateDoc(validatorRef, {
-        totalEarnings: increment(1)
-    });
 
-    // Hide pop-up after approval
-    validatorPopup.classList.add("hidden");
-
-    button.textContent = "Approved";
-    button.classList.add("bg-gray-400");
-
-    // Remove from pending transactions table
-    const row = button.closest("tr");
+// REMOVE FROM ADMIN PANEL
+function removeFromAdminPanel(paymentId) {
+    const row = document.getElementById(`admin-approval-${paymentId}`);
     if (row) row.remove();
 }
 
-// REJECTING PAYMENTS & REASSIGNING TO ANOTHER VALIDATOR
-async function rejectPayment(paymentId) {
-    const button = document.querySelector(`[data-id='${paymentId}']`);
-    if (!button) return;
+// UPDATE VALIDATION HISTORY
+function updateValidationHistory(paymentId, paymentData) {
+    const historyTable = document.getElementById("validation-history");
 
-    button.textContent = "Rejecting...";
-    button.disabled = true;
-
-    const paymentRef = doc(db, "payments", paymentId);
-    const paymentDoc = await getDoc(paymentRef);
-
-    if (!paymentDoc.exists()) return;
-    const paymentData = paymentDoc.data();
-
-    // Remove current validator
-    let updatedValidators = paymentData.assignedValidators.filter(uid => uid !== user.uid);
-
-    // Get a new validator
-    const validatorQuery = query(
-        collection(db, "users"),
-        where("isVvalidator", "==", true)
-    );
-
-    const validatorSnapshot = await getDocs(validatorQuery);
-    let availableValidators = validatorSnapshot.docs
-        .map(docSnap => docSnap.id)
-        .filter(uid => !updatedValidators.includes(uid));
-
-    if (availableValidators.length === 0) {
-        button.textContent = "No Available Validators";
-        button.classList.add("bg-gray-400");
-        return;
+    let paymentTime = "N/A";
+    if (paymentData.timestamp?.seconds) {
+        paymentTime = new Date(paymentData.timestamp.seconds * 1000).toLocaleString();
     }
 
-    const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
-    updatedValidators.push(newValidator);
+   // if (!document.getElementById(`history-${paymentData.txid}`)) {
+    //    historyTable.innerHTML += `
+    //        <tr id="history-${paymentData.txid}">
+    //            <td class="p-3 border">${paymentData.email}</td>
+    //            <td class="p-3 border">$${paymentData.amountPaid || 6}</td>
+    //            <td class="p-3 border">${paymentData.txid}</td>
+    //            <td class="p-3 border text-green-600 font-bold">Approved</td>
+    //            <td class="p-3 border">${paymentTime}</td>
+    //        </tr>
+    //    `;
+  //  }
+}
 
-    // Update Firestore
-    await updateDoc(paymentRef, {
-        assignedValidators: updatedValidators
-    });
+// LOAD VALIDATOR DASHBOARD
+async function loadValidatorDashboard() {
+    if (!user || !user.uid) return;
 
-    button.textContent = "Rejected";
-    button.classList.add("bg-gray-400");
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) return;
 
-    // Remove from pending transactions table
-    const row = button.closest("tr");
-    if (row) row.remove();
-    
-        // Add to validation history dynamically
-        const historyTable = document.getElementById("validation-history");
-        let paymentTime = "N/A";
-        if (paymentData.timestamp?.seconds) {
-            paymentTime = new Date(paymentData.timestamp.seconds * 1000).toLocaleString();
+    earningsDisplay.textContent = `$${userSnap.data().totalEarnings || 0}`;
+}
+
+
+
+    // ADMIN PANEL (Only for marketquantum25@gmail.com)
+async function loadAdminApprovals() {
+    try {
+        if (user.email !== "marketquantum25@gmail.com") {
+            document.getElementById("admin-panel").innerHTML = "<p>Access Denied</p>";
+            return;
         }
-    
-        historyTable.innerHTML += `
-            <tr>
-                <td class="p-3 border">${paymentData.email}</td>
-                <td class="p-3 border">$${paymentData.amountPaid}</td>
-                <td class="p-3 border">${paymentData.txid}</td>
-                <td class="p-3 border text-green-600 font-bold">Approved</td>
-                <td class="p-3 border">${paymentTime}</td>
-            </tr>
-        `;
-    
-        // Reload validator's earnings display
+
+        // Show admin panel
+        document.getElementById("admin-panel").classList.remove("hidden");
+
+        const q = query(collection(db, "payments"), where("statuss", "==", "pending-admin"));
+        const querySnapshot = await getDocs(q);
+        let approvalHTML = "";
+
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const paymentId = docSnap.id;
+
+            approvalHTML += `
+                <tr id="admin-approval-${paymentId}" class="hover:bg-gray-100 transition duration-200">
+                    <td class="p-4 border border-gray-300">${data.email}</td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
+                    <td class="p-4 border border-gray-300">${data.txid}</td>
+                    <td class="p-4 border border-gray-300">${data.validator}</td>
+                    <td class="p-4 border border-gray-300 text-center">
+                        <button class="admin-approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition" data-id="${paymentId}">
+                            Approve
+                        </button>
+                        <button class="admin-reject-btn px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition" data-id="${paymentId}">
+                            Reject
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.getElementById("admin-approval-list").innerHTML = approvalHTML;
+
+        document.querySelectorAll(".admin-approve-btn").forEach(button => {
+            button.addEventListener("click", () => finalizeApproval(button.dataset.id));
+        });
+
+        document.querySelectorAll(".admin-reject-btn").forEach(button => {
+            button.addEventListener("click", () => rejectApproval(button.dataset.id));
+        });
+    } catch (error) {
+        console.error("Error loading admin approvals:", error);
+    }
+}
+
+// APPROVE PAYMENT
+async function finalizeApproval(paymentId) {
+    try {
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentDoc = await getDoc(paymentRef);
+        if (!paymentDoc.exists()) return;
+        const paymentData = paymentDoc.data();
+
+        // Ensure the validator exists before updating earnings
+        if (paymentData.validator) {
+            const validatorRef = doc(db, "users", paymentData.validator);
+            await updateDoc(validatorRef, { totalEarnings: increment(1) });
+        }
+
+        // Hide the pop-up for the user who made the payment
+        const userPopup = document.getElementById(`payment-popup-${paymentData.email}`);
+        if (userPopup) userPopup.classList.add("hidden");
+
+        // Mark payment as approved
+        await updateDoc(paymentRef, { statuss: "approved-admin" });
+
+        // Update UI
+        const button = document.querySelector(`[data-id='${paymentId}']`);
+        if (button) {
+            button.textContent = "Approved";
+            button.classList.add("bg-gray-400");
+            button.disabled = true;
+        }
+
+        // Remove from admin panel
+        removeFromAdminPanel(paymentId);
+    } catch (error) {
+        console.error("Error finalizing approval:", error);
+    }
+}
+
+// REJECT PAYMENT (Reassign to another validator)
+async function rejectApproval(paymentId) {
+    try {
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentDoc = await getDoc(paymentRef);
+        if (!paymentDoc.exists()) return;
+        const paymentData = paymentDoc.data();
+
+        let updatedValidators = paymentData.assignedValidators || [];
+
+        // Fetch available validators
+        const validatorQuery = query(
+            collection(db, "users"),
+            where("isVvalidator", "==", true)
+        );
+
+        const validatorSnapshot = await getDocs(validatorQuery);
+        let availableValidators = validatorSnapshot.docs
+            .map(docSnap => docSnap.id)
+            .filter(uid => !updatedValidators.includes(uid));
+
+        if (availableValidators.length === 0) {
+            console.error("No available validators.");
+            return;
+        }
+
+        const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
+        updatedValidators.push(newValidator);
+
+        // Update payment record
+        await updateDoc(paymentRef, {
+            assignedValidators: updatedValidators,
+            statuss: "reassigned"
+        });
+
+        // Remove from admin panel
+        removeFromAdminPanel(paymentId);
+    } catch (error) {
+        console.error("Error rejecting approval:", error);
+    }
+}
+
+
+// FUNCTION TO ADD TO VALIDATION HISTORY
+function addToValidationHistory(paymentData, status) {
+    const historyTable = document.getElementById("validation-history");
+
+    let paymentTime = "N/A";
+    if (paymentData.timestamp?.seconds) {
+        paymentTime = new Date(paymentData.timestamp.seconds * 1000).toLocaleString();
+    }
+
+    historyTable.innerHTML += `
+        <tr>
+            <td class="p-3 border">${paymentData.email}</td>
+            <td class="p-3 border">$${paymentData.amountPaid || 6}</td>
+            <td class="p-3 border">${paymentData.txid}</td>
+            <td class="p-3 border text-green-600 font-bold">${status}</td>
+            <td class="p-3 border">${paymentTime}</td>
+        </tr>
+    `;
+}
+
+// LOAD VALIDATION HISTORY
+async function loadValidationHistory() {
+    const historyTable = document.getElementById("validation-history");
+    historyTable.innerHTML = ""; // Clear existing entries before reloading
+
+    try {
+        const q = query(collection(db, "payments"), where("statuss", "==", "approved-admin"));
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((docSnap) => {
+            const paymentData = docSnap.data();
+            const paymentId = docSnap.id;
+
+            let paymentTime = "N/A";
+            if (paymentData.timestamp?.seconds) {
+                paymentTime = new Date(paymentData.timestamp.seconds * 1000).toLocaleString();
+            }
+
+            if (!document.getElementById(`history-${paymentData.txid}`)) {
+                historyTable.innerHTML += `
+                    <tr id="history-${paymentData.txid}">
+                        <td class="p-3 border">${paymentData.email}</td>
+                        <td class="p-3 border">$${paymentData.amountPaid || 6}</td>
+                        <td class="p-3 border">${paymentData.txid}</td>
+                        <td class="p-3 border text-green-600 font-bold">Approved</td>
+                        <td class="p-3 border">${paymentTime}</td>
+                    </tr>
+                `;
+            }
+        });
+    } catch (error) {
+        console.error("Error loading validation history:", error);
+    }
+}
+
+// LOAD DATA ON PAGE LOAD
+onAuthStateChanged(auth, async (currentUser) => {
+    if (currentUser) {
+        user = currentUser;
+        loadAdminApprovals();
+        listenForAdminApproval();
         loadValidatorDashboard();
+        loadAssignedTransactions();
+        loadValidationHistory(); // Load validation history when page loads
     }
+});
+
     
-    // LOAD VALIDATOR DASHBOARD
-    async function loadValidatorDashboard() {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (!userSnap.exists()) return;
-    
-        earningsDisplay.textContent = `$${userSnap.data().totalEarnings || 0}`;
-    }
-    
+
     // FETCH TOTAL VALIDATIONS DONE BY THE LOGGED-IN VALIDATOR
     async function fetchTotalValidations() {
         if (!user) return;
@@ -836,7 +1168,7 @@ async function rejectPayment(paymentId) {
         const approvalsQuery = query(
             collection(db, "payments"),
             where("approvals", "array-contains", user.email),
-            where("statuss", "==", "approved") // Only count approved payments
+            where("statuss", "==", "approved-admin") // Only count approved payments
         );
     
         const approvalsSnap = await getDocs(approvalsQuery);
@@ -852,7 +1184,7 @@ async function rejectPayment(paymentId) {
     
         if (!user) return;
     
-        const q = query(collection(db, "payments"), where("statuss", "==", "approved"));
+        const q = query(collection(db, "payments"), where("statuss", "==", "approved-admin"));
     
         // Listen for real-time updates
         onSnapshot(q, async (querySnapshot) => {

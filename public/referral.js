@@ -150,7 +150,6 @@ async function saveUserWithReferral(userId, email, referrerId) {
         amountPaid: 0,
         totalReferrals: 0,
         totalEarnings: 0,
-        membershipApproved: false,
         referralEarnings: 0,
         likedVideos: 0,
         watchedVideos: 0,
@@ -188,7 +187,7 @@ async function awardReferrerOnPayment(userId) {
     // Check if the payment is approved in the payments collection
     const paymentsQuery = query(collection(db, "payments"), 
                                 where("email", "==", userData.email),
-                                where("statuss", "==", "approved"));
+                                where("statuss", "==", "approved-admin"));
     const paymentsSnapshot = await getDocs(paymentsQuery);
 
     if (paymentsSnapshot.empty) {
