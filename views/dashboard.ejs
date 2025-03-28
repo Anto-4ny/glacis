@@ -706,7 +706,19 @@
                 <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
                     <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
-                    <td class="p-4 border border-gray-300">${data.txid}</td>
+                    <td class="p-4 border border-gray-300">
+                        <div class="relative flex flex-col">
+                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+                    ${data.txid}
+                            </pre>
+                            <div class="flex items-center mt-2">
+                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                    Copy
+                                </button>
+                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                            </div>
+                        </div>
+                    </td>
                     <td class="p-4 border border-gray-300">${paymentTime}</td>
                     <td class="p-4 border border-gray-300 status-cell ${statusClass}">${statusText}</td>
                     <td class="p-4 border border-gray-300 text-center">
@@ -740,6 +752,8 @@
     }
 }
 
+
+// LISTENING FOR TRANSACTION UPDATES
 function listenForTransactionUpdates() {
     const paymentsRef = collection(db, "payments");
 
@@ -983,7 +997,19 @@ async function loadAdminApprovals() {
                 <tr id="admin-approval-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
                     <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
-                    <td class="p-4 border border-gray-300">${data.txid}</td>
+                    <td class="p-4 border border-gray-300">
+                        <div class="relative flex flex-col">
+                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+                    ${data.txid}
+                            </pre>
+                            <div class="flex items-center mt-2">
+                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                    Copy
+                                </button>
+                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                            </div>
+                        </div>
+                    </td>
                     <td class="p-4 border border-gray-300">${data.validator}</td>
                     <td class="p-4 border border-gray-300 text-center">
                         <button class="admin-approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition" data-id="${paymentId}">
@@ -1103,7 +1129,19 @@ function addToValidationHistory(paymentData, status) {
         <tr>
             <td class="p-3 border">${paymentData.email}</td>
             <td class="p-3 border">$${paymentData.amountPaid || 6}</td>
-            <td class="p-3 border">${paymentData.txid}</td>
+            <td class="p-4 border border-gray-300">
+                        <div class="relative flex flex-col">
+                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+                    ${data.txid}
+                            </pre>
+                            <div class="flex items-center mt-2">
+                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                    Copy
+                                </button>
+                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                            </div>
+                        </div>
+                    </td>
             <td class="p-3 border text-green-600 font-bold">${status}</td>
             <td class="p-3 border">${paymentTime}</td>
         </tr>
@@ -1133,7 +1171,19 @@ async function loadValidationHistory() {
                     <tr id="history-${paymentData.txid}">
                         <td class="p-3 border">${paymentData.email}</td>
                         <td class="p-3 border">$${paymentData.amountPaid || 6}</td>
-                        <td class="p-3 border">${paymentData.txid}</td>
+                        <td class="p-4 border border-gray-300">
+                        <div class="relative flex flex-col">
+                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+                    ${data.txid}
+                            </pre>
+                            <div class="flex items-center mt-2">
+                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                    Copy
+                                </button>
+                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                            </div>
+                        </div>
+                    </td>
                         <td class="p-3 border text-green-600 font-bold">Approved</td>
                         <td class="p-3 border">${paymentTime}</td>
                     </tr>
@@ -1209,7 +1259,19 @@ onAuthStateChanged(auth, async (currentUser) => {
                         <tr>
                             <td class="p-3 border">${data.email}</td>
                             <td class="p-3 border">$${data.amountPaid || 6}</td>
-                            <td class="p-3 border">${data.txid}</td>
+                            <td class="p-4 border border-gray-300">
+                        <div class="relative flex flex-col">
+                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+                    ${data.txid}
+                            </pre>
+                            <div class="flex items-center mt-2">
+                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                    Copy
+                                </button>
+                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                            </div>
+                        </div>
+                    </td>
                             <td class="p-3 border text-green-600 font-bold">Approved</td>
                             <td class="p-3 border">${paymentTime}</td>
                         </tr>
@@ -1230,6 +1292,33 @@ onAuthStateChanged(auth, async (currentUser) => {
         loadValidationHistory();
     });
 });
+    </script>
+
+    <script>
+        // COPYING TXID
+     function copyTxid(paymentId) {
+    const txidElement = document.getElementById(`txid-${paymentId}`);
+    const txidText = txidElement.innerText.trim();
+    const messageElement = document.getElementById(`copy-msg-${paymentId}`);
+
+    navigator.clipboard.writeText(txidText).then(() => {
+        showMessage(messageElement, "Copied successfully!", "text-green-600");
+    }).catch(err => {
+        console.error("Failed to copy:", err);
+        showMessage(messageElement, "Failed to copy!", "text-red-600");
+    });
+}
+
+function showMessage(element, message, colorClass) {
+    element.textContent = message;
+    element.className = `ml-2 text-sm font-semibold ${colorClass}`;
+    element.classList.remove("hidden");
+
+    // Hide message after 3 seconds
+    setTimeout(() => {
+        element.classList.add("hidden");
+    }, 3000);
+}
     </script>
 
 <script type="module">
