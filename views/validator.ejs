@@ -310,8 +310,27 @@
                 </div>
             </div>
 
+            <!-- User Management Panel -->
+<div id="user-management-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
+    <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Manage Users</h3>
+
+    <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
+        <table class="w-full border-collapse text-sm text-left">
+            <thead>
+                <tr class="bg-gradient-to-r from-red-500 to-orange-600 text-white">
+                    <th class="p-3 text-left">Email</th>
+                    <th class="p-3 text-left">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="user-list" class="text-gray-800">
+                <!-- Registered users will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <script type="module">
-    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp } from './script.js';
+    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp, deleteDoc } from './script.js';
     
     document.addEventListener("DOMContentLoaded", async () => {
         const validatorPopup = document.getElementById("validator-popup");
@@ -778,6 +797,80 @@ async function loadValidatorDashboard() {
 }
 
 // Function to manage visibility of admin and user sections
+// Function to load all registered users
+async function loadRegisteredUsers() {
+    try {
+        const userList = document.getElementById("user-list");
+        if (!userList) return;
+
+        userList.innerHTML = "<tr><td colspan='2' class='text-center p-3'>Loading...</td></tr>";
+
+        // Fetch users from Firestore
+        const usersRef = collection(db, "users");
+        const usersSnapshot = await getDocs(usersRef);
+
+        userList.innerHTML = ""; // Clear loading state
+
+        if (usersSnapshot.empty) {
+            userList.innerHTML = "<tr><td colspan='2' class='text-center p-3 text-gray-600'>No registered users</td></tr>";
+            return;
+        }
+
+        usersSnapshot.forEach((doc) => {
+            const userData = doc.data();
+            const userEmail = userData.email;
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="p-3 border">${userEmail}</td>
+                <td class="p-3 border">
+                    <button class="delete-user-btn bg-red-600 text-white px-3 py-1 rounded" data-email="${userEmail}">Delete</button>
+                </td>
+            `;
+            userList.appendChild(row);
+        });
+
+        // Attach delete event listeners
+        document.querySelectorAll(".delete-user-btn").forEach(button => {
+            button.addEventListener("click", async function () {
+                const emailToDelete = this.getAttribute("data-email");
+                await deleteUser(emailToDelete);
+            });
+        });
+
+    } catch (error) {
+        console.error("Error loading users:", error);
+    }
+}
+
+// Function to delete a user from Firestore
+async function deleteUser(email) {
+    if (!confirm(`Are you sure you want to delete ${email}? This action cannot be undone.`)) return;
+
+    try {
+        // Delete user from Firestore collection
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            querySnapshot.forEach(async (doc) => {
+                await deleteDoc(doc.ref);
+            });
+
+            alert(`User ${email} deleted successfully.`);
+            loadRegisteredUsers(); // Refresh user list
+        } else {
+            alert("User not found in Firestore.");
+        }
+
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        alert("Failed to delete user.");
+    }
+}
+
+// Update managePanelVisibility to show User Management Panel if admin
 async function managePanelVisibility() {
     try {
         if (!user) return;
@@ -786,30 +879,29 @@ async function managePanelVisibility() {
 
         // Get elements
         const adminPanel = document.getElementById("admin-panel");
+        const userManagementPanel = document.getElementById("user-management-panel");
         const validatorsSection = document.getElementById("validators");
-        const validationHistorySections = document.querySelectorAll("#validation-history-container");
 
-        // Ensure elements exist
-        if (!adminPanel || !validatorsSection) {
-            console.error("Missing elements:", { adminPanel, validatorsSection });
+        if (!adminPanel || !validatorsSection || !userManagementPanel) {
+            console.error("Missing elements:", { adminPanel, validatorsSection, userManagementPanel });
             return;
         }
 
-        // Make sure validation history is always visible
-        validationHistorySections.forEach(section => section.classList.remove("hidden"));
-
         if (isAdmin) {
-            // Show admin panel, hide validator section
+            // Show admin sections, hide validators panel
             adminPanel.classList.remove("hidden");
+            userManagementPanel.classList.remove("hidden");
             validatorsSection.classList.add("hidden");
+
+            // Load users for admin
+            await loadRegisteredUsers();
+
         } else {
-            // Hide admin panel, show validators section
+            // Hide admin sections, show validators panel
             adminPanel.classList.add("hidden");
+            userManagementPanel.classList.add("hidden");
             validatorsSection.classList.remove("hidden");
         }
-
-        // Remove extra margins/spaces dynamically
-        document.body.classList.remove("space-y-6");
 
     } catch (error) {
         console.error("Error managing panel visibility:", error);
@@ -826,6 +918,7 @@ onAuthStateChanged(auth, async (loggedInUser) => {
         }
     }
 });
+
 
     // ADMIN PANEL (Only for marketquantum25@gmail.com)
 async function loadAdminApprovals() {
