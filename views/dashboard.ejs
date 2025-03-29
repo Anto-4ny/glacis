@@ -306,6 +306,30 @@
     </div>
 </section>
 
+   <!-- Admin Panel -->
+   <div id="admin-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
+    <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Pending membership Validator Approvals</h3>
+    
+    <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
+        <table class="w-full border-collapse text-sm text-left">
+            <thead>
+                <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                    <th class="p-3 text-left">Email</th>
+                    <th class="p-3 text-left">Amount</th>
+                    <th class="p-3 text-left">TXID</th>
+                    <th class="p-3 text-left">Validator</th>
+                    <th class="p-3 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody id="admin-approval-list" class="text-gray-800">
+                <!-- Pending validator approvals will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="space-y-6">
+
 <section id="validators" class="p-4 bg-gray-100 min-h-screen">
     <div class="space-y-6">  
         <!-- Validators Page Title -->
@@ -341,28 +365,6 @@
             </div>
         </div>
 
-        <!-- Admin Panel -->
-     <div id="admin-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
-        <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Pending membership Validator Approvals</h3>
-        
-        <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
-            <table class="w-full border-collapse text-sm text-left">
-                <thead>
-                    <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                        <th class="p-3 text-left">Email</th>
-                        <th class="p-3 text-left">Amount</th>
-                        <th class="p-3 text-left">TXID</th>
-                        <th class="p-3 text-left">Validator</th>
-                        <th class="p-3 text-left">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-approval-list" class="text-gray-800">
-                    <!-- Pending validator approvals will be dynamically inserted here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
         <!-- Pending Transactions Table -->
         <div class="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 w-full">
             <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-3">Pending Transactions</h3>
@@ -385,29 +387,31 @@
             </div>
         </div>
 
-        <!-- Validation History -->
-        <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">Validation History</h3>
-            <p class="text-gray-600">View previously validated people worldwide.</p>
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="p-2 sm:p-3 border">Username</th>
-                            <th class="p-2 sm:p-3 border">Amount</th>
-                            <th class="p-2 sm:p-3 border">Transaction ID</th>
-                            <th class="p-2 sm:p-3 border">Status</th>
-                            <th class="p-2 sm:p-3 border">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="validation-history">
-                        <!-- Approved transactions will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-</section>   
+</section>  
+
+ <!-- Validation History -->
+ <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">Validation History</h3>
+    <p class="text-gray-600">View previously validated people worldwide.</p>
+    <div class="overflow-x-auto">
+        <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-2 sm:p-3 border">Username</th>
+                    <th class="p-2 sm:p-3 border">Amount</th>
+                    <th class="p-2 sm:p-3 border">Transaction ID</th>
+                    <th class="p-2 sm:p-3 border">Status</th>
+                    <th class="p-2 sm:p-3 border">Date</th>
+                </tr>
+            </thead>
+            <tbody id="validation-history">
+                <!-- Approved transactions will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
         <div>
             <div class="bg-white shadow-2xl rounded-2xl p-8">
@@ -968,6 +972,55 @@ async function loadValidatorDashboard() {
     earningsDisplay.textContent = `$${userSnap.data().totalEarnings || 0}`;
 }
 
+// Function to manage visibility of admin and user sections
+async function managePanelVisibility() {
+    try {
+        if (!user) return;
+
+        const isAdmin = user.email === "marketquantum25@gmail.com";
+
+        // Get elements
+        const adminPanel = document.getElementById("admin-panel");
+        const validatorsSection = document.getElementById("validators");
+        const validationHistorySections = document.querySelectorAll("#validation-history-container");
+
+        // Ensure elements exist
+        if (!adminPanel || !validatorsSection) {
+            console.error("Missing elements:", { adminPanel, validatorsSection });
+            return;
+        }
+
+        // Make sure validation history is always visible
+        validationHistorySections.forEach(section => section.classList.remove("hidden"));
+
+        if (isAdmin) {
+            // Show admin panel, hide validator section
+            adminPanel.classList.remove("hidden");
+            validatorsSection.classList.add("hidden");
+        } else {
+            // Hide admin panel, show validators section
+            adminPanel.classList.add("hidden");
+            validatorsSection.classList.remove("hidden");
+        }
+
+        // Remove extra margins/spaces dynamically
+        document.body.classList.remove("space-y-6");
+
+    } catch (error) {
+        console.error("Error managing panel visibility:", error);
+    }
+}
+
+// Call the function after authentication state is confirmed
+onAuthStateChanged(auth, async (loggedInUser) => {
+    user = loggedInUser;
+    if (user) {
+        await managePanelVisibility();
+        if (user.email === "marketquantum25@gmail.com") {
+            await loadAdminApprovals(); // Load admin approvals if admin
+        }
+    }
+});
 
 
     // ADMIN PANEL (Only for marketquantum25@gmail.com)
