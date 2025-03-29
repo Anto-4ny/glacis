@@ -586,86 +586,80 @@
     document.addEventListener("DOMContentLoaded", checkValidatorStatus);
     
     
-    // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
-    payBtn.addEventListener("click", async (event) => {
-        event.preventDefault();
-    
-        if (!user) return displayMessage("error", "❌ Not authenticated!");
-    
-        const txid = txidInput.value.trim();
-        const walletUsed = walletUsedInput.value.trim();
-        const paymentDate = paymentDateInput.value;
-    
-        if (!txid || !walletUsed || !paymentDate) {
-            return displayMessage("error", "❌ Please fill in all fields.");
-        }
-    
-        try {
-            // Disable form inputs & button to prevent multiple submissions
-            payBtn.disabled = true;
-            txidInput.disabled = true;
-            walletUsedInput.disabled = true;
-            paymentDateInput.disabled = true;
-    
-            // Fetch all validators from USERS collection
-            const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
-            const validatorSnap = await getDocs(validatorQuery);
-            let validatorList = [];
-    
-            validatorSnap.forEach(doc => {
+   // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
+payBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    if (!user) return displayMessage("error", "❌ Not authenticated!");
+
+    const txid = txidInput.value.trim();
+    const walletUsed = walletUsedInput.value.trim();
+    const paymentDate = paymentDateInput.value;
+
+    if (!txid || !walletUsed || !paymentDate) {
+        return displayMessage("error", "❌ Please fill in all fields.");
+    }
+
+    try {
+        // Disable form inputs & button to prevent multiple submissions
+        payBtn.disabled = true;
+        txidInput.disabled = true;
+        walletUsedInput.disabled = true;
+        paymentDateInput.disabled = true;
+
+        // Fetch all validators from USERS collection, excluding marketquantum25@gmail.com
+        const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
+        const validatorSnap = await getDocs(validatorQuery);
+        let validatorList = [];
+
+        validatorSnap.forEach(doc => {
+            const data = doc.data();
+            if (data.email !== "marketquantum25@gmail.com") {
                 validatorList.push(doc.id);
-            });
-    
-            // Randomly pick one validator
-            validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 1);
-    
-            if (validatorList.length < 1) {
-                return displayMessage("error", "❌ Not enough validators available.");
             }
-    
-            const chosenValidator = validatorList[0];
-    
-            // Store payment details in Firestore
-            const paymentRef = doc(collection(db, "payments"));
-            await setDoc(paymentRef, {
-                email: user.email,
-                txid,
-                walletAddress: walletUsed,
-                paymentDate,
-                assignedValidators: [chosenValidator], // Assigned validator
-                approvals: [],
-                statuss: "pending",
-                timestamp: serverTimestamp()
-            });
-    
-            // ✅ Update user document to set isVvalidator = true (Pending Approval)
-            await updateDoc(doc(db, "users", user.uid), {
-                isVvalidator: true
-            });
-    
-            displayMessage("success", "✅ Payment submitted. Waiting for approval.");
-    
-            // 🔹 Call Cloud Function to send email to validator
-            //await fetch("https://YOUR_CLOUD_FUNCTION_URL/sendApprovalEmail", {
-              //  method: "POST",
-               // headers: {
-              //      "Content-Type": "application/json"
-              //  },
-              //  body: JSON.stringify({ validatorEmail: chosenValidator, txid })
-          //  });
-    
-        } catch (error) {
-            console.error("Error submitting payment:", error);
-    
-            // Enable the form again for retry
-            payBtn.disabled = false;
-            txidInput.disabled = false;
-            walletUsedInput.disabled = false;
-            paymentDateInput.disabled = false;
-    
-            displayMessage("error", "❌ Submission failed. Try again.");
+        });
+
+        // Randomly pick one validator
+        validatorList = validatorList.sort(() => 0.5 - Math.random()).slice(0, 1);
+
+        if (validatorList.length < 1) {
+            return displayMessage("error", "❌ Not enough validators available.");
         }
-    });
+
+        const chosenValidator = validatorList[0];
+
+        // Store payment details in Firestore
+        const paymentRef = doc(collection(db, "payments"));
+        await setDoc(paymentRef, {
+            email: user.email,
+            txid,
+            walletAddress: walletUsed,
+            paymentDate,
+            assignedValidators: [chosenValidator], // Assigned validator
+            approvals: [],
+            statuss: "pending",
+            timestamp: serverTimestamp()
+        });
+
+        // ✅ Update user document to set isValidator = true (Pending Approval)
+        await updateDoc(doc(db, "users", user.uid), {
+            isVvalidator: true
+        });
+
+        displayMessage("success", "✅ Payment submitted. Waiting for approval.");
+
+    } catch (error) {
+        console.error("Error submitting payment:", error);
+
+        // Enable the form again for retry
+        payBtn.disabled = false;
+        txidInput.disabled = false;
+        walletUsedInput.disabled = false;
+        paymentDateInput.disabled = false;
+
+        displayMessage("error", "❌ Submission failed. Try again.");
+    }
+});
     
        //LOADING ASSIGNED TRANSACTIONS
        async function loadAssignedTransactions() {
@@ -840,15 +834,14 @@ async function rejectPayment(paymentId) {
 
         let updatedValidators = (paymentData?.assignedValidators || []).filter(uid => uid !== user.uid);
 
-        const validatorQuery = query(
-            collection(db, "users"),
-            where("isVvalidator", "==", true)
-        );
-
+        // Fetch all validators except marketquantum25@gmail.com
+        const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
         const validatorSnapshot = await getDocs(validatorQuery);
+
         let availableValidators = validatorSnapshot.docs
-            .map(docSnap => docSnap.id)
-            .filter(uid => !updatedValidators.includes(uid));
+            .map(docSnap => ({ uid: docSnap.id, email: docSnap.data().email }))
+            .filter(validator => !updatedValidators.includes(validator.uid) && validator.email !== "marketquantum25@gmail.com")
+            .map(validator => validator.uid);
 
         if (availableValidators.length === 0) {
             button.textContent = "No Available Validators";
@@ -856,6 +849,7 @@ async function rejectPayment(paymentId) {
             return;
         }
 
+        // Randomly assign a new validator
         const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
         updatedValidators.push(newValidator);
 
@@ -874,6 +868,8 @@ async function rejectPayment(paymentId) {
         }
     } catch (error) {
         console.error("Error rejecting payment:", error);
+        button.textContent = "Retry";
+        button.disabled = false;
     }
 }
 

@@ -131,81 +131,23 @@
 
 <section id="profile" class="p-6 bg-gray-100 min-h-screen flex justify-center">
     <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center">
-    
-     <!-- Profile Picture -->
-<div class="relative inline-block">
-    <img id="profileImage" src="images/quantum-market-logo.jpg" alt="User Avatar" 
-         class="w-24 h-24 rounded-full mx-auto shadow-lg">
-</div>
-
-<!-- JavaScript for Unsplash Image 
-<script>
-    document.addEventListener("DOMContentLoaded", async function () {
-        const profileImage = document.getElementById("profileImage");
-
-        try {
-            const response = await fetch("https://quantumincome.org/api/getProfileImage");
-            const data = await response.json();
-            profileImage.src = data.imageUrl;
-        } catch (error) {
-            console.error("Error fetching image:", error);
-            profileImage.src = "https://via.placeholder.com/150"; // Fallback image
-        }
-    });
-</script>-->
-
-        <!-- Username -->
-        <h2 id="username" class="text-2xl font-bold text-gray-900 mt-3">Loading...</h2>
-
-        <!-- Message Box -->
-        <div id="message-box" class="mt-2 text-sm font-semibold"></div>
-  
-        <!-- Profile Action Buttons -->
-        <div class="mt-6 space-y-4">
-            <button id="verifyProfile" class="w-full bg-blue-600 text-white py-2 rounded-lg 
-                           hover:bg-blue-700 transition">
-                Verify Profile
-            </button>
-  
-            <button id="becomeValidator" class="w-full bg-yellow-500 text-white py-2 rounded-lg 
-                           hover:bg-yellow-600 transition">
-                Become a Validator
-            </button>
-  
-            <button id="withdrawEarnings" class="w-full bg-green-600 text-white py-2 rounded-lg 
-                           hover:bg-green-700 transition">
-                Withdraw Earnings
-            </button>
+        <div class="relative inline-block">
+            <img id="profileImage" src="images/quantum-market-logo.jpg" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto shadow-lg">
         </div>
-
-        <!-- User Details Section -->
+        <h2 id="username" class="text-2xl font-bold text-gray-900 mt-3">Loading...</h2>
+        <div id="message-box" class="mt-2 text-sm font-semibold"></div>
+        <div class="mt-6 space-y-4">
+            <button id="verifyProfile" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Verify Profile</button>
+            <button id="becomeValidator" class="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition">Become a Validator</button>
+            <button id="withdrawEarnings" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">Withdraw Earnings</button>
+        </div>
         <h3 class="text-lg font-bold text-gray-800 mt-6">User Details</h3>
-
         <div class="mt-4 space-y-4">
-            <button id="userEarnings" class="w-full bg-purple-600 text-white py-2 rounded-lg 
-                           hover:bg-purple-700 transition">
-                User Earnings
-            </button>
-
-            <button id="referralCorner" class="w-full bg-orange-600 text-white py-2 rounded-lg 
-                           hover:bg-orange-700 transition">
-                Referral Corner
-            </button>
-
-            <button id="membershipValidation" class="w-full bg-teal-600 text-white py-2 rounded-lg 
-                           hover:bg-teal-700 transition">
-                Membership Validation
-            </button>
-
-            <button id="validatorPanel" class="w-full bg-red-600 text-white py-2 rounded-lg 
-                           hover:bg-red-700 transition">
-                Validator Panel
-            </button>
-
-            <button id="videos" class="w-full bg-gray-700 text-white py-2 rounded-lg 
-                           hover:bg-gray-800 transition">
-                Videos
-            </button>
+            <button id="userEarnings" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">User Earnings</button>
+            <button id="referralCorner" class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transition">Referral Corner</button>
+            <button id="membershipValidation" class="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition">Membership Validation</button>
+            <button id="validatorPanel" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">Validator Panel</button>
+            <button id="videos" class="w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800 transition">Videos</button>
         </div>
     </div>
 </section>
@@ -217,18 +159,24 @@
         const user = auth.currentUser;
         if (!user) return;
 
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
+        try {
+            const userSnap = await getDoc(doc(db, "users", user.uid));
+            if (!userSnap.exists()) return;
 
-        if (userSnap.exists()) {
             const userData = userSnap.data();
             const usernameElement = document.getElementById("username");
             const messageBox = document.getElementById("message-box");
+            const verifyProfileBtn = document.getElementById("verifyProfile");
+            const becomeValidatorBtn = document.getElementById("becomeValidator");
 
-            // Display user name with Font Awesome blue tick if verified
-            usernameElement.innerHTML = `${userData.firstName} ${userData.lastName}`;
+            usernameElement.innerHTML = `${userData.firstName} ${userData.lastName}` + 
+                (userData.isValidator ? ' <i class="fa-solid fa-circle-check text-blue-500"></i>' : '');
+
             if (userData.isValidator) {
-                usernameElement.innerHTML += ` <i class="fa-solid fa-circle-check text-blue-500"></i>`;
+                verifyProfileBtn.textContent = "You are verified";
+                verifyProfileBtn.classList.replace("bg-blue-600", "bg-gray-400");
+                becomeValidatorBtn.textContent = "You are a Validator, Tap to view your Dashboard";
+                becomeValidatorBtn.classList.replace("bg-yellow-500", "bg-gray-400");
             }
 
             function showMessage(type, text) {
@@ -236,73 +184,31 @@
                 setTimeout(() => { messageBox.innerHTML = ""; }, 5000);
             }
 
-            // Change button text dynamically
-            const verifyProfileBtn = document.getElementById("verifyProfile");
-            const becomeValidatorBtn = document.getElementById("becomeValidator");
+            const routes = {
+                verifyProfile: userData.isValidator ? null : "/validator",
+                becomeValidator: userData.isValidator ? "/validator-dashboard" : "/validator",
+                membershipValidation: "/dashboard",
+                withdrawEarnings: "/withdraw",
+                userEarnings: "/earnings",
+                referralCorner: "/referral",
+                validatorPanel: "/validator",
+                videos: "/videos"
+            };
 
-            if (userData.isValidator) {
-                verifyProfileBtn.innerText = "You are verified";
-                verifyProfileBtn.classList.replace("bg-blue-600", "bg-gray-400");
-                verifyProfileBtn.classList.replace("hover:bg-blue-700", "hover:bg-gray-500");
-
-                becomeValidatorBtn.innerText = "You are a Validator, Tap to view your Dashboard";
-                becomeValidatorBtn.classList.replace("bg-yellow-500", "bg-gray-400");
-                becomeValidatorBtn.classList.replace("hover:bg-yellow-600", "hover:bg-gray-500");
-            }
-
-            // Button actions
-            verifyProfileBtn.addEventListener("click", () => {
-                if (userData.isValidator) {
-                    showMessage("success", "✅ You are already verified!");
-                } else {
-                    window.location.href = "/validator";
-                }
+            Object.keys(routes).forEach(id => {
+                document.getElementById(id).addEventListener("click", () => {
+                    if (routes[id]) window.location.href = routes[id];
+                    else showMessage("success", "✅ You are already verified!");
+                });
             });
-
-            becomeValidatorBtn.addEventListener("click", () => {
-                if (userData.isValidator && userData.validatorId) {
-                    window.location.href = "/validator-dashboard";
-                } else {
-                    window.location.href = "/validator";
-                }
-            });
-
-            document.getElementById("membershipValidation").addEventListener("click", () => {
-                window.location.href = "/dashboard";
-            });
-
-            document.getElementById("withdrawEarnings").addEventListener("click", () => {
-                window.location.href = "/withdraw";
-            });
-
-            document.getElementById("userEarnings").addEventListener("click", () => {
-                window.location.href = "/earnings";
-            });
-
-            document.getElementById("referralCorner").addEventListener("click", () => {
-                window.location.href = "/referral";
-            });
-
-            document.getElementById("validatorPanel").addEventListener("click", () => {
-                window.location.href = "/validator";
-            });
-
-            document.getElementById("videos").addEventListener("click", () => {
-                window.location.href = "/videos";
-            });
-
-        } else {
-            console.log("User document does not exist.");
+        } catch (error) {
+            console.error("Error loading profile:", error);
         }
     }
 
-    // Wait for auth state to load
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            loadUserProfile();
-        }
-    });
+    auth.onAuthStateChanged(user => user && loadUserProfile());
 </script>
+
 
 <!-- Referral Section -->
 <div class="bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto border border-gray-200">
