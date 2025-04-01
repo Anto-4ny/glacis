@@ -609,7 +609,7 @@
     document.addEventListener("DOMContentLoaded", checkValidatorStatus);
     
     
-   // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
+// CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
 payBtn.addEventListener("click", async (event) => {
     event.preventDefault();
 
@@ -630,7 +630,19 @@ payBtn.addEventListener("click", async (event) => {
         walletUsedInput.disabled = true;
         paymentDateInput.disabled = true;
 
-        // Fetch all validators from USERS collection, excluding marketquantum25@gmail.com
+        // Check if user has an existing pending submission
+        const existingPaymentQuery = query(
+            collection(db, "payments"),
+            where("email", "==", user.email),
+            where("statuss", "in", ["pending", "pending-admin", "reassigned"])
+        );
+        const existingPaymentSnap = await getDocs(existingPaymentQuery);
+
+        if (!existingPaymentSnap.empty) {
+            return displayMessage("error", "❌ You already have a pending payment. Wait for approval.");
+        }
+
+        // Fetch all validators from USERS collection, excluding admin
         const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
         const validatorSnap = await getDocs(validatorQuery);
         let validatorList = [];
@@ -664,12 +676,10 @@ payBtn.addEventListener("click", async (event) => {
             timestamp: serverTimestamp()
         });
 
-        // ✅ Update user document to set isValidator = true (Pending Approval)
-        await updateDoc(doc(db, "users", user.uid), {
-            isVvalidator: true
-        });
-
         displayMessage("success", "✅ Payment submitted. Waiting for approval.");
+
+        // Start a timer to check approval after 5 minutes
+        setTimeout(() => checkAndReassignPayment(paymentRef.id), 5 * 60 * 1000);
 
     } catch (error) {
         console.error("Error submitting payment:", error);
@@ -683,6 +693,45 @@ payBtn.addEventListener("click", async (event) => {
         displayMessage("error", "❌ Submission failed. Try again.");
     }
 });
+
+// FUNCTION TO CHECK & REASSIGN PAYMENT AFTER 5 MINUTES
+async function checkAndReassignPayment(paymentId) {
+    try {
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentSnap = await getDoc(paymentRef);
+
+        if (!paymentSnap.exists()) return;
+        const paymentData = paymentSnap.data();
+
+        if (paymentData.statuss === "pending") {
+            // Get new validator
+            const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
+            const validatorSnap = await getDocs(validatorQuery);
+            let validatorList = [];
+
+            validatorSnap.forEach(doc => {
+                if (!paymentData.assignedValidators.includes(doc.id) && doc.data().email !== "marketquantum25@gmail.com") {
+                    validatorList.push(doc.id);
+                }
+            });
+
+            if (validatorList.length < 1) return; // No available validators
+
+            const newValidator = validatorList[Math.floor(Math.random() * validatorList.length)];
+
+            // Reassign payment
+            await updateDoc(paymentRef, {
+                assignedValidators: [...paymentData.assignedValidators, newValidator], // Add new validator
+                statuss: "reassigned"
+            });
+
+            displayMessage("success", "⚠️ Payment reassigned to a new validator.");
+        }
+    } catch (error) {
+        console.error("Error reassigning payment:", error);
+    }
+}
+
     
        //LOADING ASSIGNED TRANSACTIONS
        async function loadAssignedTransactions() {
