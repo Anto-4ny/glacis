@@ -222,8 +222,8 @@
 
         <!-- Get Started Button -->
         <div class="mt-6">
-            <a href="/validator" class="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-md hover:scale-105 transition-transform duration-300">
-                Get Started
+            <a href="#" class="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-md hover:scale-105 transition-transform duration-300">
+                Welcome
             </a>
         </div>
     </div>
@@ -603,7 +603,8 @@
     document.addEventListener("DOMContentLoaded", checkValidatorStatus);
     
         // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
-        payBtn.addEventListener("click", async (event) => {
+// Event listener for submitting payment
+payBtn.addEventListener("click", async (event) => {
     event.preventDefault();
 
     if (!user) return displayMessage("error", "❌ Not authenticated!");
@@ -617,166 +618,143 @@
     }
 
     try {
-        // Disable form inputs & button to prevent multiple submissions
-        payBtn.disabled = true;
-        txidInput.disabled = true;
-        walletUsedInput.disabled = true;
-        paymentDateInput.disabled = true;
+        disableForm();
 
-        // Check if user has an existing pending submission
-        const existingPaymentQuery = query(
+        // Check if there's already a pending payment
+        const existingQuery = query(
             collection(db, "payments"),
             where("email", "==", user.email),
             where("statuss", "in", ["pending", "pending-admin", "reassigned"])
         );
-        const existingPaymentSnap = await getDocs(existingPaymentQuery);
+        const existingSnap = await getDocs(existingQuery);
 
-        if (!existingPaymentSnap.empty) {
+        if (!existingSnap.empty) {
             return displayMessage("error", "❌ You already have a pending payment. Wait for approval.");
         }
 
-        let chosenValidator = await getAvailableValidator();
+        let validator = await getAvailableValidator();
 
-        if (!chosenValidator) {
-            displayMessage("error", "⚠️ No validators available. Waiting for one...");
+        if (!validator) {
+            displayMessage("error", "⚠️ No validators available. Waiting...");
             await waitForValidator();
-            chosenValidator = await getAvailableValidator();
+            validator = await getAvailableValidator();
         }
 
-        if (!chosenValidator) {
-            payBtn.disabled = false;
-            txidInput.disabled = false;
-            walletUsedInput.disabled = false;
-            paymentDateInput.disabled = false;
-            return displayMessage("error", "❌ No validators available. Try again later.");
+        if (!validator) {
+            enableForm();
+            return displayMessage("error", "❌ Still no validators. Try again later.");
         }
 
-        // Store payment details in Firestore
         const paymentRef = doc(collection(db, "payments"));
         await setDoc(paymentRef, {
             email: user.email,
             txid,
             walletAddress: walletUsed,
             paymentDate,
-            assignedValidators: [chosenValidator], // Assigned validator
+            assignedValidators: [validator],
             approvals: [],
             statuss: "pending",
             timestamp: serverTimestamp()
         });
 
         displayMessage("success", "✅ Payment submitted. Waiting for approval.");
-
-        // Start a timer to check approval every 5 minutes
         startReassignmentLoop(paymentRef.id);
-
     } catch (error) {
         console.error("Error submitting payment:", error);
-
-        // Enable the form again for retry
-        payBtn.disabled = false;
-        txidInput.disabled = false;
-        walletUsedInput.disabled = false;
-        paymentDateInput.disabled = false;
-
+        enableForm();
         displayMessage("error", "❌ Submission failed. Try again.");
     }
 });
 
-// FUNCTION TO GET AVAILABLE VALIDATOR (with exclude & fallback)
-async function getAvailableValidator(excludedValidators = [], allowRepeats = false) {
-    const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
-    const validatorSnap = await getDocs(validatorQuery);
-    let allValidators = [];
+function disableForm() {
+    payBtn.disabled = true;
+    txidInput.disabled = true;
+    walletUsedInput.disabled = true;
+    paymentDateInput.disabled = true;
+}
 
-    validatorSnap.forEach(doc => {
-        const email = doc.data().email;
-        if (email !== "marketquantum25@gmail.com") {
-            allValidators.push(doc.id);
+function enableForm() {
+    payBtn.disabled = false;
+    txidInput.disabled = false;
+    walletUsedInput.disabled = false;
+    paymentDateInput.disabled = false;
+}
+
+// Get available validator (excluding assigned ones, optionally allow repeat)
+async function getAvailableValidator(excluded = [], allowRepeat = false) {
+    const snapshot = await getDocs(query(collection(db, "users"), where("isVvalidator", "==", true)));
+    const all = [];
+
+    snapshot.forEach(doc => {
+        if (doc.data().email !== "marketquantum25@gmail.com") {
+            all.push(doc.id);
         }
     });
 
-    let available = allValidators.filter(v => !excludedValidators.includes(v));
+    const available = all.filter(id => !excluded.includes(id));
+    if (available.length > 0) return randomFromArray(available);
+    if (allowRepeat && all.length > 0) return randomFromArray(all);
 
-    if (available.length > 0) {
-        return available[Math.floor(Math.random() * available.length)];
-    } else if (allowRepeats && allValidators.length > 0) {
-        return allValidators[Math.floor(Math.random() * allValidators.length)];
-    } else {
-        return null;
-    }
+    return null;
 }
 
-// FUNCTION TO WAIT FOR A VALIDATOR TO BECOME AVAILABLE
+function randomFromArray(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
 function waitForValidator() {
-    return new Promise(resolve => setTimeout(resolve, 30000)); // Wait 30 seconds before retrying
+    return new Promise(resolve => setTimeout(resolve, 30000));
 }
 
-// FUNCTION TO CONTINUOUSLY CHECK & REASSIGN PAYMENT UNTIL APPROVED
+// Check & reassign payments every 5 minutes
 async function startReassignmentLoop(paymentId) {
     const interval = setInterval(async () => {
-        const paymentRef = doc(db, "payments", paymentId);
-        const paymentSnap = await getDoc(paymentRef);
+        const ref = doc(db, "payments", paymentId);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return clearInterval(interval);
 
-        if (!paymentSnap.exists()) {
-            clearInterval(interval); // Stop if the payment no longer exists
-            return;
-        }
-
-        const paymentData = paymentSnap.data();
-
-        if (paymentData.statuss === "approved-admin") {
+        const data = snap.data();
+        if (data.statuss === "approved-admin") {
             displayMessage("success", "✅ Payment approved!");
-            clearInterval(interval); // Stop reassignment loop
-            return;
+            return clearInterval(interval);
         }
 
-        if (paymentData.statuss === "pending" || paymentData.statuss === "reassigned") {
-            const assigned = Array.isArray(paymentData.assignedValidators) ? paymentData.assignedValidators : [];
-
-            // Try new validators first
+        if (["pending", "reassigned"].includes(data.statuss)) {
+            const assigned = Array.isArray(data.assignedValidators) ? data.assignedValidators : [];
             let newValidator = await getAvailableValidator(assigned, false);
-
-            // If no new validators left, allow reuse
-            if (!newValidator) {
-                newValidator = await getAvailableValidator(assigned, true);
-            }
+            if (!newValidator) newValidator = await getAvailableValidator(assigned, true);
 
             if (newValidator) {
-                await updateDoc(paymentRef, {
+                await updateDoc(ref, {
                     assignedValidators: [...assigned, newValidator],
                     statuss: "reassigned"
                 });
                 displayMessage("success", "⚠️ Payment reassigned to a validator.");
             }
         }
-    }, 5 * 60 * 1000); // Reassign every 5 minutes
+    }, 5 * 60 * 1000);
 }
 
-    
-       //LOADING ASSIGNED TRANSACTIONS
-       async function loadAssignedTransactions() {
+// Load transactions assigned to current validator
+async function loadAssignedTransactions() {
+    if (!user) return;
+
     try {
         const q = query(
             collection(db, "payments"),
             where("statuss", "==", "pending"),
             where("assignedValidators", "array-contains", user.uid)
         );
+        const snap = await getDocs(q);
+        let html = "";
 
-        const querySnapshot = await getDocs(q);
-        let transactionHTML = "";
-
-        querySnapshot.forEach((docSnap) => {
+        snap.forEach(docSnap => {
             const data = docSnap.data();
-            const paymentId = docSnap.id;
+            const id = docSnap.id;
+            const time = data.timestamp?.seconds ? new Date(data.timestamp.seconds * 1000).toLocaleString() : "N/A";
 
-            let paymentTime = "N/A";
-            if (data.timestamp?.seconds) {
-                paymentTime = new Date(data.timestamp.seconds * 1000).toLocaleString();
-            }
-            // Determine the correct status
             let statusText = "Pending Validation";
             let statusClass = "text-blue-500";
-
             if (data.statuss === "pending-admin") {
                 statusText = "Pending Admin Approval";
                 statusClass = "text-yellow-500";
@@ -788,32 +766,32 @@ async function startReassignmentLoop(paymentId) {
                 statusClass = "text-green-600";
             }
 
-            transactionHTML += `
-                <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
+            html += `
+                <tr id="transaction-${id}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
                     <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 6}</td>
                     <td class="p-4 border border-gray-300">
                         <div class="relative flex flex-col">
-                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
-                    ${data.txid}
+                            <pre id="txid-${id}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+${data.txid}
                             </pre>
                             <div class="flex items-center mt-2">
-                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                <button onclick="copyTxid('${id}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
                                     Copy
                                 </button>
-                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                                <span id="copy-msg-${id}" class="ml-2 text-sm font-semibold hidden"></span>
                             </div>
                         </div>
                     </td>
-                    <td class="p-4 border border-gray-300">${paymentTime}</td>
+                    <td class="p-4 border border-gray-300">${time}</td>
                     <td class="p-4 border border-gray-300 status-cell ${statusClass}">${statusText}</td>
                     <td class="p-4 border border-gray-300 text-center">
                         <button class="approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition"
-                            data-id="${paymentId}">
+                            data-id="${id}">
                             Approve
                         </button>
                         <button class="reject-btn px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition"
-                            data-id="${paymentId}">
+                            data-id="${id}">
                             Reject
                         </button>
                     </td>
@@ -821,18 +799,16 @@ async function startReassignmentLoop(paymentId) {
             `;
         });
 
-        document.getElementById("pending-transactions").innerHTML = transactionHTML;
+        document.getElementById("pending-transactions").innerHTML = html;
 
-        document.querySelectorAll(".approve-btn").forEach(button => {
-            button.addEventListener("click", () => approvePayment(button.dataset.id));
-        });
+        document.querySelectorAll(".approve-btn").forEach(btn =>
+            btn.addEventListener("click", () => approvePayment(btn.dataset.id))
+        );
+        document.querySelectorAll(".reject-btn").forEach(btn =>
+            btn.addEventListener("click", () => rejectPayment(btn.dataset.id))
+        );
 
-        document.querySelectorAll(".reject-btn").forEach(button => {
-            button.addEventListener("click", () => rejectPayment(button.dataset.id));
-        });
-
-        // Start listening for real-time updates
-        listenForTransactionUpdates();
+        listenForTransactionUpdates(); // Keep updates live
     } catch (error) {
         console.error("Error loading transactions:", error);
     }
