@@ -608,11 +608,8 @@
     // RUN CHECK ON PAGE LOAD
     document.addEventListener("DOMContentLoaded", checkValidatorStatus);
     
-   // TRACK ACTIVE INTERVALS TO AVOID DUPLICATES
-const reassignmentIntervals = {};
-
-// CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
-payBtn.addEventListener("click", async (event) => {
+        // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
+        payBtn.addEventListener("click", async (event) => {
     event.preventDefault();
 
     if (!user) return displayMessage("error", "❌ Not authenticated!");
@@ -626,6 +623,7 @@ payBtn.addEventListener("click", async (event) => {
     }
 
     try {
+        // Disable form inputs & button to prevent multiple submissions
         payBtn.disabled = true;
         txidInput.disabled = true;
         walletUsedInput.disabled = true;
@@ -643,12 +641,12 @@ payBtn.addEventListener("click", async (event) => {
             return displayMessage("error", "❌ You already have a pending payment. Wait for approval.");
         }
 
-        let chosenValidator = await getAvailableValidator(user.uid);
+        let chosenValidator = await getAvailableValidator();
 
         if (!chosenValidator) {
-            displayMessage("info", "⚠️ No validators available. Waiting for one...");
+            displayMessage("error", "⚠️ No validators available. Waiting for one...");
             await waitForValidator();
-            chosenValidator = await getAvailableValidator(user.uid);
+            chosenValidator = await getAvailableValidator();
         }
 
         if (!chosenValidator) {
@@ -659,44 +657,45 @@ payBtn.addEventListener("click", async (event) => {
             return displayMessage("error", "❌ No validators available. Try again later.");
         }
 
+        // Store payment details in Firestore
         const paymentRef = doc(collection(db, "payments"));
         await setDoc(paymentRef, {
             email: user.email,
             txid,
             walletAddress: walletUsed,
             paymentDate,
-            assignedValidators: [chosenValidator],
+            assignedValidators: [chosenValidator], // Assigned validator
             approvals: [],
             statuss: "pending",
-            submitterUid: user.uid, // Store to prevent self-reassignment
             timestamp: serverTimestamp()
         });
 
         displayMessage("success", "✅ Payment submitted. Waiting for approval.");
-        startReassignmentLoop(paymentRef.id); // Begin monitoring reassignment
+
+        // Start a timer to check approval every 5 minutes
+        startReassignmentLoop(paymentRef.id);
 
     } catch (error) {
         console.error("Error submitting payment:", error);
-        displayMessage("error", "❌ Submission failed. Try again.");
+
+        // Enable the form again for retry
         payBtn.disabled = false;
         txidInput.disabled = false;
         walletUsedInput.disabled = false;
         paymentDateInput.disabled = false;
+
+        displayMessage("error", "❌ Submission failed. Try again.");
     }
 });
 
-// FUNCTION TO GET AVAILABLE VALIDATOR (EXCLUDE SUBMITTER & ADMIN)
-async function getAvailableValidator(excludeUid) {
+// FUNCTION TO GET AVAILABLE VALIDATOR
+async function getAvailableValidator() {
     const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
     const validatorSnap = await getDocs(validatorQuery);
     let validatorList = [];
 
     validatorSnap.forEach(doc => {
-        const data = doc.data();
-        if (
-            data.email !== "marketquantum25@gmail.com" &&
-            doc.id !== excludeUid
-        ) {
+        if (doc.data().email !== "marketquantum25@gmail.com") {
             validatorList.push(doc.id);
         }
     });
@@ -707,58 +706,39 @@ async function getAvailableValidator(excludeUid) {
 
 // FUNCTION TO WAIT FOR A VALIDATOR TO BECOME AVAILABLE
 function waitForValidator() {
-    return new Promise(resolve => setTimeout(resolve, 30000)); // 30 seconds
+    return new Promise(resolve => setTimeout(resolve, 30000)); // Wait 30 seconds before retrying
 }
 
 // FUNCTION TO CONTINUOUSLY CHECK & REASSIGN PAYMENT UNTIL APPROVED
 async function startReassignmentLoop(paymentId) {
-    if (reassignmentIntervals[paymentId]) return; // already running
+    const interval = setInterval(async () => {
+        const paymentRef = doc(db, "payments", paymentId);
+        const paymentSnap = await getDoc(paymentRef);
 
-    reassignmentIntervals[paymentId] = setInterval(async () => {
-    console.log("🔄 Reassignment loop running for:", paymentId);
-
-    const paymentRef = doc(db, "payments", paymentId);
-    const paymentSnap = await getDoc(paymentRef);
-
-    if (!paymentSnap.exists()) {
-        console.log("❌ Payment not found. Stopping loop.");
-        clearInterval(reassignmentIntervals[paymentId]);
-        delete reassignmentIntervals[paymentId];
-        return;
-    }
-
-    const paymentData = paymentSnap.data();
-
-    if (paymentData.statuss === "approved-admin") {
-        console.log("✅ Payment approved. Stopping loop.");
-        clearInterval(reassignmentIntervals[paymentId]);
-        delete reassignmentIntervals[paymentId];
-        return;
-    }
-
-    if (paymentData.statuss === "pending") {
-        console.log("🔍 Still pending. Looking for new validator...");
-        const newValidator = await getAvailableValidator(paymentData.submitterUid);
-
-        if (
-            newValidator &&
-            !paymentData.assignedValidators.includes(newValidator)
-        ) {
-            await updateDoc(paymentRef, {
-                assignedValidators: [...paymentData.assignedValidators, newValidator],
-                statuss: "reassigned"
-            });
-
-            console.log("➡️ Reassigned to new validator:", newValidator);
-
-            if (user && user.uid === paymentData.submitterUid) {
-                displayMessage("info", "⚠️ Your payment has been reassigned to a new validator.");
-            }
-        } else {
-            console.log("⚠️ No new validator found or already assigned.");
+        if (!paymentSnap.exists()) {
+            clearInterval(interval); // Stop if the payment no longer exists
+            return;
         }
-    }
-}, 2 * 30 * 1000); // Every 2 minutes
+
+        const paymentData = paymentSnap.data();
+
+        if (paymentData.statuss === "approved-admin") {
+            displayMessage("success", "✅ Payment approved!");
+            clearInterval(interval); // Stop reassignment loop
+            return;
+        }
+
+        if (paymentData.status === "pending") {
+            const newValidator = await getAvailableValidator();
+            if (newValidator && !paymentData.assignedValidators.includes(newValidator)) {
+                await updateDoc(paymentRef, {
+                    assignedValidators: [...paymentData.assignedValidators, newValidator], // Add new validator
+                    statuss: "reassigned"
+                });
+                displayMessage("success", "⚠️ Payment reassigned to a new validator.");
+            }
+        }
+    }, 5 * 60 * 1000); // Reassign every 5 minutes
 }
 
     
