@@ -178,19 +178,28 @@ async function awardReferrerOnPayment(userId) {
 
     const userData = userDoc.data();
 
-    // Check if the user is a validator
-    if (!userData.isVvalidator) {
-        console.log(`User ${userId} is not a validator.`);
+    // Proceed if user is either a validator or vvalidator
+    if (!userData.isValidator && !userData.isVvalidator) {
+        console.log(`User ${userId} is neither a validator nor vvalidator.`);
         return;
     }
 
-    // Check if the payment is approved in the payments collection
-    const paymentsQuery = query(collection(db, "payments"), 
-                                where("email", "==", userData.email),
-                                where("statuss", "==", "approved-admin"));
+    // Fetch payments with approved-admin in either 'status' or 'statuss'
+    const paymentsQuery = query(
+        collection(db, "payments"),
+        where("email", "==", userData.email)
+    );
     const paymentsSnapshot = await getDocs(paymentsQuery);
 
-    if (paymentsSnapshot.empty) {
+    let hasApprovedPayment = false;
+    paymentsSnapshot.forEach((doc) => {
+        const payment = doc.data();
+        if (payment.status === "approved-admin" || payment.statuss === "approved-admin") {
+            hasApprovedPayment = true;
+        }
+    });
+
+    if (!hasApprovedPayment) {
         console.log(`No approved payment found for ${userData.email}.`);
         return;
     }
@@ -216,5 +225,6 @@ async function awardReferrerOnPayment(userId) {
         console.log(`Grand referrer ${grandReferrerId} earned +0.5.`);
     }
 }
+
 
 export { awardReferrerOnPayment, saveUserWithReferral };
