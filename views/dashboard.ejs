@@ -480,9 +480,6 @@
     <div class="bg-white shadow-md rounded-lg p-6 mt-6 max-w-3xl mx-auto text-center">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Follow Us on Social Media</h3>
         <div class="flex justify-center space-x-6">
-            <!--<a href="https://t.me/yourchannel" target="_blank" class="text-blue-500 text-2xl hover:text-blue-700">
-                <i class="fab fa-telegram-plane"></i>-->
-            </a>
             <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09" target="_blank" class="text-blue-400 text-2xl hover:text-blue-600">
                 <i class="fab fa-twitter"></i>
             </a>
@@ -491,9 +488,6 @@
             </a>
             <a href=" https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg==" target="_blank" class="text-pink-500 text-2xl hover:text-pink-700">
                 <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.tiktok.com/@antonytheeson?_t=ZM-8uB5WCMpRBd&_r=1" target="_blank" class="text-black text-2xl hover:text-gray-700 mx-2">
-                <i class="fab fa-tiktok"></i>
             </a>
             
         </div>
@@ -688,20 +682,28 @@
     }
 });
 
-// FUNCTION TO GET AVAILABLE VALIDATOR
-async function getAvailableValidator() {
+// FUNCTION TO GET AVAILABLE VALIDATOR (with exclude & fallback)
+async function getAvailableValidator(excludedValidators = [], allowRepeats = false) {
     const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
     const validatorSnap = await getDocs(validatorQuery);
-    let validatorList = [];
+    let allValidators = [];
 
     validatorSnap.forEach(doc => {
-        if (doc.data().email !== "marketquantum25@gmail.com") {
-            validatorList.push(doc.id);
+        const email = doc.data().email;
+        if (email !== "marketquantum25@gmail.com") {
+            allValidators.push(doc.id);
         }
     });
 
-    if (validatorList.length < 1) return null;
-    return validatorList[Math.floor(Math.random() * validatorList.length)];
+    let available = allValidators.filter(v => !excludedValidators.includes(v));
+
+    if (available.length > 0) {
+        return available[Math.floor(Math.random() * available.length)];
+    } else if (allowRepeats && allValidators.length > 0) {
+        return allValidators[Math.floor(Math.random() * allValidators.length)];
+    } else {
+        return null;
+    }
 }
 
 // FUNCTION TO WAIT FOR A VALIDATOR TO BECOME AVAILABLE
@@ -728,14 +730,23 @@ async function startReassignmentLoop(paymentId) {
             return;
         }
 
-        if (paymentData.status === "pending") {
-            const newValidator = await getAvailableValidator();
-            if (newValidator && !paymentData.assignedValidators.includes(newValidator)) {
+        if (paymentData.statuss === "pending" || paymentData.statuss === "reassigned") {
+            const assigned = Array.isArray(paymentData.assignedValidators) ? paymentData.assignedValidators : [];
+
+            // Try new validators first
+            let newValidator = await getAvailableValidator(assigned, false);
+
+            // If no new validators left, allow reuse
+            if (!newValidator) {
+                newValidator = await getAvailableValidator(assigned, true);
+            }
+
+            if (newValidator) {
                 await updateDoc(paymentRef, {
-                    assignedValidators: [...paymentData.assignedValidators, newValidator], // Add new validator
+                    assignedValidators: [...assigned, newValidator],
                     statuss: "reassigned"
                 });
-                displayMessage("success", "⚠️ Payment reassigned to a new validator.");
+                displayMessage("success", "⚠️ Payment reassigned to a validator.");
             }
         }
     }, 5 * 60 * 1000); // Reassign every 5 minutes

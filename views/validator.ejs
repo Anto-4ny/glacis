@@ -496,20 +496,28 @@ payBtn.addEventListener("click", async (event) => {
     }
 });
 
-// FUNCTION TO GET AVAILABLE VALIDATOR
-async function getAvailableValidator() {
+// FUNCTION TO GET AVAILABLE VALIDATOR (with exclude & fallback)
+async function getAvailableValidator(excludedValidators = [], allowRepeats = false) {
     const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
     const validatorSnap = await getDocs(validatorQuery);
-    let validatorList = [];
+    let allValidators = [];
 
     validatorSnap.forEach(doc => {
-        if (doc.data().email !== "marketquantum25@gmail.com") {
-            validatorList.push(doc.id);
+        const email = doc.data().email;
+        if (email !== "marketquantum25@gmail.com") {
+            allValidators.push(doc.id);
         }
     });
 
-    if (validatorList.length < 1) return null;
-    return validatorList[Math.floor(Math.random() * validatorList.length)];
+    let available = allValidators.filter(v => !excludedValidators.includes(v));
+
+    if (available.length > 0) {
+        return available[Math.floor(Math.random() * available.length)];
+    } else if (allowRepeats && allValidators.length > 0) {
+        return allValidators[Math.floor(Math.random() * allValidators.length)];
+    } else {
+        return null;
+    }
 }
 
 // FUNCTION TO WAIT FOR A VALIDATOR TO BECOME AVAILABLE
@@ -536,14 +544,23 @@ async function startReassignmentLoop(paymentId) {
             return;
         }
 
-        if (paymentData.status === "pending") {
-            const newValidator = await getAvailableValidator();
-            if (newValidator && !paymentData.assignedValidators.includes(newValidator)) {
+        if (paymentData.status === "pending" || paymentData.status === "reassigned") {
+            const assigned = Array.isArray(paymentData.assignedValidators) ? paymentData.assignedValidators : [];
+
+            // Try new validators first
+            let newValidator = await getAvailableValidator(assigned, false);
+
+            // If no new validators left, allow reuse
+            if (!newValidator) {
+                newValidator = await getAvailableValidator(assigned, true);
+            }
+
+            if (newValidator) {
                 await updateDoc(paymentRef, {
-                    assignedValidators: [...paymentData.assignedValidators, newValidator], // Add new validator
+                    assignedValidators: [...assigned, newValidator],
                     status: "reassigned"
                 });
-                displayMessage("success", "⚠️ Payment reassigned to a new validator.");
+                displayMessage("success", "⚠️ Payment reassigned to a validator.");
             }
         }
     }, 5 * 60 * 1000); // Reassign every 5 minutes
