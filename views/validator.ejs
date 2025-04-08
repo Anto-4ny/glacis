@@ -493,6 +493,8 @@ payBtn.addEventListener("click", async (event) => {
         paymentDateInput.disabled = false;
 
         displayMessage("error", "❌ Submission failed. Try again.");
+        startReassignmentLoop(paymentRef.id);
+startAdminEscalationTimer(paymentRef.id); // ⏰
     }
 });
 
@@ -532,25 +534,31 @@ async function startReassignmentLoop(paymentId) {
         const paymentSnap = await getDoc(paymentRef);
 
         if (!paymentSnap.exists()) {
-            clearInterval(interval); // Stop if the payment no longer exists
+            clearInterval(interval);
             return;
         }
 
         const paymentData = paymentSnap.data();
 
-        if (paymentData.status === "approved-admin") {
-            displayMessage("success", "✅ Payment approved!");
-            clearInterval(interval); // Stop reassignment loop
+        // ✅ Stop reassignment if admin is now handling or it's already approved
+        if (["approved-admin", "pending-admin"].includes(paymentData.status)) {
+            clearInterval(interval);
             return;
         }
 
-        if (paymentData.status === "pending" || paymentData.status === "reassigned") {
+        // ✅ Stop if a validator has already approved
+        const approvals = Array.isArray(paymentData.approvals) ? paymentData.approvals : [];
+        const approvedCount = approvals.filter(a => a.status === "approved").length;
+        if (approvedCount >= 1) {
+            clearInterval(interval);
+            return;
+        }
+
+        // ✅ Only try to reassign if it's still pending or reassigned
+        if (["pending", "reassigned"].includes(paymentData.status)) {
             const assigned = Array.isArray(paymentData.assignedValidators) ? paymentData.assignedValidators : [];
 
-            // Try new validators first
             let newValidator = await getAvailableValidator(assigned, false);
-
-            // If no new validators left, allow reuse
             if (!newValidator) {
                 newValidator = await getAvailableValidator(assigned, true);
             }
@@ -563,7 +571,34 @@ async function startReassignmentLoop(paymentId) {
                 displayMessage("success", "⚠️ Payment reassigned to a validator.");
             }
         }
-    }, 5 * 60 * 1000); // Reassign every 5 minutes
+    }, 5 * 60 * 1000); // Every 2 minutes
+}
+
+//SENT TO ADMIN AFTER 1 HOUR IF NO ONE APPROVES
+function startAdminEscalationTimer(paymentId) {
+    setTimeout(async () => {
+        const paymentRef = doc(db, "payments", paymentId);
+        const snap = await getDoc(paymentRef);
+
+        if (!snap.exists()) return;
+
+        const data = snap.data();
+
+        // ✅ Stop if already handled by admin
+        if (["approved-admin", "pending-admin"].includes(data.status)) return;
+
+        // ✅ Only escalate if no validator has approved
+        const approvals = Array.isArray(data.approvals) ? data.approvals : [];
+        const approvedCount = approvals.filter(a => a.status === "approved").length;
+
+        if (approvedCount < 1) {
+            await updateDoc(paymentRef, {
+                status: "pending-admin"
+            });
+            displayMessage("info", "⚠️ No validator approved in time. Sent to admin.");
+        }
+
+    }, 60 * 60 * 1000); // 3 minutes (you wrote 3 minutes but commented "1 hour" — fixed comment)
 }
 
     
@@ -572,7 +607,7 @@ async function startReassignmentLoop(paymentId) {
     try {
         const q = query(
             collection(db, "payments"),
-            where("status", "==", "pending"),
+            where("status", "in", ["pending", "reassigned"]),
             where("assignedValidators", "array-contains", user.uid)
         );
 
