@@ -779,7 +779,7 @@ function startAdminEscalationTimer(paymentId) {
 
         if (approvedCount < 1) {
             await updateDoc(paymentRef, {
-                status: "pending-admin"
+                statuss: "pending-admin"
             });
             displayMessage("info", "⚠️ No validator approved in time. Sent to admin.");
         }
