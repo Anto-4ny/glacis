@@ -757,7 +757,7 @@ async function startReassignmentLoop(paymentId) {
                 displayMessage("success", "⚠️ Payment reassigned to a validator.");
             }
         }
-    }, 5 * 60 * 1000); // Every 5 minutes
+    }, 2 * 60 * 1000); // Every 5 minutes
 }
 
 //SENT TO ADMIN AFTER 1 HOUR IF NO ONE APPROVES
@@ -784,7 +784,7 @@ function startAdminEscalationTimer(paymentId) {
             displayMessage("info", "⚠️ No validator approved in time. Sent to admin.");
         }
 
-    }, 60 * 60 * 1000); // 1 hour
+    }, 5 * 60 * 1000); // 1 hour
 }
 
 
