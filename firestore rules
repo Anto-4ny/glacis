@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users collection: Users can read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null; 
+    }
+
+    // Payments collection: Users can create and read their own payments
+match /payments/{paymentId} {
+  allow create: if request.auth != null;
+
+  allow read, update: if request.auth != null &&
+    resource.data.email == request.auth.token.email &&
+    (
+      (resource.data.status == 'pending') || 
+      (resource.data.statuss == 'pending') ||
+      (resource.data.status == 'reassigned') || 
+      (resource.data.statuss == 'reassigned') ||
+      (resource.data.status == 'pending-admin') || 
+      (resource.data.statuss == 'pending-admin')
+    );
+}
+
+    // Referral Activity: Users can access their own referral data
+    match /referralActivity/{docId} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid; 
+    }
+
+    // Withdrawals collection: Users can read/write their own data, and admin can update
+    match /withdrawals/{docId} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+
+      // Admin can approve or reject withdrawal requests
+      allow update: if request.auth != null && 
+                    request.auth.token.email == "marketquantum25@gmail.com";
+    }
+
+    // Admins collection: Only admin can access
+    match /admins/{adminId} {
+      allow read, write: if request.auth != null && request.auth.token.email == "marketquantum25@gmail.com";
+    }
+
+    // Default rule for other collections
+    match /{collection}/{docId} {
+      allow read, write: if request.auth != null; 
+    }
+  }
+}
+

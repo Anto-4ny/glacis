@@ -416,8 +416,8 @@
     // RUN CHECK ON PAGE LOAD
     document.addEventListener("DOMContentLoaded", checkValidatorStatus);
     
-        // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
-payBtn.addEventListener("click", async (event) => {
+  // CLICKING SUBMISSION BUTTON IN VALIDATORS PAGE
+  payBtn.addEventListener("click", async (event) => {
     event.preventDefault();
 
     if (!user) return displayMessage("error", "❌ Not authenticated!");
@@ -431,13 +431,13 @@ payBtn.addEventListener("click", async (event) => {
     }
 
     try {
-        // Disable form inputs & button to prevent multiple submissions
+        // Disable form inputs to prevent multiple submissions
         payBtn.disabled = true;
         txidInput.disabled = true;
         walletUsedInput.disabled = true;
         paymentDateInput.disabled = true;
 
-        // Check if user has an existing pending submission
+        // Check if user has a pending payment
         const existingPaymentQuery = query(
             collection(db, "payments"),
             where("email", "==", user.email),
@@ -449,6 +449,7 @@ payBtn.addEventListener("click", async (event) => {
             return displayMessage("error", "❌ You already have a pending payment. Wait for approval.");
         }
 
+        // Try to get a validator
         let chosenValidator = await getAvailableValidator();
 
         if (!chosenValidator) {
@@ -465,36 +466,38 @@ payBtn.addEventListener("click", async (event) => {
             return displayMessage("error", "❌ No validators available. Try again later.");
         }
 
-        // Store payment details in Firestore
+        // Create a new payment record
         const paymentRef = doc(collection(db, "payments"));
+        const paymentId = paymentRef.id;
+
         await setDoc(paymentRef, {
             email: user.email,
             txid,
             walletAddress: walletUsed,
             paymentDate,
-            assignedValidators: [chosenValidator], // Assigned validator
+            assignedValidators: [chosenValidator],
             approvals: [],
             status: "pending",
-            timestamp: serverTimestamp()
+            timestamp: serverTimestamp(),
+            loopStarted: true // 🚀 Flag to prevent starting multiple loops
         });
 
-        displayMessage("success", "✅ Payment submitted. Waiting for approval.");
+        // Start reassignment and admin escalation timers
+        startReassignmentLoop(paymentId); // Every 5 minutes
+        startAdminEscalationTimer(paymentId); // After 1 hour
 
-        // Start a timer to check approval every 5 minutes
-        startReassignmentLoop(paymentRef.id);
+        displayMessage("success", "✅ Payment submitted. Waiting for approval.");
 
     } catch (error) {
         console.error("Error submitting payment:", error);
 
-        // Enable the form again for retry
+        // Enable inputs again
         payBtn.disabled = false;
         txidInput.disabled = false;
         walletUsedInput.disabled = false;
         paymentDateInput.disabled = false;
 
         displayMessage("error", "❌ Submission failed. Try again.");
-        startReassignmentLoop(paymentRef.id);
-startAdminEscalationTimer(paymentRef.id); // ⏰
     }
 });
 
@@ -513,13 +516,27 @@ async function getAvailableValidator(excludedValidators = [], allowRepeats = fal
 
     let available = allValidators.filter(v => !excludedValidators.includes(v));
 
+    let chosen = null;
+
     if (available.length > 0) {
-        return available[Math.floor(Math.random() * available.length)];
+        chosen = available[Math.floor(Math.random() * available.length)];
     } else if (allowRepeats && allValidators.length > 0) {
-        return allValidators[Math.floor(Math.random() * allValidators.length)];
-    } else {
-        return null;
+        chosen = allValidators[Math.floor(Math.random() * allValidators.length)];
     }
+
+    if (chosen) {
+        const validatorDoc = await getDoc(doc(db, "users", chosen));
+        if (validatorDoc.exists()) {
+            const validatorEmail = validatorDoc.data().email;
+            await sendEmailNotification(
+                validatorEmail,
+                "📌 New Payment Validation Assigned",
+                `You've been assigned to validate a new payment. Please log in to your dashboard to review it.`
+            );
+        }
+    }
+
+    return chosen;
 }
 
 // FUNCTION TO WAIT FOR A VALIDATOR TO BECOME AVAILABLE
@@ -548,7 +565,7 @@ async function startReassignmentLoop(paymentId) {
 
         // ✅ Stop if a validator has already approved
         const approvals = Array.isArray(paymentData.approvals) ? paymentData.approvals : [];
-        const approvedCount = approvals.filter(a => a.status === "approved").length;
+        const approvedCount = approvals.filter(a => a.status === "approved-admin").length;
         if (approvedCount >= 1) {
             clearInterval(interval);
             return;
@@ -568,13 +585,25 @@ async function startReassignmentLoop(paymentId) {
                     assignedValidators: [...assigned, newValidator],
                     status: "reassigned"
                 });
+
+                // ✅ Send email to the new validator
+                const validatorSnap = await getDoc(doc(db, "users", newValidator));
+                if (validatorSnap.exists()) {
+                    const validatorEmail = validatorSnap.data().email;
+                    await sendEmailNotification(
+                        validatorEmail,
+                        "📌 Payment Reassigned",
+                        `You have been reassigned to validate a payment with TXID: ${paymentData.txid}.`
+                    );
+                }
+
                 displayMessage("success", "⚠️ Payment reassigned to a validator.");
             }
         }
     }, 5 * 60 * 1000); // Every 5 minutes
 }
 
-//SENT TO ADMIN AFTER 1 HOUR IF NO ONE APPROVES
+// SENT TO ADMIN AFTER 1 HOUR IF NO ONE APPROVES
 function startAdminEscalationTimer(paymentId) {
     setTimeout(async () => {
         const paymentRef = doc(db, "payments", paymentId);
@@ -589,19 +618,27 @@ function startAdminEscalationTimer(paymentId) {
 
         // ✅ Only escalate if no validator has approved
         const approvals = Array.isArray(data.approvals) ? data.approvals : [];
-        const approvedCount = approvals.filter(a => a.status === "approved").length;
+        const approvedCount = approvals.filter(a => a.status === "approved-admin").length;
 
         if (approvedCount < 1) {
             await updateDoc(paymentRef, {
                 status: "pending-admin"
             });
+
+            // ✅ Send email to admin
+            await sendEmailNotification(
+                "marketquantum25@gmail.com",
+                "⚠️ Validator Timeout - Manual Approval Needed",
+                `No validator approved the payment with TXID: ${data.txid} in time. Please review it manually.`
+            );
+
             displayMessage("info", "⚠️ No validator approved in time. Sent to admin.");
         }
 
-    }, 60 * 60 * 1000); // 3 minutes (you wrote 3 minutes but commented "1 hour" — fixed comment)
+    }, 60 * 60 * 1000); // 1 hour
 }
 
-    
+
     //LOADING ASSIGNED TRANSACTIONS
     async function loadAssignedTransactions() {
     try {
@@ -630,7 +667,7 @@ function startAdminEscalationTimer(paymentId) {
                 statusText = "Pending Admin Approval";
                 statusClass = "text-yellow-500";
             } else if (data.status === "reassigned") {
-                statusText = "Reassigned";
+                statusText = "Reassigned to you";
                 statusClass = "text-orange-500";
             } else if (data.status === "approved-admin") {
                 statusText = "Approved";
@@ -640,7 +677,7 @@ function startAdminEscalationTimer(paymentId) {
             transactionHTML += `
                 <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
-                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 30}</td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 12}</td>
                     <td class="p-4 border border-gray-300">
                         <div class="relative flex flex-col">
                             <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
@@ -706,7 +743,7 @@ function listenForTransactionUpdates() {
                 } else if (data.status === "pending-admin") {
                     statusCell.innerHTML = `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
                 } else if (data.status === "reassigned") {
-                    statusCell.innerHTML = `<span class="text-orange-500 font-semibold">Reassigned</span>`;
+                    statusCell.innerHTML = `<span class="text-orange-500 font-semibold">Reassigned to you</span>`;
                 }
             }
         });
@@ -715,7 +752,6 @@ function listenForTransactionUpdates() {
 
 // Call this function after loading transactions
 listenForTransactionUpdates();
-
 
 // APPROVE PAYMENT (Send to Admin)
 async function approvePayment(paymentId) {
@@ -728,7 +764,6 @@ async function approvePayment(paymentId) {
 
         const paymentRef = doc(db, "payments", paymentId);
         const paymentDoc = await getDoc(paymentRef);
-
         if (!paymentDoc.exists()) return;
         const paymentData = paymentDoc.data();
 
@@ -746,15 +781,33 @@ async function approvePayment(paymentId) {
         button.textContent = "Sent to Admin";
         button.classList.add("bg-gray-400");
 
-        // Update row status instead of removing it
         const row = button.closest("tr");
         if (row) {
-            row.querySelector(".status-cell").innerHTML = `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
+            row.querySelector(".status-cell").innerHTML =
+                `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
         }
+
+        // ✅ Notify user
+        sendEmailNotification(
+            paymentData.email,
+            "✅ Payment Approved by Validator",
+            "Your payment has been approved by a validator and is now pending final admin approval."
+        );
+
+        // ✅ Notify admin
+        sendEmailNotification(
+            "marketquantum25@gmail.com",
+            "🧾 Payment Awaiting Final Approval",
+            `A payment with ID ${paymentId} has been approved by a validator and is ready for your review.`
+        );
+
+        toast("✅ Payment approved and sent to admin!", "success");
     } catch (error) {
         console.error("Error approving payment:", error);
+        toast("❌ Error approving payment.", "error");
     }
 }
+
 
 // REJECT PAYMENT (Reassign Validator)
 async function rejectPayment(paymentId) {
@@ -767,20 +820,17 @@ async function rejectPayment(paymentId) {
 
         const paymentRef = doc(db, "payments", paymentId);
         const paymentDoc = await getDoc(paymentRef);
-
         if (!paymentDoc.exists()) return;
         const paymentData = paymentDoc.data();
 
         let updatedValidators = (paymentData?.assignedValidators || []).filter(uid => uid !== user.uid);
 
-        // Fetch all validators except marketquantum25@gmail.com
         const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
         const validatorSnapshot = await getDocs(validatorQuery);
 
         let availableValidators = validatorSnapshot.docs
             .map(docSnap => ({ uid: docSnap.id, email: docSnap.data().email }))
-            .filter(validator => !updatedValidators.includes(validator.uid) && validator.email !== "marketquantum25@gmail.com")
-            .map(validator => validator.uid);
+            .filter(v => !updatedValidators.includes(v.uid) && v.email !== "marketquantum25@gmail.com");
 
         if (availableValidators.length === 0) {
             button.textContent = "No Available Validators";
@@ -788,9 +838,8 @@ async function rejectPayment(paymentId) {
             return;
         }
 
-        // Randomly assign a new validator
         const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
-        updatedValidators.push(newValidator);
+        updatedValidators.push(newValidator.uid);
 
         await updateDoc(paymentRef, {
             assignedValidators: updatedValidators,
@@ -800,15 +849,26 @@ async function rejectPayment(paymentId) {
         button.textContent = "Rejected";
         button.classList.add("bg-gray-400");
 
-        // Update row status instead of removing it
         const row = button.closest("tr");
         if (row) {
-            row.querySelector(".status-cell").innerHTML = `<span class="text-orange-500 font-semibold">Reassigned</span>`;
+            row.querySelector(".status-cell").innerHTML =
+                `<span class="text-orange-500 font-semibold">Reassigned to you</span>`;
         }
+
+        // ✅ Notify the new validator
+        sendEmailNotification(
+            newValidator.email,
+            "🔄 New Payment Assigned",
+            "A payment has been reassigned to you. Please log in to review it."
+        );
+
+        toast("⚠️ Payment reassigned to another validator.", "info");
+
     } catch (error) {
         console.error("Error rejecting payment:", error);
         button.textContent = "Retry";
         button.disabled = false;
+        toast("❌ Error rejecting payment.", "error");
     }
 }
 
@@ -828,7 +888,7 @@ async function rejectPayment(paymentId) {
                // row.id = `payment-${paymentId}`;
               //  row.innerHTML = `
               //      <td class="p-4 border">${data.email}</td>
-                //    <td class="p-4 border text-green-600 font-semibold">$${data.amountPaid || 6}</td>
+                //    <td class="p-4 border text-green-600 font-semibold">$${data.amountPaid || 12}</td>
                 //    <td class="p-4 border">${data.txid}</td>
                 //    <td class="p-4 border status-cell">Pending Validation</td>
                //     <td class="p-4 border text-center">
@@ -887,7 +947,7 @@ function updateValidationHistory(paymentId, paymentData) {
     //    historyTable.innerHTML += `
     //        <tr id="history-${paymentData.txid}">
     //            <td class="p-3 border">${paymentData.email}</td>
-    //            <td class="p-3 border">$${paymentData.amountPaid || 6}</td>
+    //            <td class="p-3 border">$${paymentData.amountPaid || 12}</td>
     //            <td class="p-3 border">${paymentData.txid}</td>
     //            <td class="p-3 border text-green-600 font-bold">Approved</td>
     //            <td class="p-3 border">${paymentTime}</td>
@@ -1053,7 +1113,7 @@ async function loadAdminApprovals() {
             approvalHTML += `
                 <tr id="admin-approval-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
-                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 30}</td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 12}</td>
                     <td class="p-4 border border-gray-300">
                         <div class="relative flex flex-col">
                             <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
@@ -1094,7 +1154,7 @@ async function loadAdminApprovals() {
     }
 }
 
-// APPROVE PAYMENT
+// APPROVE PAYMENT (Final by Admin)
 async function finalizeApproval(paymentId) {
     try {
         const paymentRef = doc(db, "payments", paymentId);
@@ -1102,20 +1162,38 @@ async function finalizeApproval(paymentId) {
         if (!paymentDoc.exists()) return;
         const paymentData = paymentDoc.data();
 
-        // Ensure the validator exists before updating earnings
+        // Reward validator
         if (paymentData.validator) {
             const validatorRef = doc(db, "users", paymentData.validator);
             await updateDoc(validatorRef, { totalEarnings: increment(1) });
+
+            // Send email to validator
+            const validatorSnap = await getDoc(validatorRef);
+            if (validatorSnap.exists()) {
+                const validatorEmail = validatorSnap.data().email;
+                sendEmailNotification(
+                    validatorEmail,
+                    "🎉 Approval Confirmed!",
+                    "Your approval has been accepted by the admin. You have earned $1!"
+                );
+            }
         }
 
-        // Hide the pop-up for the user who made the payment
+        // Hide user popup
         const userPopup = document.getElementById(`payment-popup-${paymentData.email}`);
         if (userPopup) userPopup.classList.add("hidden");
 
-        // Mark payment as approved
+        // Update payment status
         await updateDoc(paymentRef, { status: "approved-admin" });
 
-        // Update UI
+        // Email user
+        sendEmailNotification(
+            paymentData.email,
+            "✅ Payment Approved",
+            "Your payment has been fully approved. You now have access to all features."
+        );
+
+        // UI update
         const button = document.querySelector(`[data-id='${paymentId}']`);
         if (button) {
             button.textContent = "Approved";
@@ -1123,14 +1201,14 @@ async function finalizeApproval(paymentId) {
             button.disabled = true;
         }
 
-        // Remove from admin panel
         removeFromAdminPanel(paymentId);
     } catch (error) {
         console.error("Error finalizing approval:", error);
     }
 }
 
-// REJECT PAYMENT (Reassign to another validator)
+
+// REJECT PAYMENT (Admin Reassigns Validator)
 async function rejectApproval(paymentId) {
     try {
         const paymentRef = doc(db, "payments", paymentId);
@@ -1140,16 +1218,18 @@ async function rejectApproval(paymentId) {
 
         let updatedValidators = paymentData.assignedValidators || [];
 
-        // Fetch available validators
         const validatorQuery = query(
             collection(db, "users"),
             where("isValidator", "==", true)
         );
-
         const validatorSnapshot = await getDocs(validatorQuery);
+
         let availableValidators = validatorSnapshot.docs
-            .map(docSnap => docSnap.id)
-            .filter(uid => !updatedValidators.includes(uid));
+            .map(docSnap => ({
+                uid: docSnap.id,
+                email: docSnap.data().email
+            }))
+            .filter(v => !updatedValidators.includes(v.uid));
 
         if (availableValidators.length === 0) {
             console.error("No available validators.");
@@ -1157,15 +1237,20 @@ async function rejectApproval(paymentId) {
         }
 
         const newValidator = availableValidators[Math.floor(Math.random() * availableValidators.length)];
-        updatedValidators.push(newValidator);
+        updatedValidators.push(newValidator.uid);
 
-        // Update payment record
         await updateDoc(paymentRef, {
             assignedValidators: updatedValidators,
             status: "reassigned"
         });
 
-        // Remove from admin panel
+        // Email new validator
+        sendEmailNotification(
+            newValidator.email,
+            "🔄 New Payment Assigned",
+            "A payment has been reassigned to you by the admin. Please log in and review it."
+        );
+
         removeFromAdminPanel(paymentId);
     } catch (error) {
         console.error("Error rejecting approval:", error);
@@ -1185,7 +1270,7 @@ function addToValidationHistory(paymentData, status) {
     historyTable.innerHTML += `
         <tr>
             <td class="p-3 border">${paymentData.email}</td>
-            <td class="p-3 border">$${paymentData.amountPaid || 30}</td>
+            <td class="p-3 border">$${paymentData.amountPaid || 12}</td>
             <td class="p-4 border border-gray-300">${paymentData.txid}</td>
             <td class="p-3 border text-green-600 font-bold">${status}</td>
             <td class="p-3 border">${paymentTime}</td>
@@ -1215,7 +1300,7 @@ async function loadValidationHistory() {
                 historyTable.innerHTML += `
                     <tr id="history-${paymentData.txid}">
                         <td class="p-3 border">${paymentData.email}</td>
-                        <td class="p-3 border">$${paymentData.amountPaid || 30}</td>
+                        <td class="p-3 border">$${paymentData.amountPaid || 12}</td>
                        <td class="p-4 border border-gray-300">${paymentData.txid}</td>
                         <td class="p-3 border text-green-600 font-bold">Approved</td>
                         <td class="p-3 border">${paymentTime}</td>
@@ -1291,7 +1376,7 @@ onAuthStateChanged(auth, async (currentUser) => {
                     historyHTML += `
                         <tr>
                             <td class="p-3 border">${data.email}</td>
-                            <td class="p-3 border">$${data.amountPaid || 30}</td>
+                            <td class="p-3 border">$${data.amountPaid || 12}</td>
                             <td class="p-3 border">${data.txid}</td>
                             <td class="p-3 border text-green-600 font-bold">Approved</td>
                             <td class="p-3 border">${paymentTime}</td>
@@ -1408,6 +1493,27 @@ document.addEventListener("contextmenu", function (event) {
       event.preventDefault(); // Disable Print (Ctrl + P)
     }
   });
+
+</script>
+
+<!-- EmailJS CDN -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("t07CgID0p1Rw9_NM9"); // Your public key
+  })();
+
+  function sendEmailNotification(toEmail, subject, message) {
+  const templateParams = {
+    to_email: toEmail,
+    subject,
+    message,
+  };
+
+  return emailjs.send("service_4kqozhm", "template_f77qu27", templateParams)
+    .then(() => console.log("✅ Email sent to", toEmail))
+    .catch((error) => console.error("❌ Email error:", error));
+}
 
 </script>
 </body>
