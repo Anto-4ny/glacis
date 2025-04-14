@@ -1698,11 +1698,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     emailjs.init("t07CgID0p1Rw9_NM9"); // Your public key
   })();
 
-  function sendEmailNotification(toEmail, subject, message) {
+  function sendEmailNotification(toEmail, subject, message, fromName, fromEmail, replyTo) {
   const templateParams = {
-    to_email: toEmail,
-    subject,
-    message,
+    to_email: toEmail,      // Recipient email address
+    from_name: fromName,    // Sender's name
+    from_email: fromEmail,  // Sender's email address (usually your verified email)
+    reply_to: replyTo,      // Email address for replies
+    subject: subject,       // Email subject
+    message: message        // Email body content
   };
 
   return emailjs.send("service_4kqozhm", "template_f77qu27", templateParams)
