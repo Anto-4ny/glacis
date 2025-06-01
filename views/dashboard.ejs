@@ -22,9 +22,9 @@
 </head>
 
 <!-- Header -->
-<header class="flex flex-col bg-gradient-to-r from-gray-900 via-gray-800 to-gray-100 shadow-lg fixed w-full top-0 z-50 border-b border-gray-300 h-28 px-6">
+<header class="flex flex-col bg-gradient-to-r from-gray-900 via-gray-800 to-gray-100 shadow-lg fixed w-full top-0 z-50 border-b border-gray-300 h-18 px-3">
  
-<!-- Top Section with Icons (Hidden on Small Screens) -->
+<!-- Top Section with Icons (Hidden on Small Screens) 
 <div class="hidden lg:flex items-center space-x-4 bg-white shadow-md rounded-full border border-gray-300 px-4 py-2 w-fit absolute right-6 top-0 mb-4">
     <button id="theme-toggle" class="text-yellow-500 text-xl hover:text-yellow-600 transition">
         <i class="fas fa-moon"></i>
@@ -36,7 +36,7 @@
         <i class="fas fa-bell"></i>
         <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">0</span>
     </button>
-</div>
+</div>-->
 
 
     <!-- Main Header Section -->
@@ -52,7 +52,7 @@
     <a href="validator" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Validator</a>
     <a href="referral" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Referrals</a>
     <a href="withdraw" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Withdraw</a>
-    <a href="videos" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Videos</a>
+    <a href="donations" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Donate</a>
     <a href="help" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Help</a>
     <a href="profile" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Profile</a>
     <button id="logout-button-desktop" class="text-red-500 font-semibold hover:text-red-700 transition duration-300">Log Out</button>
@@ -91,8 +91,8 @@
         <a href="withdraw" class="flex items-center space-x-3 hover:text-blue-500">
             <i class="fas fa-wallet"></i><span>Withdraw</span>
         </a>
-        <a href="videos" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-info-circle"></i><span>Videos</span>
+        <a href="donations" class="flex items-center space-x-3 hover:text-blue-500">
+            <i class="fas fa-info-circle"></i><span>Donate</span>
         </a>
         <a href="help" class="flex items-center space-x-3 hover:text-blue-500">
             <i class="fas fa-question-circle"></i><span>Help</span>
@@ -105,7 +105,7 @@
         </button>
     </div>
     
-    <!-- Mobile Icons Section (Now inside the menu for small screens) -->
+    <!-- Mobile Icons Section (Now inside the menu for small screens) 
     <div class="p-6 border-t flex justify-around text-gray-700 text-xl bg-white shadow-md rounded-b-2xl">
         <button id="theme-toggle" class="text-yellow-500 hover:text-yellow-600 transition">
             <i class="fas fa-moon"></i>
@@ -117,7 +117,7 @@
             <i class="fas fa-bell"></i>
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
         </button>
-    </div>
+    </div>-->
 </nav>
 
 <body class="bg-gray-100 font-sans mt-20">
@@ -195,117 +195,184 @@
 </script>
 
 <!-- Spacer for Other Items -->
-<div class="h-8 md:h-14 lg:h-8"></div>
+<div class="h-4 md:h-14 lg:h-4"></div>
 
-      <!-- Banner Area -->
-      <section class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center text-center overflow-hidden bg-gradient-to-r from-white to-gray-100 shadow-lg rounded-2xl z-0">
+     <!-- Luxurious Banner -->
+<section class="relative w-full h-[250px] flex items-center justify-center overflow-hidden rounded-2xl shadow-xl bg-gradient-to-r from-black via-gray-900 to-black text-white">
 
-    <!-- Moving Shapes -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute w-14 h-14 md:w-20 md:h-20 bg-blue-400 rounded-full opacity-50 animate-float" style="top: 5%; left: 10%;"></div>
-        <div class="absolute w-24 h-24 md:w-28 md:h-28 bg-yellow-400 rounded-full opacity-50 animate-float-reverse" style="top: 10%; right: 15%;"></div>
-        <div class="absolute w-32 h-32 md:w-40 md:h-40 bg-red-400 rounded-full opacity-50 animate-float" style="bottom: 8%; left: 20%;"></div>
-        <div class="absolute w-20 h-20 md:w-28 md:h-28 bg-purple-500 rounded-md opacity-50 transform rotate-45 animate-float-reverse" style="bottom: 5%; right: 10%;"></div>
-        <div class="absolute w-10 h-10 md:w-16 md:h-16 bg-green-400 rounded-full opacity-50 animate-float" style="top: 50%; left: 50%;"></div>
-        <div class="absolute w-16 h-16 md:w-24 md:h-24 bg-orange-400 rounded-md opacity-50 transform rotate-12 animate-float" style="top: 20%; left: 40%;"></div>
-        <div class="absolute w-12 h-12 md:w-18 md:h-18 bg-pink-400 rounded-full opacity-50 animate-float-reverse" style="bottom: 15%; right: 30%;"></div>
+  <!-- Animated Gradient Background Shapes -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <div class="absolute w-32 h-32 bg-purple-600 opacity-30 rounded-full top-0 left-10 animate-float"></div>
+    <div class="absolute w-48 h-48 bg-blue-500 opacity-20 rounded-full bottom-0 right-20 animate-float-reverse"></div>
+    <div class="absolute w-24 h-24 bg-pink-500 opacity-20 rounded-full top-12 right-5 animate-float"></div>
+  </div>
+
+  <!-- Banner Content -->
+  <div class="relative z-10 text-center px-6">
+    <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest bg-gradient-to-r from-blue-400 via-pink-400 to-purple-600 text-transparent bg-clip-text uppercase">
+      Welcome to Your Dashboard
+    </h1>
+
+    <!-- Typing Carousel Text -->
+    <p id="typing-text" class="mt-3 text-sm md:text-base text-gray-300 font-medium h-6 md:h-7 lg:h-8 overflow-hidden"></p>
+
+    <!-- Call to Action -->
+    <div class="mt-4">
+      <a href="#"
+        class="inline-block px-5 py-2 text-sm md:text-base font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-500 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg">
+        Explore
+      </a>
     </div>
-
-    <!-- Banner Content -->
-    <div class="relative z-10 px-6 lg:px-12">
-        <h1 class="text-gray-900 text-3xl md:text-5xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
-            Welcome to Your Dashboard
-        </h1>
-        <p class="text-gray-700 text-lg md:text-xl mt-4 max-w-2xl mx-auto">
-            Track earnings, referrals, and validator progress effortlessly. Take control of your journey now!
-        </p>
-
-        <!-- Get Started Button -->
-        <div class="mt-6">
-            <a href="#" class="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-md hover:scale-105 transition-transform duration-300">
-                Welcome
-            </a>
-        </div>
-    </div>
+  </div>
 </section>
 
-
-<!-- Floating Animations -->
+<!-- Keyframe Animations -->
 <style>
-    @keyframes float {
-        0% { transform: translateY(0px) translateX(0px); }
-        50% { transform: translateY(-30px) translateX(15px); }
-        100% { transform: translateY(0px) translateX(0px); }
-    }
+  @keyframes float {
+    0% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-20px) translateX(10px); }
+    100% { transform: translateY(0) translateX(0); }
+  }
 
-    @keyframes float-reverse {
-        0% { transform: translateY(0px) translateX(0px); }
-        50% { transform: translateY(30px) translateX(-15px); }
-        100% { transform: translateY(0px) translateX(0px); }
-    }
+  @keyframes float-reverse {
+    0% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(20px) translateX(-10px); }
+    100% { transform: translateY(0) translateX(0); }
+  }
 
-    .animate-float {
-        animation: float 8s infinite ease-in-out alternate;
-    }
+  .animate-float {
+    animation: float 6s infinite ease-in-out alternate;
+  }
 
-    .animate-float-reverse {
-        animation: float-reverse 8s infinite ease-in-out alternate;
-    }
+  .animate-float-reverse {
+    animation: float-reverse 6s infinite ease-in-out alternate;
+  }
 </style>
 
-<section id="dashboard-info" class="p-4 bg-gray-100 min-h-screen">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- User Registration & Activation -->
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-blue-500">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">User Registration & Activation</h3>
-            <p class="text-gray-600">Register as a common member with <strong>$4</strong> or as a validator with <strong>$12</strong>.</p>
-        </div>
+<!-- Typing Carousel Script -->
+<script>
+  const phrases = [
+    "Track earnings with ease.",
+    "Monitor referrals in real time.",
+    "Validate member payments quickly.",
+    "Gain total control of your growth.",
+    "Welcome back, champion!"
+  ];
 
-        <!-- Validator Responsibilities -->
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-yellow-500">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Validator Responsibilities</h3>
-            <p class="text-gray-600">Validators verify user payments and earn <strong>$1 per validation</strong>. At least one validator must approve a payment.</p>
-        </div>
+  let i = 0, j = 0, currentPhrase = [], isDeleting = false, isEnd = false;
 
-        <!-- Referral System -->
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-green-500">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Referral Earnings</h3>
-            <ul class="list-disc pl-5 text-gray-600">
-                <li>Direct referrals earn <strong>$1</strong> per activated account.</li>
-                <li>Level 2 referrals earn <strong>$0.5</strong> per activation.</li>
-                <li>If a referral registers as a validator, earn <strong>$5</strong> (direct) or <strong>$2</strong> (level 2).</li>
-            </ul>
-        </div>
+  function loopTyping() {
+    const typingText = document.getElementById("typing-text");
 
-        <!-- Payment System -->
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-purple-500">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Payment System</h3>
-            <p class="text-gray-600">Payments are done manually through <strong>Binance</strong>.</p>
-        </div>
+    isEnd = false;
+    typingText.innerHTML = currentPhrase.join("");
 
-        <!-- Transaction Proof Submission -->
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-red-500">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Transaction Proof Submission</h3>
-            <ul class="list-disc pl-5 text-gray-600">
-                <li>Transaction Hash (TXID)</li>
-                <li>Payment method used (It should always be Binance)</li>
-                <li>Sender and receiver wallet addresses</li>
-                <li>Takes upto 24 hrs for your withdrawal to be approved</li>
-            </ul>
-        </div>
+    if (i < phrases.length) {
+      if (!isDeleting && j <= phrases[i].length) {
+        currentPhrase.push(phrases[i][j]);
+        j++;
+        typingText.innerHTML = currentPhrase.join("");
+      }
 
-        <!-- Dashboard Features -->
-        <div class="bg-white shadow-lg rounded-xl p-6 border-l-4 border-indigo-500">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Dashboard Features</h3>
-            <ul class="list-disc pl-5 text-gray-600">
-                <li>Account activation & verification status</li>
-                <li>Unique referral link</li>
-                <li>Membership panel for pending verifications</li>
-                <li>Wallet withdrawals (min: $1, 24hr approval)</li>
-            </ul>
-        </div>
+      if (isDeleting && j <= phrases[i].length) {
+        currentPhrase.pop();
+        j--;
+        typingText.innerHTML = currentPhrase.join("");
+      }
+
+      if (j == phrases[i].length) {
+        isEnd = true;
+        isDeleting = true;
+      }
+
+      if (isDeleting && j === 0) {
+        currentPhrase = [];
+        isDeleting = false;
+        i++;
+        if (i >= phrases.length) i = 0;
+      }
+    }
+
+    const speed = isEnd ? 2000 : isDeleting ? 50 : 100;
+    setTimeout(loopTyping, speed);
+  }
+
+  document.addEventListener("DOMContentLoaded", loopTyping);
+</script>
+
+<section id="dashboard-info" class="px-4 py-10 bg-gradient-to-br from-gray-100 via-white to-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <!-- User Registration & Activation -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-blue-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-blue-600 mb-3">User Registration & Activation</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Register as a <strong>common member</strong> with <strong>$4</strong> or as a <strong>validator</strong> with <strong>$12</strong>.
+      </p>
     </div>
+
+    <!-- Validator Responsibilities -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-yellow-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-yellow-600 mb-3">Validator Responsibilities</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Validators verify user payments and earn <strong>$1 per validation</strong>. At least one validator must approve a payment.
+      </p>
+    </div>
+
+    <!-- Referral Earnings -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-green-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-green-600 mb-3">Referral Earnings</h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>Direct referrals earn <strong>$1</strong> per activated account.</li>
+        <li>Level 2 referrals earn <strong>$0.5</strong> per activation.</li>
+        <li>If a referral registers as a validator, earn <strong>$5</strong> (direct) or <strong>$2</strong> (level 2).</li>
+      </ul>
+    </div>
+
+    <!-- Payment System -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-purple-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-purple-600 mb-3">Payment System</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Payments are done manually through <strong>Binance</strong>.
+      </p>
+    </div>
+
+    <!-- Transaction Proof Submission -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-red-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-red-600 mb-3">Transaction Proof Submission</h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>Transaction Hash (TXID)</li>
+        <li>Payment method used (It should always be Binance)</li>
+        <li>Sender and receiver wallet addresses</li>
+        <li>Takes up to 24 hrs for your withdrawal to be approved</li>
+      </ul>
+    </div>
+
+    <!-- Dashboard Features -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-indigo-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-indigo-600 mb-3">Dashboard Features</h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>Account activation & verification status</li>
+        <li>Unique referral link</li>
+        <li>Membership panel for pending verifications</li>
+        <li>Wallet withdrawals (min: $1, 24hr approval)</li>
+      </ul>
+    </div>
+
+    <!-- Donations Section -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-pink-500 hover:scale-105 transition-transform duration-300 col-span-1 md:col-span-2 lg:col-span-3">
+      <h3 class="text-2xl font-semibold text-pink-600 mb-3">Support the Community</h3>
+      <p class="text-gray-700 mb-4">
+        Help us grow and support our validators and infrastructure through a generous donation. Every contribution makes a difference.
+      </p>
+      <a href="/donations" class="inline-block px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium text-lg rounded-full shadow-lg hover:brightness-110 transition-all duration-300">
+        Donate Now
+      </a>
+    </div>
+
+  </div>
 </section>
+
 
    <!-- Admin Panel -->
    <div id="admin-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">

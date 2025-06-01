@@ -25,6 +25,11 @@ app.get("/", (req, res) => {
 });
 
 // Route for Videos Page (Displays videos.ejs)
+app.get("/donations", (req, res) => {
+    res.render("donations", { user: "John Doe" });
+});
+
+// Route for Videos Page (Displays videos.ejs)
 app.get("/videos", (req, res) => {
     res.render("videos", { user: "John Doe" });
 });

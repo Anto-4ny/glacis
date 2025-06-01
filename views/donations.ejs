@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quantum Market || watch and earn from videos</title>
+    <title>Quantum Market || Earnings</title>
     <meta name="description" content="Quantum Market offers an online earning platform where users make money by inviting others, helping verify new users, selling ebooks, advertising, and more.">
     <meta property="og:title" content="Quantum Market">
     <meta property="og:description" content="Join Quantum Market to earn money through various online opportunities including referrals, verifications, and advertising.">
@@ -18,6 +18,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
+
     <script type="module">
         import { ensureAuthenticated } from "./script.js";
         
@@ -25,8 +26,8 @@
             ensureAuthenticated(); 
         });
     </script>   
- 
- <!-- Header -->
+
+<!-- Header -->
 <header class="flex flex-col bg-gradient-to-r from-gray-900 via-gray-800 to-gray-100 shadow-lg fixed w-full top-0 z-50 border-b border-gray-300 h-18 px-3">
  
     <!-- Top Section with Icons (Hidden on Small Screens) 
@@ -110,7 +111,7 @@
             </button>
         </div>
         
-        <!-- Mobile Icons Section (Now inside the menu for small screens) 
+        <!-- Mobile Icons Section (Now inside the menu for small screens)
         <div class="p-6 border-t flex justify-around text-gray-700 text-xl bg-white shadow-md rounded-b-2xl">
             <button id="theme-toggle" class="text-yellow-500 hover:text-yellow-600 transition">
                 <i class="fas fa-moon"></i>
@@ -125,29 +126,171 @@
         </div>-->
     </nav>
 
-<body class="bg-gray-100 font-sans mt-20">
+              <!-- Spacer for Other Items -->
+<div class="h-14 md:h-14 lg:h-14"></div>
 
-    <section id="help" class="p-6 bg-gray-100 min-h-screen">
-        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Watch and like videos to earn</h3>
-            <p class="text-gray-600 mb-4">Each video earns you $5.</p>
+<section class="min-h-screen px-4 py-12 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-pink-600 dark:text-pink-400 mb-2">Support Our Mission</h1>
+      <p class="text-gray-700 dark:text-gray-300 text-lg">Your donation helps us maintain infrastructure, reward validators, and grow the community. Thank you for your generosity!</p>
+    </div>
 
-            <div class="p-4 bg-white shadow-lg rounded-lg mt-4">
-                <h3 class="text-lg font-semibold text-gray-800">Your Video Earnings</h3>
-                <p class="text-green-600 text-xl font-bold" id="earnings-display">$0</p>
+    <!-- Wallet Info -->
+    <div class="bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-pink-500 mb-10">
+      <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Donate via Binance (BEP20)</h2>
+      <div class="flex justify-between items-center bg-white dark:bg-gray-900 p-4 rounded-xl shadow-inner">
+        <span class="font-medium text-gray-800 dark:text-gray-200">Wallet Address:</span>
+        <div class="flex items-center space-x-2">
+          <span id="walletBinance" class="text-sm font-mono text-blue-600 dark:text-blue-400">821693759</span>
+         <button id="copyWalletBtn" class="text-sm px-3 py-1 bg-pink-600 text-white rounded hover:bg-pink-700">
+            Copy
+         </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donation Form -->
+    <div class="bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-green-500">
+      <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Submit Donation Details</h2>
+
+        <form class="space-y-4" id="donationForm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">First Name</label>
+            <input type="text" id="donor-first-name" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
             </div>
-            
-            <div class="p-4 bg-white shadow-lg rounded-lg mt-4">
-                <h3 class="text-lg font-semibold text-gray-800">Liked Videos</h3>
-                <p class="text-blue-600 text-xl font-bold" id="liked-videos-display">0</p>
-            </div>            
-    
-            <div id="video-list" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Videos will be inserted here dynamically -->
+
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Last Name</label>
+            <input type="text" id="donor-last-name" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
             </div>
         </div>
-    </section>
-  
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+            <input type="email" id="donor-email" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
+        </div>
+
+            <!-- TXID field -->
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Transaction ID (TXID)</label>
+            <input type="text" id="donor-txid" placeholder="e.g. 0x123abc..." required class="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-green-400 dark:bg-gray-900 dark:text-white">
+            <div id="txid-message" class="text-sm mt-1 text-red-500"></div> 
+            </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Wallet Address Used</label>
+            <input type="text" id="donor-wallet" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Amount Donated (USD)</label>
+            <input type="number" id="donor-amount" placeholder="Enter amount in USD" required class="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-green-400 dark:bg-gray-900 dark:text-white">
+        </div>
+
+        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-full hover:brightness-110 transition-all duration-300">
+            Submit Donation
+        </button>
+
+        <!-- Success/Error Messages -->
+        <div id="donation-message" class="text-center font-medium mt-4"></div>
+        </form>
+
+    </div>
+  </div>
+</section>
+
+<script type="module">
+ import {
+  auth,
+  db,
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  onAuthStateChanged
+} from './script.js'
+
+const walletAddress = "821693759";
+
+// ✅ Clipboard Copy Handler
+function copyWallet() {
+  navigator.clipboard.writeText(walletAddress).then(() => {
+    showMessage("Wallet address copied!", "green");
+  }).catch(() => {
+    showMessage("Failed to copy wallet address.", "red");
+  });
+}
+
+// ✅ Feedback Message
+function showMessage(message, type) {
+  const msgEl = document.getElementById("donation-message");
+  msgEl.textContent = message;
+  msgEl.className = `text-center mt-4 font-medium ${type === "green" ? "text-green-600" : "text-red-500"}`;
+}
+
+// ✅ Listen for Copy Button Click
+document.getElementById("copyWalletBtn").addEventListener("click", copyWallet);
+
+// ✅ Pre-fill user info if logged in
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        document.getElementById("donor-first-name").value = data.firstName || "";
+        document.getElementById("donor-last-name").value = data.lastName || "";
+        document.getElementById("donor-email").value = data.email || user.email;
+        document.getElementById("donor-wallet").value = walletAddress;
+      }
+    } catch (error) {
+      showMessage("Failed to fetch user data.", "red");
+    }
+  }
+});
+
+// ✅ Donation Form Submission
+document.getElementById("donationForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const firstName = document.getElementById("donor-first-name").value.trim();
+  const lastName = document.getElementById("donor-last-name").value.trim();
+  const email = document.getElementById("donor-email").value.trim();
+  const txid = document.getElementById("donor-txid").value.trim();
+  const wallet = document.getElementById("donor-wallet").value.trim();
+  const amount = parseFloat(document.getElementById("donor-amount").value);
+
+  if (!txid || !amount || isNaN(amount)) {
+    return showMessage("Please enter a valid TXID and amount.", "red");
+    document.getElementById("txid-message").textContent = "Invalid TXID";
+
+  }
+
+  try {
+    await addDoc(collection(db, "donations"), {
+      firstName,
+      lastName,
+      email,
+      txid,
+      wallet,
+      amount,
+      status: "pending",
+      timestamp: new Date()
+    });
+
+    showMessage("Thank you for your donation! We have received your details.", "green");
+    e.target.reset();
+  } catch (err) {
+    showMessage("Failed to submit donation. Please try again.", "red");
+  }
+});
+
+</script>
+
+
 
 <footer class="bg-gray-900 text-white text-center py-4">
     <p class="copyright-text text-sm">
@@ -159,8 +302,8 @@
             Antocap Teknologies
         </a>
     </p>
-</footer> 
-   
+</footer>    
+  
 <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
 <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
 <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
@@ -169,11 +312,10 @@
 
 <!-- Your custom script -->
 <script type="module" src="script.js"></script>
-<script type="module" src="videos.js"></script>
+<script type="module" src="referral.js"></script>
 
-  <script>
-
-document.addEventListener("contextmenu", function (event) {
+<script>
+ document.addEventListener("contextmenu", function (event) {
     event.preventDefault(); // Disable right-click
   });
 
@@ -197,5 +339,32 @@ document.addEventListener("contextmenu", function (event) {
 
 
 </script>
+
+<script>
+
+document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Disable right-click
+  });
+  
+
+  document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && (event.key === "u" || event.key === "U")) {
+      event.preventDefault(); // Disable "View Source" (Ctrl + U)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "I") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + I)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "J") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + J)
+    }
+    if (event.ctrlKey && event.key === "S") {
+      event.preventDefault(); // Disable Save (Ctrl + S)
+    }
+    if (event.ctrlKey && event.key === "P") {
+      event.preventDefault(); // Disable Print (Ctrl + P)
+    }
+  });
+</script>
 </body>
 </html>
+
