@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Quantum Income | Charity, validation and donations site </title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="quantum income, quantum market, antocap teknologies, web designer" name="keywords">
+        <meta content="quantum income, quantum market, antocap teknologies, web designer" name="description">
+
+        <!-- Favicon -->
+        <link href="img/quantumincome-logo.jpg" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+
+                    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body>
+<!-- Top Bar Start -->
+<div class="hidden md:block bg-green-900 text-white text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+    <div class="flex items-center space-x-6">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-phone-alt"></i>
+        <p>+0000 00 000 00</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-envelope"></i>
+        <p>marketquantum25@gmail.com</p>
+      </div>
+    </div>
+    <div class="flex space-x-4">
+      <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</div>
+<!-- Top Bar End -->
+
+<!-- Nav Bar Start -->
+<nav class="bg-green-800 sticky top-0 left-0 w-full z-50 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="dashboard" class="flex items-center">
+        <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" class="h-10">
+      </a>
+
+      <!-- Toggle Button -->
+      <div class="lg:hidden">
+        <button id="mobile-menu-toggle" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden lg:flex space-x-4 items-center text-white font-medium">
+        <a href="dashboard" class="hover:text-yellow-400">Home</a>
+        <a href="about" class="hover:text-yellow-400">About</a>
+        <a href="donations" class="hover:text-yellow-400">Donate</a>
+        <a href="earnings" class="hover:text-yellow-400">Earnings</a>
+
+        <!-- Remote Jobs Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Remote Jobs <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="validator" class="block px-4 py-2 hover:bg-gray-200">Validator</a>
+            <a href="referral" class="block px-4 py-2 hover:bg-gray-200">Refer and Earn</a>
+            <a href="withdraw" class="block px-4 py-2 hover:bg-gray-200">Withdraw Earnings</a>
+          </div>
+        </div>
+
+        <!-- Our Services Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Our Services <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="service" class="block px-4 py-2 hover:bg-gray-200">What We Do</a>
+            <a href="donations" class="block px-4 py-2 hover:bg-gray-200">Donate Now</a>
+            <a href="help" class="block px-4 py-2 hover:bg-gray-200">Help & Support</a>
+          </div>
+        </div>
+
+        <a href="profile" class="hover:text-yellow-400">Profile</a>
+        <a href="index" class="text-red-400 hover:text-red-500">Log Out</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu"
+    class="fixed top-0 left-0 w-[70%] h-full bg-green-900 text-white transform -translate-x-full transition-transform duration-300 z-40 lg:hidden overflow-y-auto">
+    <div class="p-6 space-y-4">
+      <button id="mobile-menu-close" class="text-white absolute top-4 right-4 text-2xl">✕</button>
+
+      <a href="dashboard" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-home text-yellow-400"></i>Home</a>
+      <a href="about" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-info-circle text-yellow-400"></i>About</a>
+      <a href="donations" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-donate text-yellow-400"></i>Donate</a>
+      <a href="earnings" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-wallet text-yellow-400"></i>Earnings</a>
+
+      <!-- Dropdowns with toggle -->
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-briefcase text-yellow-400"></i>Remote Jobs</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="validator" class="block py-1 hover:text-yellow-400">Validator</a>
+          <a href="referral" class="block py-1 hover:text-yellow-400">Refer and Earn</a>
+          <a href="withdraw" class="block py-1 hover:text-yellow-400">Withdraw Earnings</a>
+        </div>
+      </div>
+
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-cogs text-yellow-400"></i>Our Services</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="service" class="block py-1 hover:text-yellow-400">What We Do</a>
+          <a href="donations" class="block py-1 hover:text-yellow-400">Donate Now</a>
+          <a href="help" class="block py-1 hover:text-yellow-400">Help & Support</a>
+        </div>
+      </div>
+
+      <a href="profile" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-user text-yellow-400"></i>Profile</a>
+      <a href="index" class="flex items-center gap-2 text-red-400 hover:text-red-500"><i class="fas fa-sign-out-alt text-red-400"></i>Log Out</a>
+    </div>
+  </div>
+</nav>
+<!-- Nav Bar End -->
+
+
+        <!-- Carousel Start -->
+<div class="carousel">
+  <div class="container-fluid">
+    <div class="owl-carousel">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item">
+        <div class="carousel-img">
+          <img src="img/carousel-1.jpg" alt="Helping Children">
+        </div>
+        <div class="carousel-text">
+          <h1>Support Families & Communities</h1>
+          <p>Your donation keeps the platform alive and supports vulnerable communities across the globe.</p>
+          <div class="carousel-btn">
+            <a class="btn btn-custom" href="donations">Donate Now</a>
+            <a class="btn btn-custom btn-play" href="validator">Earn from Validations</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="carousel-img">
+          <img src="img/carousel-2.jpg" alt="Remote Jobs">
+        </div>
+        <div class="carousel-text">
+          <h1>Earn by Approving Donations</h1>
+          <p>Become a validator, review real payments, and earn rewards — from anywhere in the world.</p>
+          <div class="carousel-btn">
+            <a class="btn btn-custom" href="donations">Donate Now</a>
+            <a class="btn btn-custom btn-play" href="validator">Become a Validator</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <div class="carousel-img">
+          <img src="img/carousel-3.jpg" alt="Referral Earnings">
+        </div>
+        <div class="carousel-text">
+          <h1>Invite & Earn Instantly</h1>
+          <p>Refer friends to join the platform and earn passive income for every successful signup and donation.</p>
+          <div class="carousel-btn">
+            <a class="btn btn-custom" href="donations">Donate Now</a>
+            <a class="btn btn-custom btn-play" href="referral">Start Referring</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Carousel End -->
+        
+<!-- About Start -->
+<div class="about">
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <!-- Image Column -->
+      <div class="col-lg-6">
+        <div class="about-img" data-parallax="scroll" data-image-src="img/about.jpg"></div>
+      </div>
+
+      <!-- Content Column -->
+      <div class="col-lg-6">
+        <div class="section-header">
+          <p>Learn About Us</p>
+          <h2>Quantum Income — Empowering Lives Globally</h2>
+        </div>
+        <div class="about-tab">
+          <ul class="nav nav-pills nav-justified">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="pill" href="#tab-content-1">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="pill" href="#tab-content-2">Mission</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="pill" href="#tab-content-3">Vision</a>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            
+            <!-- About Tab -->
+            <div id="tab-content-1" class="container tab-pane active">
+              Quantum Income is a global platform committed to transforming lives through digital giving and earning opportunities. By blending charity with technology, we enable people from every corner of the world to donate, support one another, and earn income remotely by becoming validators and referrers. Whether you're donating to help a cause or earning by validating transactions, you're making an impact.
+            </div>
+
+            <!-- Mission Tab -->
+            <div id="tab-content-2" class="container tab-pane fade">
+              Our mission is to create a decentralized ecosystem where giving meets opportunity. We aim to reward users who contribute their time and trust by verifying donation records, while also funding initiatives that support education, health, and financial independence globally. Quantum Income exists to build bridges between donors, validators, and dreamers in need.
+            </div>
+
+            <!-- Vision Tab -->
+            <div id="tab-content-3" class="container tab-pane fade">
+              To be the world’s leading donation and income platform where generosity is rewarded and global impact is measurable. We envision a future where millions thrive — not just through receiving donations, but through validating, referring, and building a self-sustaining digital economy powered by people, for people.
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- About End -->
+
+
+ <!-- Service Start -->
+<div class="service">
+    <div class="container">
+        <div class="section-header text-center">
+            <p>What We Do?</p>
+            <h2>Empowering communities through donations, validation, and digital income</h2>
+        </div>
+        <div class="row">
+            <!-- Donation Management -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="flaticon-donation"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>Global Donations</h3>
+                        <p>We connect generous donors to real causes worldwide—ensuring transparency, impact, and secure transactions through blockchain and digital tools.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validator Jobs -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="flaticon-check"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>Remote Validation</h3>
+                        <p>We offer remote jobs that allow users to earn money by verifying donation proofs, ensuring integrity within our community.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Income -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="flaticon-referral"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>Referral Program</h3>
+                        <p>Invite friends and earn rewards! Our referral system encourages growth and rewards you for every successful referral.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Empowerment -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="flaticon-coin"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>Financial Inclusion</h3>
+                        <p>We empower the unbanked by enabling access to decentralized donation and earning opportunities from anywhere in the world.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Learning & Tools -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="flaticon-online-learning"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>Education & Support</h3>
+                        <p>We educate our users on safe validation, digital finance, and crypto basics to help them grow their skills while earning.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Development -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="flaticon-group"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>Community Growth</h3>
+                        <p>At the heart of Quantum Income is a supportive, global community united by fairness, opportunity, and collective impact.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+        
+        
+<!-- Causes Start -->
+<div class="causes">
+    <div class="container">
+        <div class="section-header text-center">
+            <p>Popular Causes</p>
+            <h2>Support the core missions driving Quantum Income worldwide</h2>
+        </div>
+        <div class="owl-carousel causes-carousel">
+
+            <!-- Cause 1: Validator Rewards -->
+            <div class="causes-item">
+                <div class="causes-img">
+                    <img src="img/causes-1.jpg" alt="Validator Rewards">
+                </div>
+                <div class="causes-progress">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                            <span>26%</span>
+                        </div>
+                    </div>
+                    <div class="progress-text">
+                        <p><strong>Raised:</strong> $150</p>
+                        <p><strong>Goal:</strong> $200</p>
+                    </div>
+                </div>
+                <div class="causes-text">
+                    <h3>Reward Our Validators</h3>
+                    <p>Support remote workers validating donations with accuracy and fairness. Every $1 goes directly to reward their efforts.</p>
+                </div>
+                <div class="causes-btn">
+                    <a class="btn btn-custom" href="validator">Learn More</a>
+                    <a class="btn btn-custom" href="donations">Donate Now</a>
+                </div>
+            </div>
+
+            <!-- Cause 2: Family Support -->
+            <div class="causes-item">
+                <div class="causes-img">
+                    <img src="img/causes-2.jpg" alt="Family Support">
+                </div>
+                <div class="causes-progress">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                            <span>60%</span>
+                        </div>
+                    </div>
+                    <div class="progress-text">
+                        <p><strong>Raised:</strong> $120</p>
+                        <p><strong>Goal:</strong> $200</p>
+                    </div>
+                </div>
+                <div class="causes-text">
+                    <h3>Support Vulnerable Families</h3>
+                    <p>Help us reach low-income households with essential food, clothes, and education support through donor-funded outreach.</p>
+                </div>
+                <div class="causes-btn">
+                    <a class="btn btn-custom" href="about">Learn More</a>
+                    <a class="btn btn-custom" href="donations">Donate Now</a>
+                </div>
+            </div>
+
+            <!-- Cause 3: Learner Onboarding -->
+            <div class="causes-item">
+                <div class="causes-img">
+                    <img src="img/causes-3.jpg" alt="Learner Onboarding">
+                </div>
+                <div class="causes-progress">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                            <span>30%</span>
+                        </div>
+                    </div>
+                    <div class="progress-text">
+                        <p><strong>Raised:</strong> $180</p>
+                        <p><strong>Goal:</strong> $200</p>
+                    </div>
+                </div>
+                <div class="causes-text">
+                    <h3>Train & Onboard New Earners</h3>
+                    <p>Fund workshops that teach new users how to validate, invite, and grow their income online via Quantum Income.</p>
+                </div>
+                <div class="causes-btn">
+                    <a class="btn btn-custom" href="help">Learn More</a>
+                    <a class="btn btn-custom" href="donations">Donate Now</a>
+                </div>
+            </div>
+
+            <!-- Cause 4: System & Infrastructure -->
+            <div class="causes-item">
+                <div class="causes-img">
+                    <img src="img/causes-4.jpg" alt="Infrastructure">
+                </div>
+                <div class="causes-progress">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                            <span>10%</span>
+                        </div>
+                    </div>
+                    <div class="progress-text">
+                        <p><strong>Raised:</strong> $100</p>
+                        <p><strong>Goal:</strong> $200</p>
+                    </div>
+                </div>
+                <div class="causes-text">
+                    <h3>Improve Donation Platform</h3>
+                    <p>Help us maintain, secure, and improve the tech behind Quantum Income so users experience faster, safer service globally.</p>
+                </div>
+                <div class="causes-btn">
+                    <a class="btn btn-custom" href="donations">Learn More</a>
+                    <a class="btn btn-custom" href="donations">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Causes End -->
+
+       
+<section id="dashboard-info" class="px-4 py-10 bg-gradient-to-br from-gray-100 via-white to-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <!-- User Registration & Activation -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-blue-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-blue-600 mb-3">Starting Remote job as a Validator</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Register as a validator by donating a minimum of <strong>12 usd</strong> to start earning with remote jobs .
+      </p>
+    </div>
+
+    <!-- Validator Responsibilities -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-yellow-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-yellow-600 mb-3">Validator Responsibilities</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Validators verify user payments and earn <strong>1 usd per validation</strong>. At least one validator must approve a payment.
+      </p>
+    </div>
+
+    <!-- Referral Earnings -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-green-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-green-600 mb-3">Refer and Earn Program</h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>Direct referrals earn <strong>15%</strong> per validated account.</li>
+        <li>Level 2 referrals earn <strong>5%</strong> per activation.</li>
+      </ul>
+    </div>
+
+    <!-- Payment System -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-purple-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-purple-600 mb-3">Payment System</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Donations are done manually through <strong>Binance Wallet (BEP20): 821693759</strong>.
+      </p>
+    </div>
+
+    <!-- Transaction Proof Submission -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-red-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-red-600 mb-3">Transaction Proof Submission</h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>Transaction Hash (TXID)</li>
+        <li>Payment method used (It should always be Binance)</li>
+        <li>Sender and receiver wallet addresses</li>
+        <li>Takes up to 24 hrs for your withdrawal to be approved</li>
+      </ul>
+    </div>
+
+    <!-- Dashboard Features -->
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-indigo-500 hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-indigo-600 mb-3">Dashboard Features</h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>Account activation & verification status</li>
+        <li>Unique referral link</li>
+        <li>Membership panel for pending verifications</li>
+        <li>Wallet withdrawals (min: $1, 24hr approval)</li>
+      </ul>
+    </div>
+
+    <!-- Donations Section 
+    <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-pink-500 hover:scale-105 transition-transform duration-300 col-span-1 md:col-span-2 lg:col-span-3">
+      <h3 class="text-2xl font-semibold text-pink-600 mb-3">Support the Community</h3>
+      <p class="text-gray-700 mb-4">
+        Help us grow and support our validators and infrastructure through a generous donation. Every contribution makes a difference.
+      </p>
+      <a href="/donations" class="inline-block px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium text-lg rounded-full shadow-lg hover:brightness-110 transition-all duration-300">
+        Donate Now
+      </a>
+    </div>-->
+
+  </div>
+</section>
+        
+        
+ <!-- Donate Start -->
+<div class="donate" data-parallax="scroll" data-image-src="img/donate.jpg">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Left Content -->
+            <div class="col-lg-7">
+                <div class="donate-content">
+                    <div class="section-header">
+                        <p>Donate Now</p>
+                        <h2>Support Quantum Income – Empower and Uplift</h2>
+                    </div>
+                    <div class="donate-text">
+                        <p>
+                            Your donation goes a long way in helping validators earn, onboarding learners, and aiding families worldwide. Thank you for your kindness!
+                        </p>
+                        <p class="font-weight-bold text-white">
+                            <span class="text-warning">Binance Wallet (BEP20):</span>
+                            <span id="walletAddress" class="text-light">821693759</span>
+                            <button onclick="copyWallet()" class="btn btn-sm btn-light ml-2">Copy</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation Form -->
+            <div class="col-lg-5">
+                <div class="donate-form">
+                    <form id="quickDonationForm">
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="donorName" placeholder="Your Name" required />
+                        </div>
+                        <div class="control-group">
+                            <input type="email" class="form-control" id="donorEmail" placeholder="Your Email" required />
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="txid" placeholder="Transaction ID (TXID)" required />
+                        </div>
+                        <div class="btn-group btn-group-toggle w-100 mb-2" data-toggle="buttons">
+                            <label class="btn btn-custom w-33">
+                                <input type="radio" name="amount" value="1"> $1
+                            </label>
+                            <label class="btn btn-custom w-33">
+                                <input type="radio" name="amount" value="2"> $2
+                            </label>
+                            <label class="btn btn-custom w-33">
+                                <input type="radio" name="amount" value="5"> $5
+                            </label>
+                        </div>
+                        <div class="control-group">
+                            <input type="number" step="0.01" min="0" class="form-control" id="customAmount" placeholder="Or enter custom amount (USD)" />
+                        </div>
+                        <div>
+                            <button class="btn btn-custom btn-block mt-2" type="submit">Submit Donation</button>
+                        </div>
+                        <div id="donationFeedback" class="text-white mt-2 text-center font-weight-bold"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Donate End -->
+
+<!-- Script -->
+<script>
+    function copyWallet() {
+        const address = document.getElementById("walletAddress").textContent;
+        navigator.clipboard.writeText(address).then(() => {
+            alert("Wallet address copied to clipboard.");
+        });
+    }
+
+    document.getElementById("quickDonationForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("donorName").value.trim();
+        const email = document.getElementById("donorEmail").value.trim();
+        const txid = document.getElementById("txid").value.trim();
+        const selectedAmount = document.querySelector('input[name="amount"]:checked');
+        const customAmount = parseFloat(document.getElementById("customAmount").value);
+
+        let amount = selectedAmount ? parseFloat(selectedAmount.value) : customAmount;
+
+        if (!name || !email || !txid || !amount || isNaN(amount)) {
+            return document.getElementById("donationFeedback").textContent = "Please fill all fields correctly.";
+        }
+
+        // TODO: Send to Firebase or backend
+        console.log("Donation Submitted:", { name, email, txid, amount });
+
+        document.getElementById("donationFeedback").textContent = "Thank you! Your donation was received.";
+        this.reset();
+    });
+</script>
+        
+        
+<!-- Testimonial Start -->
+<div class="testimonial">
+    <div class="container">
+        <div class="section-header text-center">
+            <p>Testimonial</p>
+            <h2>What people are saying about Quantum Income</h2>
+        </div>
+        <div class="owl-carousel testimonials-carousel">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-item">
+                <div class="testimonial-profile">
+                    <img src="img/testimonial-1.jpg" alt="Image">
+                    <div class="testimonial-name">
+                        <h3>Esther M.</h3>
+                        <p>Remote Validator</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>
+                        Quantum Income gave me the opportunity to work from home validating payments. I earn weekly, and I’ve referred others too. It’s genuine and easy to start!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="testimonial-item">
+                <div class="testimonial-profile">
+                    <img src="img/testimonial-2.jpg" alt="Image">
+                    <div class="testimonial-name">
+                        <h3>James K.</h3>
+                        <p>Donor</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>
+                        I donated through Binance and within minutes got confirmation. The transparency and updates are amazing. I’m happy to be part of a mission that uplifts lives.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="testimonial-item">
+                <div class="testimonial-profile">
+                    <img src="img/testimonial-3.jpg" alt="Image">
+                    <div class="testimonial-name">
+                        <h3>Faith W.</h3>
+                        <p>Youth Beneficiary</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>
+                        I joined Quantum Income through a friend’s referral. I was trained to approve donations and now earn online. It’s changed my life completely!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Testimonial 4 -->
+            <div class="testimonial-item">
+                <div class="testimonial-profile">
+                    <img src="img/testimonial-4.jpg" alt="Image">
+                    <div class="testimonial-name">
+                        <h3>Samuel T.</h3>
+                        <p>Community Organizer</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>
+                        We partnered with Quantum Income to support families in need. Their response was fast, and the funds helped buy food and pay school fees. A real impact!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Testimonial End -->
+        
+
+
+<!-- Footer Start -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Logo & About -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-contact text-center">
+                    <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" style="width: 70px; margin-bottom: 15px;">
+                    <p class="text-white">
+                        Quantum Income is a global platform focused on helping people earn through remote validation jobs and building impact through donations and referrals.
+                    </p>
+                    <div class="footer-social">
+                        <a class="btn btn-custom" href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-custom" href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-custom" href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Popular Links</h2>
+                    <a href="about">About Us</a>
+                    <a href="validator">Validator</a>
+                    <a href="withdraw">Withdrawals</a>
+                    <a href="donations">Donate</a>
+                    <a href="referral">Refer</a>
+                </div>
+            </div>
+
+            <!-- Useful Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Useful Links</h2>
+                    <a href="profile">Profile</a>
+                    <a href="service">Services</a>
+                    <a href="help">Help</a>
+                    <a href="validator">Remote Jobs</a>
+                    <a href="earnings">Earnings</a>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-newsletter">
+                    <h2>Newsletter</h2>
+                    <form>
+                        <input class="form-control" placeholder="Email goes here">
+                        <button class="btn btn-custom">Submit</button>
+                        <label>Don't worry, we don't spam!</label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="container copyright">
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; <a href="#">Quantum Income</a>, All Rights Reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p>
+  Designed by <a href="https://antocapteknologies.com" target="_blank">Antocap Teknologies</a> |
+    <a href="https://htmlcodex.com" target="_blank" style="font-size: 6px;">Template by HTML Codex</a>
+    </p> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+        
+        <!-- Back to top button -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- Pre Loader -->
+        <div id="loader" class="show">
+            <div class="loader"></div>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/parallax/parallax.min.js"></script>
+        
+        <!-- Contact Javascript File -->
+        <script src="mail/jqBootstrapValidation.min.js"></script>
+        <script src="mail/contact.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+    </body>
+</html>

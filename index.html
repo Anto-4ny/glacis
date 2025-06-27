@@ -1,0 +1,182 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quantum Market || Register/Login</title>
+    <meta name="description" content="Quantum Market offers an online earning platform where users make money by inviting others, helping verify new users, selling ebooks, advertising, and more.">
+    <meta property="og:title" content="Quantum Market">
+    <meta property="og:description" content="Join Quantum Market to earn money through various online opportunities including referrals, verifications, and advertising.">
+    <meta property="og:image" content="images/quantum-market-logo.jpg">
+    <meta property="og:url" content="https://quatumincome.org">
+
+    <!-- Use only one Font Awesome import -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="images/quantum-market-logo.jpg" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+    <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <main class="w-full max-w-md bg-white p-8 shadow-lg rounded-lg">
+        <div class="auth-container">
+        
+            <!-- Sign-Up Section -->
+<div class="form-box" id="signup-section">
+    <form id="signup-form" class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-700 text-center">Signup</h2>
+
+        <label class="block text-gray-600">First Name</label>
+        <input type="text" id="first-name" pattern="[A-Za-z]+" placeholder="Enter your first name" required
+            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+
+        <label class="block text-gray-600">Last Name</label>
+        <input type="text" id="last-name" pattern="[A-Za-z]+" placeholder="Enter your last name" required
+            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+
+        <label class="block text-gray-600">Email</label>
+        <input type="email" id="signup-email" placeholder="Enter your email" required
+            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+
+        <label class="block text-gray-600">Password</label>
+        <div class="relative">
+            <input type="password" id="signup-password" placeholder="Create a password" required
+                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <span id="toggle-signup-password" class="absolute right-3 top-3 text-gray-500 cursor-pointer">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+
+        <label class="block text-gray-600">Confirm Password</label>
+        <div class="relative">
+            <input type="password" id="confirm-password" placeholder="Confirm your password" required
+                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <span id="toggle-confirm-password" class="absolute right-3 top-3 text-gray-500 cursor-pointer">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+
+        <label class="block text-gray-600">Referral Code (if you have one)</label>
+        <input type="text" id="referral-code" name="referralCode" placeholder="Enter referral code"
+            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Signup</button>
+
+        <div id="signup-message" class="text-center text-red-500"></div>
+
+        <div class="text-center mt-4">
+            <span class="text-gray-600">Already have an account?</span>
+            <a href="#" id="show-login" class="text-blue-600 hover:underline">Login here</a>
+        </div>
+    </form>
+</div>
+            
+            <!-- Login Section -->
+            <div class="form-box hidden" id="login-section">
+                <form id="login-form" class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-700 text-center">Login</h2>
+                    
+                    <label class="block text-gray-600">Email</label>
+                    <input type="email" id="login-email" placeholder="Enter your email" required
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    
+                    <label class="block text-gray-600">Password</label>
+                    <div class="relative">
+                        <input type="password" id="login-password" placeholder="Enter your password" required
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <span id="toggle-login-password" class="absolute right-3 top-3 text-gray-500 cursor-pointer">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Login</button>
+                    
+                    <div id="login-message" class="text-center text-red-500"></div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="#" id="show-signup" class="text-blue-600 hover:underline">Signup here</a> |
+                        <a href="#" id="forgot-password" class="text-red-600 hover:underline">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Forgot Password Section -->
+            <div id="forgot-password-section" class="hidden bg-gray-50 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-gray-700 text-center mb-4">Reset Password</h2>
+                
+                <label class="block text-gray-600">Enter your email address</label>
+                <input type="email" id="reset-email" placeholder="Enter your email" required
+                    class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                
+                <button id="send-reset-email"
+                    class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 mt-4">
+                    Send Reset Email
+                </button>
+                
+                <div id="reset-message" class="text-center text-red-500 mt-2"></div>
+                
+                <button id="back-to-login"
+                    class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 mt-2">
+                    Back to Login
+                </button>
+            </div>
+        </div>
+        <footer class="bg-gray-900 text-white text-center py-4">
+            <p class="copyright-text text-sm">
+                &copy; 2025 <span class="font-bold">Quantum Market</span>. All rights reserved.
+            </p>
+            <p class="text-xs mt-1">
+                Designed by 
+                <a href="https://antocapteknologies.com" class="text-blue-400 hover:text-blue-300 font-semibold" target="_blank">
+                    Antocap Teknologies
+                </a>
+            </p>
+        </footer>    
+          
+    </main>
+
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
+    
+        <script type="module" src="/js/script.js"></script>
+        <script type="module" src="/js/referral.js"></script>
+
+        <script type="module">
+            import { auth } from "./js/script.js";
+        
+            // 🔹 Auto-fill Referral Code from URL (If Provided)
+            document.addEventListener("DOMContentLoaded", () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const referralCode = urlParams.get("referral");
+                if (referralCode) {
+                    const referralInput = document.getElementById("referral-code");
+                    referralInput.value = referralCode;
+                }
+            });
+        
+            // 🔹 Disable Right-Click & Common DevTools Shortcuts
+            document.addEventListener("contextmenu", (event) => event.preventDefault()); // Disable right-click
+        
+            document.addEventListener("keydown", (event) => {
+                const blockedKeys = [
+                    { ctrl: true, key: "u" }, // View Source (Ctrl + U)
+                    { ctrl: true, shift: true, key: "I" }, // DevTools (Ctrl + Shift + I)
+                    { ctrl: true, shift: true, key: "J" }, // DevTools (Ctrl + Shift + J)
+                    { ctrl: true, key: "S" }, // Save (Ctrl + S)
+                    { ctrl: true, key: "P" } // Print (Ctrl + P)
+                ];
+        
+                blockedKeys.forEach(({ ctrl, shift, key }) => {
+                    if (event.ctrlKey === ctrl && event.shiftKey === shift && event.key.toLowerCase() === key.toLowerCase()) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        
+        </script>        
+</body>
+</html>

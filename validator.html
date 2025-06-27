@@ -1,143 +1,192 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quantum Market || Dashboard</title>
-    <meta name="description" content="Quantum Market offers an online earning platform where users make money by inviting others, helping verify new users, selling ebooks, advertising, and more.">
-    <meta property="og:title" content="Quantum Market">
-    <meta property="og:description" content="Join Quantum Market to earn money through various online opportunities including referrals, verifications, and advertising.">
-    <meta property="og:image" content="images/quantum-market-logo.jpg">
-    <meta property="og:url" content="https://quatummarket.antocapteknologies.com">
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Quantum Income | validator dashboard | Charity, validation and donations site </title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="validator, quantum income" name="keywords">
+        <meta content="validator-earnings" name="description">
 
-    <!-- Use only one Font Awesome import -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="images/quantum-market-logo.jpg" type="image/x-icon">
-    
-    <!-- Tailwind CSS -->
+        <!-- Favicon -->
+        <link href="img/quantumincome-logo.jpg" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+
+                    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN (Load this in the <head> or before your script) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
 
-</head>
+    <body>
 
-<!-- Header -->
-<header class="flex flex-col bg-gradient-to-r from-gray-900 via-gray-800 to-gray-100 shadow-lg fixed w-full top-0 z-50 border-b border-gray-300 h-18 px-3">
- 
-<!-- Top Section with Icons (Hidden on Small Screens) 
-<div class="hidden lg:flex items-center space-x-4 bg-white shadow-md rounded-full border border-gray-300 px-4 py-2 w-fit absolute right-6 top-0 mb-4">
-    <button id="theme-toggle" class="text-yellow-500 text-xl hover:text-yellow-600 transition">
-        <i class="fas fa-moon"></i>
-    </button>
-    <button id="language-toggle" class="text-blue-500 text-xl hover:text-blue-600 transition">
-        <i class="fas fa-language"></i>
-    </button>
-    <button id="notification-bar" class="relative text-green-500 text-xl hover:text-green-600 transition">
-        <i class="fas fa-bell"></i>
-        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">0</span>
-    </button>
-</div>-->
-
-
-    <!-- Main Header Section -->
-    <div class="flex items-center justify-between py-1">
-        <a href="/dashboard" class="flex items-center space-x-3">
-            <img id="logo" src="images/quantum-market-logo.jpg" alt="Logo" class="h-20 w-20 rounded-full shadow-md">                         
-        </a>
-
-       <!-- Desktop Navigation -->
-<nav class="hidden lg:flex space-x-8 bg-white px-10 py-3 shadow-md rounded-full border border-gray-300 mt-10">
-    <a href="dashboard" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Dashboard</a>
-    <a href="earnings" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Earnings</a>
-    <a href="validator" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Validator</a>
-    <a href="referral" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Referrals</a>
-    <a href="withdraw" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Withdraw</a>
-    <a href="videos" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Videos</a>
-    <a href="help" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Help</a>
-    <a href="profile" class="text-gray-900 font-semibold hover:text-blue-500 transition duration-300">Profile</a>
-    <button id="logout-button-desktop" class="text-red-500 font-semibold hover:text-red-700 transition duration-300">Log Out</button>
-</nav>
-
-
-        <!-- Mobile Navigation Icon -->
-        <button id="hamburger-icon" class="text-gray-900 text-2xl lg:hidden">
-            <i class="fas fa-bars"></i>
-        </button>
+        <!-- Top Bar Start -->
+<div class="hidden md:block bg-green-900 text-white text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+    <div class="flex items-center space-x-6">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-phone-alt"></i>
+        <p>+0000 00 000 00</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-envelope"></i>
+        <p>marketquantum25@gmail.com</p>
+      </div>
     </div>
-</header>
-
-<!-- Overlay -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-30 hidden lg:hidden"></div>
-
-<!-- Mobile Navigation -->
-<nav id="mobile-nav" class="fixed left-0 top-0 h-full w-3/4 bg-white text-gray-900 shadow-2xl transform -translate-x-full transition-transform lg:hidden z-50 rounded-r-2xl">
-    <div class="p-6 border-b flex justify-between items-center">
-        <h3 class="text-xl font-semibold">Menu</h3>
-        <button id="close-nav" class="text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+    <div class="flex space-x-4">
+      <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
     </div>
-    <div class="p-6 flex flex-col space-y-4 text-lg">
-        <a href="dashboard" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
-        </a>
-        <a href="earnings" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-dollar-sign"></i><span>Earnings</span>
-        </a>
-        <a href="validator" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-user-check"></i><span>Validator</span>
-        </a>
-        <a href="referral" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-user-friends"></i><span>Referrals</span>
-        </a>
-        <a href="withdraw" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-wallet"></i><span>Withdraw</span>
-        </a>
-        <a href="videos" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-info-circle"></i><span>Videos</span>
-        </a>
-        <a href="help" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-question-circle"></i><span>Help</span>
-        </a>
-        <a href="profile" class="flex items-center space-x-3 hover:text-blue-500">
-            <i class="fas fa-user"></i><span>Profile</span>
-        </a>
-        <button id="logout-button-mobile" class="flex items-center space-x-3 text-red-500 hover:text-red-700">
-            <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
-        </button>
-    </div>
-    
-    <!-- Mobile Icons Section (Now inside the menu for small screens) 
-    <div class="p-6 border-t flex justify-around text-gray-700 text-xl bg-white shadow-md rounded-b-2xl">
-        <button id="theme-toggle" class="text-yellow-500 hover:text-yellow-600 transition">
-            <i class="fas fa-moon"></i>
-        </button>
-        <button id="language-toggle" class="text-blue-500 hover:text-blue-600 transition">
-            <i class="fas fa-language"></i>
-        </button>
-        <button id="notification-bar" class="relative text-green-500 hover:text-green-600 transition">
-            <i class="fas fa-bell"></i>
-            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
-        </button>
-    </div>-->
-</nav>
+  </div>
+</div>
+<!-- Top Bar End -->
 
-<body class="bg-gray-100 font-sans mt-20">
-<!-- Validator Registration Popup 
-<div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Become a member or a validator</h3>
-        <p class="text-gray-600 mb-2">To become an eligible member of Quantum Market, pay a one-time registration fee.</p>
-        
-        
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700">Select Membership Type</label>
-            <select id="amountPaid" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
-                <option value="common">$6 - Common Member</option>
-            </select>
+<!-- Nav Bar Start -->
+<nav class="bg-green-800 sticky top-0 left-0 w-full z-50 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="dashboard" class="flex items-center">
+        <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" class="h-10">
+      </a>
+
+      <!-- Toggle Button -->
+      <div class="lg:hidden">
+        <button id="mobile-menu-toggle" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden lg:flex space-x-4 items-center text-white font-medium">
+        <a href="dashboard" class="hover:text-yellow-400">Home</a>
+        <a href="about" class="hover:text-yellow-400">About</a>
+        <a href="donations" class="hover:text-yellow-400">Donate</a>
+        <a href="earnings" class="hover:text-yellow-400">Earnings</a>
+
+        <!-- Remote Jobs Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Remote Jobs <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="validator" class="block px-4 py-2 hover:bg-gray-200">Validator</a>
+            <a href="referral" class="block px-4 py-2 hover:bg-gray-200">Refer and Earn</a>
+            <a href="withdraw" class="block px-4 py-2 hover:bg-gray-200">Withdraw Earnings</a>
+          </div>
         </div>
 
+        <!-- Our Services Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Our Services <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="service" class="block px-4 py-2 hover:bg-gray-200">What We Do</a>
+            <a href="donations" class="block px-4 py-2 hover:bg-gray-200">Donate Now</a>
+            <a href="help" class="block px-4 py-2 hover:bg-gray-200">Help & Support</a>
+          </div>
+        </div>
+
+        <a href="profile" class="hover:text-yellow-400">Profile</a>
+        <a href="index" class="text-red-400 hover:text-red-500">Log Out</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu"
+    class="fixed top-0 left-0 w-[70%] h-full bg-green-900 text-white transform -translate-x-full transition-transform duration-300 z-40 lg:hidden overflow-y-auto">
+    <div class="p-6 space-y-4">
+      <button id="mobile-menu-close" class="text-white absolute top-4 right-4 text-2xl">✕</button>
+
+      <a href="dashboard" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-home text-yellow-400"></i>Home</a>
+      <a href="about" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-info-circle text-yellow-400"></i>About</a>
+      <a href="donations" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-donate text-yellow-400"></i>Donate</a>
+      <a href="earnings" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-wallet text-yellow-400"></i>Earnings</a>
+
+      <!-- Dropdowns with toggle -->
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-briefcase text-yellow-400"></i>Remote Jobs</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="validator" class="block py-1 hover:text-yellow-400">Validator</a>
+          <a href="referral" class="block py-1 hover:text-yellow-400">Refer and Earn</a>
+          <a href="withdraw" class="block py-1 hover:text-yellow-400">Withdraw Earnings</a>
+        </div>
+      </div>
+
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-cogs text-yellow-400"></i>Our Services</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="service" class="block py-1 hover:text-yellow-400">What We Do</a>
+          <a href="donations" class="block py-1 hover:text-yellow-400">Donate Now</a>
+          <a href="help" class="block py-1 hover:text-yellow-400">Help & Support</a>
+        </div>
+      </div>
+
+      <a href="profile" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-user text-yellow-400"></i>Profile</a>
+      <a href="index" class="flex items-center gap-2 text-red-400 hover:text-red-500"><i class="fas fa-sign-out-alt text-red-400"></i>Log Out</a>
+    </div>
+  </div>
+</nav>
+<!-- Nav Bar End -->
+        
+        
+        <!-- Page Header Start -->
+        <div class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Validator overview</h2>
+                    </div>
+                    <div class="col-12">
+                        <a href="dashboard">Home</a>
+                        <a href="validator">Validator Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+    <script type="module">
+        import { ensureAuthenticated } from "./js/script.js";
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            ensureAuthenticated(); 
+        });
+    </script>   
+        
+
+<!-- Validator Registration Popup -->
+<div id="validator-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto mt-10">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Become a Validator</h3>
+        <p class="text-gray-600 mb-2">To become a validator, pay a one-time registration fee of <strong>$30</strong>.</p>
         <p class="text-gray-800 font-semibold">Send payment to:</p>
 
-        
+        <!-- Wallet Addresses -->
         <div class="space-y-2">
             <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg">
                 <span class="text-sm text-gray-700">Binance: <strong id="binance-wallet">821693759</strong></span>
@@ -149,23 +198,27 @@
         <h3 class="text-lg font-semibold mt-6">Submit Payment Details</h3>
         <p class="text-gray-600 text-sm mb-4">Submit your payment details for verification:</p>
 
-        
+        <!-- Payment Submission Form -->
         <form id="payment-form" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Transaction Hash (TXID)</label>
                 <input type="text" id="txid" placeholder="Enter TXID" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
+   
+            <!--<div>
+                <label class="block text-sm font-medium text-gray-700">Upload Transaction Screenshot</label>
+                <input type="file" id="screenshot" accept="image/*" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
+            </div>-->
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Wallet Address Used</label>
-                <input type="text" id="wallet-used" value="821693759" class="w-full p-3 border rounded-lg bg-gray-200 text-gray-600 cursor-not-allowed" readonly>
+                <input type="text" id="wallet-used" placeholder="Enter Wallet Address" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Date & Time of Payment</label>
                 <input type="datetime-local" id="payment-date" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 transition">
             </div>
-
             <div id="message-box"></div>
             <button id="pay-validator-btn" class="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-700 transition">
                 Submit Payment
@@ -173,7 +226,6 @@
         </form>
     </div>
 </div>
-
 <script>
     function copyToClipboard(id) {
         const text = document.getElementById(id).textContent;
@@ -192,122 +244,126 @@
             messageBoxx.innerHTML = "";
         }, 3000);
     }
-</script>-->
-
-<!-- Spacer for Other Items -->
-<div class="h-4 md:h-14 lg:h-4"></div>
-
-     <!-- Luxurious Banner -->
-<section class="relative w-full h-[250px] flex items-center justify-center overflow-hidden rounded-2xl shadow-xl bg-gradient-to-r from-black via-gray-900 to-black text-white">
-
-  <!-- Animated Gradient Background Shapes -->
-  <div class="absolute inset-0 overflow-hidden z-0">
-    <div class="absolute w-32 h-32 bg-purple-600 opacity-30 rounded-full top-0 left-10 animate-float"></div>
-    <div class="absolute w-48 h-48 bg-blue-500 opacity-20 rounded-full bottom-0 right-20 animate-float-reverse"></div>
-    <div class="absolute w-24 h-24 bg-pink-500 opacity-20 rounded-full top-12 right-5 animate-float"></div>
-  </div>
-
-  <!-- Banner Content -->
-  <div class="relative z-10 text-center px-6">
-    <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest bg-gradient-to-r from-blue-400 via-pink-400 to-purple-600 text-transparent bg-clip-text uppercase">
-      Welcome to Your Dashboard
-    </h1>
-
-    <!-- Typing Carousel Text -->
-    <p id="typing-text" class="mt-3 text-sm md:text-base text-gray-300 font-medium h-6 md:h-7 lg:h-8 overflow-hidden"></p>
-
-    <!-- Call to Action -->
-    <div class="mt-4">
-      <a href="#"
-        class="inline-block px-5 py-2 text-sm md:text-base font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-500 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg">
-        Explore
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Keyframe Animations -->
-<style>
-  @keyframes float {
-    0% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-20px) translateX(10px); }
-    100% { transform: translateY(0) translateX(0); }
-  }
-
-  @keyframes float-reverse {
-    0% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(20px) translateX(-10px); }
-    100% { transform: translateY(0) translateX(0); }
-  }
-
-  .animate-float {
-    animation: float 6s infinite ease-in-out alternate;
-  }
-
-  .animate-float-reverse {
-    animation: float-reverse 6s infinite ease-in-out alternate;
-  }
-</style>
-
-<!-- Typing Carousel Script -->
-<script>
-  const phrases = [
-    "Track earnings with ease.",
-    "Monitor referrals in real time.",
-    "Validate member payments quickly.",
-    "Gain total control of your growth.",
-    "Welcome back, champion!"
-  ];
-
-  let i = 0, j = 0, currentPhrase = [], isDeleting = false, isEnd = false;
-
-  function loopTyping() {
-    const typingText = document.getElementById("typing-text");
-
-    isEnd = false;
-    typingText.innerHTML = currentPhrase.join("");
-
-    if (i < phrases.length) {
-      if (!isDeleting && j <= phrases[i].length) {
-        currentPhrase.push(phrases[i][j]);
-        j++;
-        typingText.innerHTML = currentPhrase.join("");
-      }
-
-      if (isDeleting && j <= phrases[i].length) {
-        currentPhrase.pop();
-        j--;
-        typingText.innerHTML = currentPhrase.join("");
-      }
-
-      if (j == phrases[i].length) {
-        isEnd = true;
-        isDeleting = true;
-      }
-
-      if (isDeleting && j === 0) {
-        currentPhrase = [];
-        isDeleting = false;
-        i++;
-        if (i >= phrases.length) i = 0;
-      }
-    }
-
-    const speed = isEnd ? 2000 : isDeleting ? 50 : 100;
-    setTimeout(loopTyping, speed);
-  }
-
-  document.addEventListener("DOMContentLoaded", loopTyping);
 </script>
 
-<section id="dashboard-info" class="px-4 py-10 bg-gradient-to-br from-gray-100 via-white to-gray-50 min-h-screen">
+ <!-- Spacer for Other Items -->
+ <div class="h-8 md:h-14 lg:h-8"></div>
+        
+
+<body class="bg-gray-100 font-sans mt-20">
+<div id="message-box"></div>
+
+ <!-- Admin Panel -->
+ <div id="admin-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
+    <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Pending Validator Approvals</h3>
+    
+    <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
+        <table class="w-full border-collapse text-sm text-left">
+            <thead>
+                <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                    <th class="p-3 text-left">Email</th>
+                    <th class="p-3 text-left">Amount</th>
+                    <th class="p-3 text-left">TXID</th>
+                    <th class="p-3 text-left">Validator</th>
+                    <th class="p-3 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody id="admin-approval-list" class="text-gray-800">
+                <!-- Pending validator approvals will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="space-y-6">
+
+    <section id="validators" class="p-4 bg-gray-100 min-h-screen">
+        <div class="space-y-6">  
+    
+            <!-- Validate Payment Panel -->
+            <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Validate Payment</h3>
+                <p class="text-red-600">==>>Review and approve/reject payments. Note that false validations or validations of amount less than 12 usd will result to account ban!</p>
+                <p class="text-gray-600">If no pending transactions in your dashboard, 
+                    wait until you are assigned a validation to validate, keep referring more people as you wait to be assigned.</p>
+                <p class="text-black-600"></p>Lets earn together!</p>
+            </div>
+    
+            <!-- Earnings Tracker for Validators -->
+            <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Earnings Tracker</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-green-100 p-3 sm:p-4 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
+                        <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 sm:p-4 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
+                        <p id="total-earnings" class="text-2xl font-bold text-blue-700">$0</p>
+                    </div>
+                    <div class="bg-gray-100 p-3 sm:p-4 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
+                        <p id="pending-earnings" class="text-2xl font-bold text-gray-600">$0</p>
+                    </div>
+                </div>
+            </div>
+
+    
+            <!-- Pending Transactions Table -->
+            <div class="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 w-full">
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-3">Pending Transactions</h3>
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full min-w-full border-collapse text-sm shadow-md">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Username</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Amount Paid</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Transaction ID</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Time Submitted</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Status</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
+                            <!-- Transactions dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>    
+
+<!-- Validation History -->
+            <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Validation History</h3>
+                <p class="text-gray-600">View previously validated people worldwide.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 sm:p-3 border">Username</th>
+                                <th class="p-2 sm:p-3 border">Amount</th>
+                                <th class="p-2 sm:p-3 border">Transaction ID</th>
+                                <th class="p-2 sm:p-3 border">Status</th>
+                                <th class="p-2 sm:p-3 border">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="validation-history">
+                            <!-- Approved transactions will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <section id="dashboard-info" class="px-4 py-10 bg-gradient-to-br from-gray-100 via-white to-gray-50 min-h-screen">
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
     <!-- User Registration & Activation -->
     <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-blue-500 hover:scale-105 transition-transform duration-300">
-      <h3 class="text-2xl font-semibold text-blue-600 mb-3">User Registration & Activation</h3>
+      <h3 class="text-2xl font-semibold text-blue-600 mb-3">Starting Remote job as a Validator</h3>
       <p class="text-gray-700 leading-relaxed">
-        Register as a <strong>common member</strong> with <strong>$4</strong> or as a <strong>validator</strong> with <strong>$12</strong>.
+        Register as a validator by donating a minimum of <strong>12 usd</strong> to start earning with remote jobs .
       </p>
     </div>
 
@@ -315,17 +371,16 @@
     <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-yellow-500 hover:scale-105 transition-transform duration-300">
       <h3 class="text-2xl font-semibold text-yellow-600 mb-3">Validator Responsibilities</h3>
       <p class="text-gray-700 leading-relaxed">
-        Validators verify user payments and earn <strong>$1 per validation</strong>. At least one validator must approve a payment.
+        Validators verify user payments and earn <strong>1 usd per validation</strong>. At least one validator must approve a payment.
       </p>
     </div>
 
     <!-- Referral Earnings -->
     <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-green-500 hover:scale-105 transition-transform duration-300">
-      <h3 class="text-2xl font-semibold text-green-600 mb-3">Referral Earnings</h3>
+      <h3 class="text-2xl font-semibold text-green-600 mb-3">Refer and Earn Program</h3>
       <ul class="list-disc pl-5 text-gray-700 space-y-1">
-        <li>Direct referrals earn <strong>$1</strong> per activated account.</li>
-        <li>Level 2 referrals earn <strong>$0.5</strong> per activation.</li>
-        <li>If a referral registers as a validator, earn <strong>$5</strong> (direct) or <strong>$2</strong> (level 2).</li>
+        <li>Direct referrals earn <strong>15%</strong> per validated account.</li>
+        <li>Level 2 referrals earn <strong>5%</strong> per activation.</li>
       </ul>
     </div>
 
@@ -333,7 +388,7 @@
     <div class="bg-white/30 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-purple-500 hover:scale-105 transition-transform duration-300">
       <h3 class="text-2xl font-semibold text-purple-600 mb-3">Payment System</h3>
       <p class="text-gray-700 leading-relaxed">
-        Payments are done manually through <strong>Binance</strong>.
+        Donations are done manually through <strong>Binance Wallet (BEP20): 821693759</strong>.
       </p>
     </div>
 
@@ -373,114 +428,7 @@
   </div>
 </section>
 
-
-   <!-- Admin Panel -->
-   <div id="admin-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
-    <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Pending membership Validator Approvals</h3>
-    
-    <div class="overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
-        <table class="w-full border-collapse text-sm text-left">
-            <thead>
-                <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                    <th class="p-3 text-left">Email</th>
-                    <th class="p-3 text-left">Amount</th>
-                    <th class="p-3 text-left">TXID</th>
-                    <th class="p-3 text-left">Validator</th>
-                    <th class="p-3 text-left">Action</th>
-                </tr>
-            </thead>
-            <tbody id="admin-approval-list" class="text-gray-800">
-                <!-- Pending validator approvals will be dynamically inserted here -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="space-y-6">
-
-<section id="validators" class="p-4 bg-gray-100 min-h-screen">
-    <div class="space-y-6">  
-        <!-- Validators Page Title -->
-        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl rounded-2xl p-6 text-center">
-            <h2 class="text-2xl sm:text-3xl text-white font-extrabold tracking-wide uppercase py-3 rounded-xl 
-                       bg-gradient-to-r from-green-500 to-blue-600 inline-block px-4 sm:px-6">
-                Membership Validators Panel
-            </h2>
-        </div>
-
-        <!-- Validate Payment Panel -->
-        <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">Validate Payment</h3>
-            <p class="text-gray-600">Review and approve/reject payments.</p>
-        </div>
-
-        <!-- Earnings Tracker for Validators -->
-        <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">Earnings Tracker</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="bg-green-100 p-3 sm:p-4 rounded-lg text-center">
-                    <h4 class="text-lg font-semibold text-gray-700">Total Validations</h4>
-                    <p id="total-validations" class="text-2xl font-bold text-green-700">0</p>
-                </div>
-                <div class="bg-blue-100 p-3 sm:p-4 rounded-lg text-center">
-                    <h4 class="text-lg font-semibold text-gray-700">Total Earnings</h4>
-                    <p id="total-earnings" class="text-2xl font-bold text-blue-700">$0</p>
-                </div>
-                <div class="bg-gray-100 p-3 sm:p-4 rounded-lg text-center">
-                    <h4 class="text-lg font-semibold text-gray-700">Pending Earnings</h4>
-                    <p id="pending-earnings" class="text-2xl font-bold text-gray-600">$0</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pending Transactions Table -->
-        <div class="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 w-full">
-            <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-3">Pending Transactions</h3>
-            <div class="overflow-x-auto w-full">
-                <table class="w-full min-w-full border-collapse text-sm shadow-md">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
-                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Username</th>
-                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Amount Paid</th>
-                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Transaction ID</th>
-                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Time Submitted</th>
-                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Status</th>
-                            <th class="px-3 py-2 sm:px-4 sm:py-3 border border-gray-300">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pending-transactions" class="bg-gray-50 divide-y divide-gray-200">
-                        <!-- Transactions dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-</section>  
-
- <!-- Validation History -->
- <div class="bg-white shadow-lg rounded-lg p-4 sm:p-6 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">Validation History</h3>
-    <p class="text-gray-600">View previously validated people worldwide.</p>
-    <div class="overflow-x-auto">
-        <table class="w-full min-w-full border-collapse border border-gray-300 text-sm">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-2 sm:p-3 border">Username</th>
-                    <th class="p-2 sm:p-3 border">Amount</th>
-                    <th class="p-2 sm:p-3 border">Transaction ID</th>
-                    <th class="p-2 sm:p-3 border">Status</th>
-                    <th class="p-2 sm:p-3 border">Date</th>
-                </tr>
-            </thead>
-            <tbody id="validation-history">
-                <!-- Approved transactions will be inserted here -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- User Management Panel -->
+            <!-- User Management Panel -->
 <div id="user-management-panel" class="hidden bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-4xl mx-auto border border-gray-200">
     <h3 class="text-2xl font-bold text-gray-900 mb-4">Admin Panel - Manage Users</h3>
 
@@ -499,92 +447,8 @@
     </div>
 </div>
 
-
-        <div>
-            <div class="bg-white shadow-2xl rounded-2xl p-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Earnings Histogram</h3>
-                <canvas id="histogramChart"></canvas>
-            </div>
-        </div>
-    
-         <!-- Referral Section -->
-<div class="bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto border border-gray-200">
-    <h3 class="text-xl font-bold text-gray-900 mb-4">Your Referral Link</h3>
-    
-    <div class="flex items-center space-x-4 bg-gray-100 p-3 rounded-lg shadow-inner">
-        <p id="referral-link" class="flex-grow text-gray-800 bg-white px-4 py-2 rounded-md border border-gray-300 overflow-hidden text-ellipsis whitespace-nowrap">
-            Your Referral Link Here
-        </p>
-        <button id="copy-link-button" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
-            Copy
-        </button>
-        
-        <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300">
-            <i class="fab fa-whatsapp text-lg"></i>
-        </a>
-    </div>
-
-    <p id="copy-message" class="hidden text-sm"></p>
-
-    <!-- Referred Friends Section -->
-<h3 class="text-xl font-bold text-gray-900 mt-6">Your Referred Friends</h3>
-
-<div class="w-full sm:w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto overflow-x-auto mt-4 bg-gray-50 p-4 rounded-lg shadow-lg border border-gray-200">
-    <table class="w-full border-collapse text-sm text-left">
-        <thead>
-            <tr class="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                <th class="p-3 text-left">Email</th>
-                <th class="p-3 text-left">Status</th>
-            </tr>
-        </thead>
-        <tbody id="referred-users-list" class="text-gray-800">
-            <!-- Referred users will be dynamically inserted here -->
-        </tbody>
-    </table>
-</div>
-</div>
-
-        <!-- Social Media Links -->
-    <div class="bg-white shadow-md rounded-lg p-6 mt-6 max-w-3xl mx-auto text-center">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Follow Us on Social Media</h3>
-        <div class="flex justify-center space-x-6">
-            <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09" target="_blank" class="text-blue-400 text-2xl hover:text-blue-600">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/profile.php?id=61564678751322" target="_blank" class="text-blue-600 text-2xl hover:text-blue-800">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href=" https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg==" target="_blank" class="text-pink-500 text-2xl hover:text-pink-700">
-                <i class="fab fa-instagram"></i>
-            </a>
-            
-        </div>
-    </div>
-    
-    <footer class="bg-gray-900 text-white text-center py-4">
-        <p class="copyright-text text-sm">
-            &copy; 2025 <span class="font-bold">Quantum Market</span>. All rights reserved.
-        </p>
-        <p class="text-xs mt-1">
-            Designed by 
-            <a href="https://antocapteknologies.com" class="text-blue-400 hover:text-blue-300 font-semibold" target="_blank">
-                Antocap Teknologies
-            </a>
-        </p>
-    </footer>    
-      
-    <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
-    <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
-    <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
-    <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
-    <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
-  
-       <!-- Your custom script -->
-       <script type="module" src="script.js"></script>
-<script type="module" src="referral.js"></script>
-
 <script type="module">
-    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp, deleteDoc } from './script.js';
+    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp, deleteDoc } from './js/script.js';
     
     document.addEventListener("DOMContentLoaded", async () => {
         const validatorPopup = document.getElementById("validator-popup");
@@ -631,13 +495,13 @@
             // Check if the user's payment has been approved
             const paymentsQuery = query(collection(db, "payments"), 
                                         where("email", "==", user.email), 
-                                        where("statuss", "==", "approved-admin"));
+                                        where("status", "==", "approved-admin"));
             const paymentsSnap = await getDocs(paymentsQuery);
     
-            if (!userData.isVvalidator && !paymentsSnap.empty) {
+            if (!userData.isValidator && !paymentsSnap.empty) {
                 // ✅ Update user to become a validator
                 await updateDoc(userRef, {
-                    isVvalidator: true
+                    isValidator: true
                 });
     
                 console.log("✅ User is now a validator.");
@@ -651,7 +515,7 @@
         const paymentQuery = query(
             collection(db, "payments"),
             where("email", "==", user.email),
-            where("statuss", "==", "approved-admin"),
+            where("status", "==", "approved-admin"),
             limit(1)
         );
     
@@ -695,7 +559,7 @@
         const existingPaymentQuery = query(
             collection(db, "payments"),
             where("email", "==", user.email),
-            where("statuss", "in", ["pending", "pending-admin", "reassigned"])
+            where("status", "in", ["pending", "pending-admin", "reassigned"])
         );
         const existingPaymentSnap = await getDocs(existingPaymentQuery);
 
@@ -731,7 +595,7 @@
             paymentDate,
             assignedValidators: [chosenValidator],
             approvals: [],
-            statuss: "pending",
+            status: "pending",
             timestamp: serverTimestamp(),
             loopStarted: true // 🚀 Flag to prevent starting multiple loops
         });
@@ -757,7 +621,7 @@
 
 // FUNCTION TO GET AVAILABLE VALIDATOR (with exclude & fallback)
 async function getAvailableValidator(excludedValidators = [], allowRepeats = false) {
-    const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
+    const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
     const validatorSnap = await getDocs(validatorQuery);
     let allValidators = [];
 
@@ -812,21 +676,21 @@ async function startReassignmentLoop(paymentId) {
         const paymentData = paymentSnap.data();
 
         // ✅ Stop reassignment if admin is now handling or it's already approved
-        if (["approved-admin", "pending-admin"].includes(paymentData.statuss)) {
+        if (["approved-admin", "pending-admin"].includes(paymentData.status)) {
             clearInterval(interval);
             return;
         }
 
         // ✅ Stop if a validator has already approved
         const approvals = Array.isArray(paymentData.approvals) ? paymentData.approvals : [];
-        const approvedCount = approvals.filter(a => a.statuss === "approved-admin").length;
+        const approvedCount = approvals.filter(a => a.status === "approved-admin").length;
         if (approvedCount >= 1) {
             clearInterval(interval);
             return;
         }
 
         // ✅ Only try to reassign if it's still pending or reassigned
-        if (["pending", "reassigned"].includes(paymentData.statuss)) {
+        if (["pending", "reassigned"].includes(paymentData.status)) {
             const assigned = Array.isArray(paymentData.assignedValidators) ? paymentData.assignedValidators : [];
 
             let newValidator = await getAvailableValidator(assigned, false);
@@ -837,7 +701,7 @@ async function startReassignmentLoop(paymentId) {
             if (newValidator) {
                 await updateDoc(paymentRef, {
                     assignedValidators: [...assigned, newValidator],
-                    statuss: "reassigned"
+                    status: "reassigned"
                 });
 
                 // ✅ Send email to the new validator
@@ -868,15 +732,15 @@ function startAdminEscalationTimer(paymentId) {
         const data = snap.data();
 
         // ✅ Stop if already handled by admin
-        if (["approved-admin", "pending-admin"].includes(data.statuss)) return;
+        if (["approved-admin", "pending-admin"].includes(data.status)) return;
 
         // ✅ Only escalate if no validator has approved
         const approvals = Array.isArray(data.approvals) ? data.approvals : [];
-        const approvedCount = approvals.filter(a => a.statuss === "approved-admin").length;
+        const approvedCount = approvals.filter(a => a.status === "approved-admin").length;
 
         if (approvedCount < 1) {
             await updateDoc(paymentRef, {
-                statuss: "pending-admin"
+                status: "pending-admin"
             });
 
             // ✅ Send email to admin
@@ -893,13 +757,12 @@ function startAdminEscalationTimer(paymentId) {
 }
 
 
-
     //LOADING ASSIGNED TRANSACTIONS
     async function loadAssignedTransactions() {
     try {
         const q = query(
             collection(db, "payments"),
-            where("statuss", "in", ["pending", "reassigned"]),
+            where("status", "in", ["pending", "reassigned"]),
             where("assignedValidators", "array-contains", user.uid)
         );
 
@@ -918,13 +781,13 @@ function startAdminEscalationTimer(paymentId) {
             let statusText = "Pending Validation";
             let statusClass = "text-blue-500";
 
-            if (data.statuss === "pending-admin") {
+            if (data.status === "pending-admin") {
                 statusText = "Pending Admin Approval";
                 statusClass = "text-yellow-500";
-            } else if (data.statuss === "reassigned") {
+            } else if (data.status === "reassigned") {
                 statusText = "Reassigned to you";
                 statusClass = "text-orange-500";
-            } else if (data.statuss === "approved-admin") {
+            } else if (data.status === "approved-admin") {
                 statusText = "Approved";
                 statusClass = "text-green-600";
             }
@@ -932,7 +795,7 @@ function startAdminEscalationTimer(paymentId) {
             transactionHTML += `
                 <tr id="transaction-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
-                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 4}</td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 12}</td>
                     <td class="p-4 border border-gray-300">
                         <div class="relative flex flex-col">
                             <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
@@ -979,7 +842,6 @@ function startAdminEscalationTimer(paymentId) {
     }
 }
 
-// LISTENING FOR TRANSACTION UPDATES
 function listenForTransactionUpdates() {
     const paymentsRef = collection(db, "payments");
 
@@ -992,13 +854,13 @@ function listenForTransactionUpdates() {
             if (row) {
                 let statusCell = row.querySelector(".status-cell");
 
-                if (data.statuss === "approved-admin") {
+                if (data.status === "approved-admin") {
                     statusCell.innerHTML = `<span class="text-green-600 font-semibold">Approved</span>`;
                     updateValidationHistory(paymentId, data);
                     row.remove(); // Move to history
-                } else if (data.statuss === "pending-admin") {
+                } else if (data.status === "pending-admin") {
                     statusCell.innerHTML = `<span class="text-yellow-500 font-semibold">Pending Admin Approval</span>`;
-                } else if (data.statuss === "reassigned") {
+                } else if (data.status === "reassigned") {
                     statusCell.innerHTML = `<span class="text-orange-500 font-semibold">Reassigned to you</span>`;
                 }
             }
@@ -1008,7 +870,6 @@ function listenForTransactionUpdates() {
 
 // Call this function after loading transactions
 listenForTransactionUpdates();
-
 
 // APPROVE PAYMENT (Send to Admin)
 async function approvePayment(paymentId) {
@@ -1031,7 +892,7 @@ async function approvePayment(paymentId) {
 
         await updateDoc(paymentRef, {
             approvals: [...(paymentData?.approvals || []), user.uid],
-            statuss: "pending-admin",
+            status: "pending-admin",
             validator: user.uid
         });
 
@@ -1082,7 +943,7 @@ async function rejectPayment(paymentId) {
 
         let updatedValidators = (paymentData?.assignedValidators || []).filter(uid => uid !== user.uid);
 
-        const validatorQuery = query(collection(db, "users"), where("isVvalidator", "==", true));
+        const validatorQuery = query(collection(db, "users"), where("isValidator", "==", true));
         const validatorSnapshot = await getDocs(validatorQuery);
 
         let availableValidators = validatorSnapshot.docs
@@ -1100,7 +961,7 @@ async function rejectPayment(paymentId) {
 
         await updateDoc(paymentRef, {
             assignedValidators: updatedValidators,
-            statuss: "reassigned"
+            status: "reassigned"
         });
 
         button.textContent = "Rejected";
@@ -1109,7 +970,7 @@ async function rejectPayment(paymentId) {
         const row = button.closest("tr");
         if (row) {
             row.querySelector(".status-cell").innerHTML =
-                `<span class="text-orange-500 font-semibold">Reassigned</span>`;
+                `<span class="text-orange-500 font-semibold">Reassigned to you</span>`;
         }
 
         // ✅ Notify the new validator
@@ -1129,7 +990,6 @@ async function rejectPayment(paymentId) {
     }
 }
 
-
     //LISTEN FOR REAL-TIME UPDATES
 //function listenForAdminApproval() {
   //  const paymentsRef = collection(db, "payments");
@@ -1146,7 +1006,7 @@ async function rejectPayment(paymentId) {
                // row.id = `payment-${paymentId}`;
               //  row.innerHTML = `
               //      <td class="p-4 border">${data.email}</td>
-                //    <td class="p-4 border text-green-600 font-semibold">$${data.amountPaid || 4}</td>
+                //    <td class="p-4 border text-green-600 font-semibold">$${data.amountPaid || 12}</td>
                 //    <td class="p-4 border">${data.txid}</td>
                 //    <td class="p-4 border status-cell">Pending Validation</td>
                //     <td class="p-4 border text-center">
@@ -1205,7 +1065,7 @@ function updateValidationHistory(paymentId, paymentData) {
     //    historyTable.innerHTML += `
     //        <tr id="history-${paymentData.txid}">
     //            <td class="p-3 border">${paymentData.email}</td>
-    //            <td class="p-3 border">$${paymentData.amountPaid || 4}</td>
+    //            <td class="p-3 border">$${paymentData.amountPaid || 12}</td>
     //            <td class="p-3 border">${paymentData.txid}</td>
     //            <td class="p-3 border text-green-600 font-bold">Approved</td>
     //            <td class="p-3 border">${paymentTime}</td>
@@ -1360,7 +1220,7 @@ async function loadAdminApprovals() {
         // Show admin panel
         document.getElementById("admin-panel").classList.remove("hidden");
 
-        const q = query(collection(db, "payments"), where("statuss", "==", "pending-admin"));
+        const q = query(collection(db, "payments"), where("status", "==", "pending-admin"));
         const querySnapshot = await getDocs(q);
         let approvalHTML = "";
 
@@ -1371,20 +1231,20 @@ async function loadAdminApprovals() {
             approvalHTML += `
                 <tr id="admin-approval-${paymentId}" class="hover:bg-gray-100 transition duration-200">
                     <td class="p-4 border border-gray-300">${data.email}</td>
-                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 4}</td>
-                   <td class="p-4 border border-gray-300">
-                         <div class="relative flex flex-col">
-                             <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
-                     ${data.txid}
-                             </pre>
-                             <div class="flex items-center mt-2">
-                                 <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
-                                     Copy
-                                 </button>
-                                 <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
-                             </div>
-                         </div>
-                     </td>
+                    <td class="p-4 border border-gray-300 text-green-600 font-semibold">$${data.amountPaid || 12}</td>
+                    <td class="p-4 border border-gray-300">
+                        <div class="relative flex flex-col">
+                            <pre id="txid-${paymentId}" class="whitespace-pre-wrap break-words cursor-text select-all p-2 bg-gray-100 rounded w-full">
+                    ${data.txid}
+                            </pre>
+                            <div class="flex items-center mt-2">
+                                <button onclick="copyTxid('${paymentId}')" class="px-2 py-1 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                                    Copy
+                                </button>
+                                <span id="copy-msg-${paymentId}" class="ml-2 text-sm font-semibold hidden"></span>
+                            </div>
+                        </div>
+                    </td>
                     <td class="p-4 border border-gray-300">${data.validator}</td>
                     <td class="p-4 border border-gray-300 text-center">
                         <button class="admin-approve-btn px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition" data-id="${paymentId}">
@@ -1442,7 +1302,7 @@ async function finalizeApproval(paymentId) {
         if (userPopup) userPopup.classList.add("hidden");
 
         // Update payment status
-        await updateDoc(paymentRef, { statuss: "approved-admin" });
+        await updateDoc(paymentRef, { status: "approved-admin" });
 
         // Email user
         sendEmailNotification(
@@ -1478,7 +1338,7 @@ async function rejectApproval(paymentId) {
 
         const validatorQuery = query(
             collection(db, "users"),
-            where("isVvalidator", "==", true)
+            where("isValidator", "==", true)
         );
         const validatorSnapshot = await getDocs(validatorQuery);
 
@@ -1499,7 +1359,7 @@ async function rejectApproval(paymentId) {
 
         await updateDoc(paymentRef, {
             assignedValidators: updatedValidators,
-            statuss: "reassigned"
+            status: "reassigned"
         });
 
         // Email new validator
@@ -1528,8 +1388,8 @@ function addToValidationHistory(paymentData, status) {
     historyTable.innerHTML += `
         <tr>
             <td class="p-3 border">${paymentData.email}</td>
-            <td class="p-3 border">$${paymentData.amountPaid || 4}</td>
-           <td class="p-4 border border-gray-300">${paymentData.txid}</td>
+            <td class="p-3 border">$${paymentData.amountPaid || 12}</td>
+            <td class="p-4 border border-gray-300">${paymentData.txid}</td>
             <td class="p-3 border text-green-600 font-bold">${status}</td>
             <td class="p-3 border">${paymentTime}</td>
         </tr>
@@ -1542,7 +1402,7 @@ async function loadValidationHistory() {
     historyTable.innerHTML = ""; // Clear existing entries before reloading
 
     try {
-        const q = query(collection(db, "payments"), where("statuss", "==", "approved-admin"));
+        const q = query(collection(db, "payments"), where("status", "==", "approved-admin"));
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((docSnap) => {
@@ -1558,8 +1418,8 @@ async function loadValidationHistory() {
                 historyTable.innerHTML += `
                     <tr id="history-${paymentData.txid}">
                         <td class="p-3 border">${paymentData.email}</td>
-                        <td class="p-3 border">$${paymentData.amountPaid || 4}</td>
-                        <td class="p-4 border border-gray-300">${paymentData.txid}</td>
+                        <td class="p-3 border">$${paymentData.amountPaid || 12}</td>
+                       <td class="p-4 border border-gray-300">${paymentData.txid}</td>
                         <td class="p-3 border text-green-600 font-bold">Approved</td>
                         <td class="p-3 border">${paymentTime}</td>
                     </tr>
@@ -1594,7 +1454,7 @@ onAuthStateChanged(auth, async (currentUser) => {
         const approvalsQuery = query(
             collection(db, "payments"),
             where("approvals", "array-contains", user.email),
-            where("statuss", "==", "approved-admin") // Only count approved payments
+            where("status", "==", "approved-admin") // Only count approved payments
         );
     
         const approvalsSnap = await getDocs(approvalsQuery);
@@ -1610,7 +1470,7 @@ onAuthStateChanged(auth, async (currentUser) => {
     
         if (!user) return;
     
-        const q = query(collection(db, "payments"), where("statuss", "==", "approved-admin"));
+        const q = query(collection(db, "payments"), where("status", "==", "approved-admin"));
     
         // Listen for real-time updates
         onSnapshot(q, async (querySnapshot) => {
@@ -1634,7 +1494,7 @@ onAuthStateChanged(auth, async (currentUser) => {
                     historyHTML += `
                         <tr>
                             <td class="p-3 border">${data.email}</td>
-                            <td class="p-3 border">$${data.amountPaid || 4}</td>
+                            <td class="p-3 border">$${data.amountPaid || 12}</td>
                             <td class="p-3 border">${data.txid}</td>
                             <td class="p-3 border text-green-600 font-bold">Approved</td>
                             <td class="p-3 border">${paymentTime}</td>
@@ -1656,8 +1516,8 @@ onAuthStateChanged(auth, async (currentUser) => {
         loadValidationHistory();
     });
 });
-    </script>
-
+    </script> 
+    
     <script>
         // COPYING TXID
      function copyTxid(paymentId) {
@@ -1684,56 +1544,141 @@ function showMessage(element, message, colorClass) {
     }, 3000);
 }
     </script>
-
-<script type="module">
-    import { auth, db, doc, getDoc, updateDoc, query, collection, where, getDocs, increment, setDoc, onAuthStateChanged, limit, onSnapshot, getFirestore, serverTimestamp } from './script.js';
+ 
+<!-- Referral Section -->
+<div class="bg-white shadow-xl rounded-2xl p-8 mt-6 max-w-3xl mx-auto border border-gray-200">
+    <h3 class="text-xl font-bold text-gray-900 mb-4">Your Referral Link</h3>
     
-//document.getElementById("close-notification").addEventListener("click", function () {
-  //  document.getElementById("notification-bar").style.display = "none";
-//});
+    <div class="flex items-center space-x-4 bg-gray-100 p-3 rounded-lg shadow-inner">
+        <p id="referral-link" class="flex-grow text-gray-800 bg-white px-4 py-2 rounded-md border border-gray-300 overflow-hidden text-ellipsis whitespace-nowrap">
+            Your Referral Link Here
+        </p>
+        <button id="copy-link-button" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+            Copy
+        </button>
+  
+            <a id="whatsapp-share-button" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300">
+            <i class="fab fa-whatsapp text-lg"></i>
+        </a>
+    </div>
+</div>
 
-document.addEventListener("DOMContentLoaded", async function () {
-    const ctx4 = document.getElementById("histogramChart").getContext("2d");
+<p id="copy-message" class="hidden text-sm"></p>
+
+</section>
+
+ <!-- Footer Start -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Logo & About -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-contact text-center">
+                    <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" style="width: 70px; margin-bottom: 15px;">
+                    <p class="text-white">
+                        Quantum Income is a global platform focused on helping people earn through remote validation jobs and building impact through donations and referrals.
+                    </p>
+                    <div class="footer-social">
+                        <a class="btn btn-custom" href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-custom" href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-custom" href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Popular Links</h2>
+                    <a href="about">About Us</a>
+                    <a href="validator">Validator</a>
+                    <a href="withdraw">Withdrawals</a>
+                    <a href="donations">Donate</a>
+                    <a href="referral">Refer</a>
+                </div>
+            </div>
+
+            <!-- Useful Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Useful Links</h2>
+                    <a href="profile">Profile</a>
+                    <a href="service">Services</a>
+                    <a href="help">Help</a>
+                    <a href="validator">Remote Jobs</a>
+                    <a href="earnings">Earnings</a>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-newsletter">
+                    <h2>Newsletter</h2>
+                    <form>
+                        <input class="form-control" placeholder="Email goes here">
+                        <button class="btn btn-custom">Submit</button>
+                        <label>Don't worry, we don't spam!</label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="container copyright">
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; <a href="#">Quantum Income</a>, All Rights Reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p>
+  Designed by <a href="https://antocapteknologies.com" target="_blank">Antocap Teknologies</a> |
+    <a href="https://htmlcodex.com" target="_blank" style="font-size: 6px;">Template by HTML Codex</a>
+    </p> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+        <!-- Back to top button -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- Pre Loader -->
+        <div id="loader" class="show">
+            <div class="loader"></div>
+        </div>  
+  
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/parallax/parallax.min.js"></script>
+        
+        <!-- Contact Javascript File -->
+        <script src="mail/jqBootstrapValidation.min.js"></script>
+        <script src="mail/contact.js"></script>
+
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
+
+<!-- Your custom script -->
+<script type="module" src="/js/script.js"></script>
+<script type="module" src="/js/referral.js"></script>
 
 
-    try {
-        const usersRef = collection(db, "users");
-        const usersSnapshot = await getDocs(usersRef);
-        const earningsData = [];
-        const labels = [];
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
 
-        usersSnapshot.forEach((doc) => {
-            const userData = doc.data();
-            if (userData.totalEarnings) {
-                earningsData.push(userData.totalEarnings);
-                labels.push(userData.firstName || "User"); // Default to "User" if no name
-            }
-        });
+  <script>
 
-        if (earningsData.length === 0) {
-            console.warn("No earnings data found in Firestore.");
-        }
-
-        new Chart(ctx4, {
-            type: "bar",
-            data: {
-                labels,
-                datasets: [{
-                    label: "Earnings Distribution",
-                    data: earningsData,
-                    backgroundColor: "#673AB7"
-                }]
-            },
-            options: { responsive: true }
-        });
-
-    } catch (error) {
-        console.error("Error fetching earnings data:", error);
-    }
-});
-
-    
-  document.addEventListener("contextmenu", function (event) {
+document.addEventListener("contextmenu", function (event) {
     event.preventDefault(); // Disable right-click
   });
 
@@ -1755,7 +1700,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-
 </script>
 
 <!-- EmailJS CDN -->
@@ -1765,14 +1709,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     emailjs.init("t07CgID0p1Rw9_NM9"); // Your public key
   })();
 
-  function sendEmailNotification(toEmail, subject, message, fromName, fromEmail, replyTo) {
+  function sendEmailNotification(toEmail, subject, message) {
   const templateParams = {
-    to_email: toEmail,      // Recipient email address
-    from_name: fromName,    // Sender's name
-    from_email: fromEmail,  // Sender's email address (usually your verified email)
-    reply_to: replyTo,      // Email address for replies
-    subject: subject,       // Email subject
-    message: message        // Email body content
+    to_email: toEmail,
+    subject,
+    message,
   };
 
   return emailjs.send("service_4kqozhm", "template_f77qu27", templateParams)
@@ -1781,6 +1722,5 @@ document.addEventListener("DOMContentLoaded", async function () {
 }
 
 </script>
-
 </body>
 </html>

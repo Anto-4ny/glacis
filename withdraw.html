@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Quantum Income | Charity, validation and donations site </title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Favicon -->
+        <link href="img/quantumincome-logo.jpg" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+
+                    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body>
+
+        <!-- Top Bar Start -->
+<div class="hidden md:block bg-green-900 text-white text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+    <div class="flex items-center space-x-6">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-phone-alt"></i>
+        <p>+0000 00 000 00</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-envelope"></i>
+        <p>marketquantum25@gmail.com</p>
+      </div>
+    </div>
+    <div class="flex space-x-4">
+      <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</div>
+<!-- Top Bar End -->
+
+<!-- Nav Bar Start -->
+<nav class="bg-green-800 sticky top-0 left-0 w-full z-50 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="dashboard" class="flex items-center">
+        <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" class="h-10">
+      </a>
+
+      <!-- Toggle Button -->
+      <div class="lg:hidden">
+        <button id="mobile-menu-toggle" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden lg:flex space-x-4 items-center text-white font-medium">
+        <a href="dashboard" class="hover:text-yellow-400">Home</a>
+        <a href="about" class="hover:text-yellow-400">About</a>
+        <a href="donations" class="hover:text-yellow-400">Donate</a>
+        <a href="earnings" class="hover:text-yellow-400">Earnings</a>
+
+        <!-- Remote Jobs Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Remote Jobs <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="validator" class="block px-4 py-2 hover:bg-gray-200">Validator</a>
+            <a href="referral" class="block px-4 py-2 hover:bg-gray-200">Refer and Earn</a>
+            <a href="withdraw" class="block px-4 py-2 hover:bg-gray-200">Withdraw Earnings</a>
+          </div>
+        </div>
+
+        <!-- Our Services Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Our Services <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="service" class="block px-4 py-2 hover:bg-gray-200">What We Do</a>
+            <a href="donations" class="block px-4 py-2 hover:bg-gray-200">Donate Now</a>
+            <a href="help" class="block px-4 py-2 hover:bg-gray-200">Help & Support</a>
+          </div>
+        </div>
+
+        <a href="profile" class="hover:text-yellow-400">Profile</a>
+        <a href="index" class="text-red-400 hover:text-red-500">Log Out</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu"
+    class="fixed top-0 left-0 w-[70%] h-full bg-green-900 text-white transform -translate-x-full transition-transform duration-300 z-40 lg:hidden overflow-y-auto">
+    <div class="p-6 space-y-4">
+      <button id="mobile-menu-close" class="text-white absolute top-4 right-4 text-2xl">✕</button>
+
+      <a href="dashboard" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-home text-yellow-400"></i>Home</a>
+      <a href="about" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-info-circle text-yellow-400"></i>About</a>
+      <a href="donations" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-donate text-yellow-400"></i>Donate</a>
+      <a href="earnings" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-wallet text-yellow-400"></i>Earnings</a>
+
+      <!-- Dropdowns with toggle -->
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-briefcase text-yellow-400"></i>Remote Jobs</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="validator" class="block py-1 hover:text-yellow-400">Validator</a>
+          <a href="referral" class="block py-1 hover:text-yellow-400">Refer and Earn</a>
+          <a href="withdraw" class="block py-1 hover:text-yellow-400">Withdraw Earnings</a>
+        </div>
+      </div>
+
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-cogs text-yellow-400"></i>Our Services</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="service" class="block py-1 hover:text-yellow-400">What We Do</a>
+          <a href="donations" class="block py-1 hover:text-yellow-400">Donate Now</a>
+          <a href="help" class="block py-1 hover:text-yellow-400">Help & Support</a>
+        </div>
+      </div>
+
+      <a href="profile" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-user text-yellow-400"></i>Profile</a>
+      <a href="index" class="flex items-center gap-2 text-red-400 hover:text-red-500"><i class="fas fa-sign-out-alt text-red-400"></i>Log Out</a>
+    </div>
+  </div>
+</nav>
+<!-- Nav Bar End -->
+        
+        <!-- Page Header Start -->
+        <div class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Withdrawals Overview</h2>
+                    </div>
+                    <div class="col-12">
+                        <a href="dashboard">Home</a>
+                        <a href="withdraw">Withdraw</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+<body class="bg-gray-100 font-sans mt-20">
+    <section id="withdrawal" class="p-6 bg-gray-100 min-h-screen">
+    
+        <!-- Withdrawal Summary -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal Summary</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-blue-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700">Total Balance</h4>
+                    <p id="total-balance" class="text-2xl font-bold text-blue-700">$0</p>
+                </div>
+                <div class="bg-yellow-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700">Pending Withdrawals</h4>
+                    <p id="pending-withdrawals" class="text-2xl font-bold text-yellow-700">$0</p>
+                </div>
+                <div class="bg-green-100 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700">Minimum Withdrawal</h4>
+                    <p id="minimum-withdrawal" class="text-2xl font-bold text-green-700">$1</p>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Withdrawal Request Form -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal Request</h3>
+            <form id="withdrawal-form">
+                <label class="block text-gray-700 font-medium mb-2">Amount to Withdraw</label>
+                <input type="number" id="withdraw-amount" placeholder="Enter amount" 
+                       class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-600">
+                
+                <label class="block text-gray-700 font-medium mb-2">Wallet Address</label>
+                <input type="text" id="wallet-address" placeholder="Your Wallet Address" 
+                       class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-600">
+    
+                <button type="submit" class="w-full bg-yellow-500 text-white py-2 rounded-lg 
+                                          hover:bg-yellow-600 transition">
+                    Submit Withdrawal
+                </button>
+            </form>
+        </div>
+    
+        <!-- Withdrawal History -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Withdrawal History</h3>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 border">Date</th>
+                        <th class="p-3 border">Amount</th>
+                        <th class="p-3 border">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawal-history-body">
+                    <!-- Withdrawal history will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Withdrawal Rules -->
+        <div class="bg-yellow-100 p-4 rounded-lg mt-6 text-gray-800">
+            <h4 class="font-semibold mb-2">Withdrawal Rules</h4>
+            <ul class="list-disc list-inside">
+                <li>Withdrawals are processed within <span class="font-bold">24 hours</span>.</li>
+                <li>No refunds once payment is made.</li>
+                <li>Ensure the correct wallet address is used.</li>
+            </ul>
+        </div>
+    </section>
+
+<!-- Admin Panel (Visible Only to Admin) -->
+<div id="admin-panel" class="bg-white shadow-lg rounded-lg p-6 mt-8 hidden">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Admin Panel - Approve Withdrawals</h3>
+
+    <!-- Responsive Wrapper -->
+    <div class="overflow-x-auto w-full">
+        <table class="w-full min-w-[600px] border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3 border">User Email</th>
+                    <th class="p-3 border">Amount</th>
+                    <th class="p-3 border">Wallet Address</th>
+                    <th class="p-3 border">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="admin-withdrawals-body">
+                <!-- Withdrawal requests will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    
+<script type="module">
+    import { auth, db, doc, getDoc, collection, getDocs, addDoc, onAuthStateChanged, runTransaction, deleteDoc, updateDoc } from "./js/script.js"; // Import Firestore utilities
+
+    //const db = getFirestore();
+
+async function loadWithdrawalData() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.warn("No authenticated user.");
+        return;
+    }
+
+    try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            console.log("User Data:", userData); // Debugging: Check retrieved data
+
+            // Fetch earnings data from Firestore
+            const totalEarnings = userData.totalEarnings || 0;
+            const referralEarnings = userData.referralEarnings || 0;
+            const pendingWithdrawals = userData.pendingWithdrawals || 0; // Ensure this field exists in Firestore
+            const minimumWithdrawal = 1; // Set minimum withdrawal amount
+
+            // Compute total balance
+            const totalBalance = totalEarnings + referralEarnings;
+
+            console.log("Total Balance:", totalBalance);
+            console.log("Pending Withdrawals:", pendingWithdrawals);
+
+            // Update UI
+            document.getElementById("total-balance").textContent = `$${totalBalance.toFixed(2)}`;
+            document.getElementById("pending-withdrawals").textContent = `$${pendingWithdrawals.toFixed(2)}`;
+            document.getElementById("minimum-withdrawal").textContent = `$${minimumWithdrawal.toFixed(2)}`;
+
+            // Load withdrawal history
+            loadWithdrawalHistory(user.uid);
+         // Check if the logged-in user is admin
+         checkIfAdmin(user.email);
+        } else {
+            console.warn("User document not found in Firestore.");
+        }
+    } catch (error) {
+        console.error("Error fetching withdrawal data:", error);
+    }
+}
+// SUBMISSION OF WITHDRAWAL
+async function submitWithdrawal(event) {
+    event.preventDefault();
+
+    const user = auth.currentUser;
+    if (!user) {
+        console.warn("No authenticated user.");
+        return;
+    }
+
+    const amountInput = document.getElementById("withdraw-amount");
+    const walletInput = document.getElementById("wallet-address");
+
+    const amount = parseFloat(amountInput.value);
+    const walletAddress = walletInput.value.trim();
+
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid withdrawal amount.");
+        return;
+    }
+
+    // Reference to the user document
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+        // Use Firestore transaction to update balance safely
+        await runTransaction(db, async (transaction) => {
+            const userSnap = await transaction.get(userRef);
+            if (!userSnap.exists()) {
+                throw new Error("User data not found.");
+            }
+
+            const userData = userSnap.data();
+            const totalEarnings = userData.totalEarnings || 0;
+            const pendingWithdrawals = userData.pendingWithdrawals || 0;
+            const minimumWithdrawal = 1;
+
+            if (amount > totalEarnings) {
+                throw new Error("Insufficient balance for withdrawal.");
+            }
+
+            if (amount < minimumWithdrawal) {
+                throw new Error(`Minimum withdrawal amount is $${minimumWithdrawal}.`);
+            }
+
+            if (!walletAddress) {
+                throw new Error("Please enter a valid wallet address.");
+            }
+
+            // Update Firestore: Deduct from totalEarnings and increase pendingWithdrawals
+            transaction.update(userRef, {
+                totalEarnings: totalEarnings - amount,
+                pendingWithdrawals: pendingWithdrawals + amount
+            });
+
+            // Save withdrawal request to Firestore
+            const withdrawalsRef = collection(db, "withdrawals");
+            await addDoc(withdrawalsRef, {
+                userId: user.uid,
+                amount: amount,
+                walletAddress: walletAddress,
+                status: "Pending",
+                requestedAt: new Date().toISOString(),
+            });
+        });
+
+        alert("Withdrawal request submitted successfully!");
+        amountInput.value = "";
+        walletInput.value = "";
+
+        // Refresh UI with updated balances
+        loadWithdrawalData();
+    } catch (error) {
+        console.error("Error submitting withdrawal request:", error);
+        alert(error.message || "Error processing your withdrawal. Please try again.");
+    }
+}
+
+// Function to load withdrawal history
+async function loadWithdrawalHistory(userId) {
+    try {
+        const withdrawalsRef = collection(db, "withdrawals");
+        const withdrawalsSnap = await getDocs(withdrawalsRef);
+
+        const withdrawalTableBody = document.getElementById("withdrawal-history-body");
+        withdrawalTableBody.innerHTML = ""; // Clear previous history
+
+        withdrawalsSnap.forEach((doc) => {
+            const data = doc.data();
+            if (data.userId === userId) {
+                const row = `
+                    <tr class="text-center">
+                        <td class="p-3 border">${new Date(data.requestedAt).toLocaleDateString()}</td>
+                        <td class="p-3 border">$${data.amount.toFixed(2)}</td>
+                        <td class="p-3 border ${data.status === "Approved" ? "text-green-600" : data.status === "Rejected" ? "text-red-600" : "text-yellow-600"}">
+                            ${data.status}
+                        </td>
+                    </tr>
+                `;
+                withdrawalTableBody.innerHTML += row;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching withdrawal history:", error);
+    }
+}
+
+// Ensure withdrawal data loads when the user logs in
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("User authenticated:", user.uid);
+        loadWithdrawalData();
+    } else {
+        console.warn("User not logged in.");
+    }
+});
+
+// Attach form submission event listener
+document.getElementById("withdrawal-form").addEventListener("submit", submitWithdrawal);
+
+// Function to check if user is an admin
+function checkIfAdmin(email) {
+    if (email === "marketquantum25@gmail.com") {
+        document.getElementById("admin-panel").classList.remove("hidden");
+        loadPendingWithdrawals();
+    }
+}
+
+// Load pending withdrawals for the admin
+async function loadPendingWithdrawals() {
+    try {
+        const withdrawalsRef = collection(db, "withdrawals");
+        const withdrawalsSnap = await getDocs(withdrawalsRef);
+        const adminTableBody = document.getElementById("admin-withdrawals-body");
+        adminTableBody.innerHTML = ""; // Clear the table before adding new entries
+
+        for (const docSnap of withdrawalsSnap.docs) {
+            const data = docSnap.data();
+            if (data.status === "Pending") {
+                let userEmail = "Unknown"; // Default value
+
+                // Fetch user email using userId
+                if (data.userId) {
+                    const userRef = doc(db, "users", data.userId);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        userEmail = userSnap.data().email || "Unknown";
+                    }
+                }
+
+                // Append the row dynamically
+                const row = `
+                    <tr class="text-center">
+                        <td class="p-3 border">${userEmail}</td>
+                        <td class="p-3 border">$${data.amount.toFixed(2)}</td>
+                        <td class="p-3 border">${data.walletAddress}</td>
+                        <td class="p-3 border">
+                            <button onclick="approveWithdrawal('${docSnap.id}', '${data.userId}', ${data.amount})" 
+                                class="bg-green-500 text-white px-3 py-1 rounded-lg mr-2">Approve</button>
+                            <button onclick="rejectWithdrawal('${docSnap.id}', '${data.userId}', ${data.amount})" 
+                                class="bg-red-500 text-white px-3 py-1 rounded-lg">Reject</button>
+                        </td>
+                    </tr>
+                `;
+                adminTableBody.innerHTML += row;
+            }
+        }
+    } catch (error) {
+        console.error("Error loading pending withdrawals:", error);
+    }
+}
+
+// Approve withdrawal
+async function approveWithdrawal(withdrawalId, userId, amount) {
+    try {
+        const withdrawalRef = doc(db, "withdrawals", withdrawalId);
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            console.warn("User not found.");
+            return;
+        }
+
+        const userData = userSnap.data();
+        const pendingWithdrawals = userData.pendingWithdrawals || 0;
+
+        // Ensure Firestore transaction updates correctly
+        await updateDoc(userRef, {
+            pendingWithdrawals: Math.max(0, pendingWithdrawals - amount) // Prevent negative values
+        });
+
+        // Update withdrawal request status
+        await updateDoc(withdrawalRef, {
+            status: "Approved",
+            adminProcessedBy: auth.currentUser.email,
+            processedAt: new Date().toISOString()
+        });
+
+        alert("Withdrawal approved successfully!");
+        loadPendingWithdrawals(); // Refresh admin panel
+        loadWithdrawalData(); // Refresh user data
+    } catch (error) {
+        console.error("Error approving withdrawal:", error);
+        alert("Error processing approval. Try again.");
+    }
+}
+
+// Reject withdrawal
+async function rejectWithdrawal(withdrawalId, userId, amount) {
+    try {
+        const withdrawalRef = doc(db, "withdrawals", withdrawalId);
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            console.warn("User not found.");
+            return;
+        }
+
+        const userData = userSnap.data();
+        const totalEarnings = userData.totalEarnings || 0;
+        const pendingWithdrawals = userData.pendingWithdrawals || 0;
+
+        // Refund rejected withdrawal back to total earnings
+        await updateDoc(userRef, {
+            totalEarnings: totalEarnings + amount,
+            pendingWithdrawals: Math.max(0, pendingWithdrawals - amount) // Prevent negative values
+        });
+
+        // Mark withdrawal as rejected
+        await updateDoc(withdrawalRef, {
+            status: "Rejected",
+            adminProcessedBy: auth.currentUser.email,
+            processedAt: new Date().toISOString()
+        });
+
+        alert("Withdrawal rejected successfully!");
+        loadPendingWithdrawals(); // Refresh admin panel
+        loadWithdrawalData(); // Refresh user data
+    } catch (error) {
+        console.error("Error rejecting withdrawal:", error);
+        alert("Error processing rejection. Try again.");
+    }
+}
+
+
+// Ensure data loads on auth state change
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loadWithdrawalData();
+    } else {
+        console.warn("User not logged in.");
+    }
+});
+
+// Make functions globally accessible for onclick events
+window.approveWithdrawal = approveWithdrawal;
+window.rejectWithdrawal = rejectWithdrawal;
+
+</script>
+
+  
+  <!-- Footer Start -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Logo & About -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-contact text-center">
+                    <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" style="width: 70px; margin-bottom: 15px;">
+                    <p class="text-white">
+                        Quantum Income is a global platform focused on helping people earn through remote validation jobs and building impact through donations and referrals.
+                    </p>
+                    <div class="footer-social">
+                        <a class="btn btn-custom" href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-custom" href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-custom" href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Popular Links</h2>
+                    <a href="about">About Us</a>
+                    <a href="validator">Validator</a>
+                    <a href="withdraw">Withdrawals</a>
+                    <a href="donations">Donate</a>
+                    <a href="referral">Refer</a>
+                </div>
+            </div>
+
+            <!-- Useful Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Useful Links</h2>
+                    <a href="profile">Profile</a>
+                    <a href="service">Services</a>
+                    <a href="help">Help</a>
+                    <a href="validator">Remote Jobs</a>
+                    <a href="earnings">Earnings</a>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-newsletter">
+                    <h2>Newsletter</h2>
+                    <form>
+                        <input class="form-control" placeholder="Email goes here">
+                        <button class="btn btn-custom">Submit</button>
+                        <label>Don't worry, we don't spam!</label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="container copyright">
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; <a href="#">Quantum Income</a>, All Rights Reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p>
+  Designed by <a href="https://antocapteknologies.com" target="_blank">Antocap Teknologies</a> |
+    <a href="https://htmlcodex.com" target="_blank" style="font-size: 6px;">Template by HTML Codex</a>
+    </p> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+ 
+        <!-- Back to top button -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- Pre Loader -->
+        <div id="loader" class="show">
+            <div class="loader"></div>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/parallax/parallax.min.js"></script>
+        
+        <!-- Contact Javascript File -->
+        <script src="mail/jqBootstrapValidation.min.js"></script>
+        <script src="mail/contact.js"></script>
+
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
+
+<!-- Your custom script -->
+<script type="module" src="/js/script.js"></script>
+<script type="module" src="/js/referral.js"></script>
+
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+
+  <script>
+
+document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Disable right-click
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && (event.key === "u" || event.key === "U")) {
+      event.preventDefault(); // Disable "View Source" (Ctrl + U)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "I") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + I)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "J") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + J)
+    }
+    if (event.ctrlKey && event.key === "S") {
+      event.preventDefault(); // Disable Save (Ctrl + S)
+    }
+    if (event.ctrlKey && event.key === "P") {
+      event.preventDefault(); // Disable Print (Ctrl + P)
+    }
+  });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Quantum Income | Charity, validation and donations site </title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Free Website Template" name="keywords">
+        <meta content="Free Website Template" name="description">
+
+        <!-- Favicon -->
+        <link href="img/quantumincome-logo.jpg" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+
+                    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body>
+
+      <!-- Top Bar Start -->
+<div class="hidden md:block bg-green-900 text-white text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+    <div class="flex items-center space-x-6">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-phone-alt"></i>
+        <p>+0000 00 000 00</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-envelope"></i>
+        <p>marketquantum25@gmail.com</p>
+      </div>
+    </div>
+    <div class="flex space-x-4">
+      <a href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</div>
+<!-- Top Bar End -->
+
+<!-- Nav Bar Start -->
+<nav class="bg-green-800 sticky top-0 left-0 w-full z-50 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="dashboard" class="flex items-center">
+        <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" class="h-10">
+      </a>
+
+      <!-- Toggle Button -->
+      <div class="lg:hidden">
+        <button id="mobile-menu-toggle" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden lg:flex space-x-4 items-center text-white font-medium">
+        <a href="dashboard" class="hover:text-yellow-400">Home</a>
+        <a href="about" class="hover:text-yellow-400">About</a>
+        <a href="donations" class="hover:text-yellow-400">Donate</a>
+        <a href="earnings" class="hover:text-yellow-400">Earnings</a>
+
+        <!-- Remote Jobs Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Remote Jobs <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="validator" class="block px-4 py-2 hover:bg-gray-200">Validator</a>
+            <a href="referral" class="block px-4 py-2 hover:bg-gray-200">Refer and Earn</a>
+            <a href="withdraw" class="block px-4 py-2 hover:bg-gray-200">Withdraw Earnings</a>
+          </div>
+        </div>
+
+        <!-- Our Services Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-yellow-400">
+            Our Services <i class="fas fa-caret-down"></i>
+          </button>
+          <div
+            class="absolute left-0 mt-2 w-40 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="service" class="block px-4 py-2 hover:bg-gray-200">What We Do</a>
+            <a href="donations" class="block px-4 py-2 hover:bg-gray-200">Donate Now</a>
+            <a href="help" class="block px-4 py-2 hover:bg-gray-200">Help & Support</a>
+          </div>
+        </div>
+
+        <a href="profile" class="hover:text-yellow-400">Profile</a>
+        <a href="index" class="text-red-400 hover:text-red-500">Log Out</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu"
+    class="fixed top-0 left-0 w-[70%] h-full bg-green-900 text-white transform -translate-x-full transition-transform duration-300 z-40 lg:hidden overflow-y-auto">
+    <div class="p-6 space-y-4">
+      <button id="mobile-menu-close" class="text-white absolute top-4 right-4 text-2xl">✕</button>
+
+      <a href="dashboard" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-home text-yellow-400"></i>Home</a>
+      <a href="about" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-info-circle text-yellow-400"></i>About</a>
+      <a href="donations" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-donate text-yellow-400"></i>Donate</a>
+      <a href="earnings" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-wallet text-yellow-400"></i>Earnings</a>
+
+      <!-- Dropdowns with toggle -->
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-briefcase text-yellow-400"></i>Remote Jobs</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="validator" class="block py-1 hover:text-yellow-400">Validator</a>
+          <a href="referral" class="block py-1 hover:text-yellow-400">Refer and Earn</a>
+          <a href="withdraw" class="block py-1 hover:text-yellow-400">Withdraw Earnings</a>
+        </div>
+      </div>
+
+      <div>
+        <button class="flex items-center justify-between w-full dropdown-toggle-mobile">
+          <span class="flex gap-2 items-center"><i class="fas fa-cogs text-yellow-400"></i>Our Services</span>
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="pl-6 mt-2 hidden dropdown-mobile">
+          <a href="service" class="block py-1 hover:text-yellow-400">What We Do</a>
+          <a href="donations" class="block py-1 hover:text-yellow-400">Donate Now</a>
+          <a href="help" class="block py-1 hover:text-yellow-400">Help & Support</a>
+        </div>
+      </div>
+
+      <a href="profile" class="flex items-center gap-2 hover:text-yellow-400"><i class="fas fa-user text-yellow-400"></i>Profile</a>
+      <a href="index" class="flex items-center gap-2 text-red-400 hover:text-red-500"><i class="fas fa-sign-out-alt text-red-400"></i>Log Out</a>
+    </div>
+  </div>
+</nav>
+<!-- Nav Bar End -->
+        
+        <!-- Page Header Start -->
+        <div class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Donate to Quantum Market</h2>
+                    </div>
+                    <div class="col-12">
+                        <a href="dashboard.html">Home</a>
+                        <a href="donations.html">Donations</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+              <!-- Spacer for Other Items -->
+<div class="h-14 md:h-14 lg:h-14"></div>
+
+<section class="min-h-screen px-4 py-12 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-pink-600 dark:text-pink-400 mb-2">Support Our Mission</h1>
+      <p class="text-gray-700 dark:text-gray-300 text-lg">Your donation helps us maintain infrastructure, reward validators, and grow the community. Thank you for your generosity!</p>
+    </div>
+
+    <!-- Wallet Info -->
+    <div class="bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-pink-500 mb-10">
+      <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Donate via Binance (BEP20)</h2>
+      <div class="flex justify-between items-center bg-white dark:bg-gray-900 p-4 rounded-xl shadow-inner">
+        <span class="font-medium text-gray-800 dark:text-gray-200">Wallet Address:</span>
+        <div class="flex items-center space-x-2">
+          <span id="walletBinance" class="text-sm font-mono text-blue-600 dark:text-blue-400">821693759</span>
+         <button id="copyWalletBtn" class="text-sm px-3 py-1 bg-pink-600 text-white rounded hover:bg-pink-700">
+            Copy
+         </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donation Form -->
+    <div class="bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-xl border-l-4 border-green-500">
+      <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Submit Donation Details</h2>
+
+        <form class="space-y-4" id="donationForm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">First Name</label>
+            <input type="text" id="donor-first-name" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
+            </div>
+
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Last Name</label>
+            <input type="text" id="donor-last-name" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+            <input type="email" id="donor-email" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
+        </div>
+
+            <!-- TXID field -->
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Transaction ID (TXID)</label>
+            <input type="text" id="donor-txid" placeholder="e.g. 0x123abc..." required class="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-green-400 dark:bg-gray-900 dark:text-white">
+            <div id="txid-message" class="text-sm mt-1 text-red-500"></div> 
+            </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Wallet Address Used</label>
+            <input type="text" id="donor-wallet" class="w-full px-4 py-2 rounded-xl border bg-white dark:bg-gray-900 dark:text-white" required>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Amount Donated (USD)</label>
+            <input type="number" id="donor-amount" placeholder="Enter amount in USD" required class="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-green-400 dark:bg-gray-900 dark:text-white">
+        </div>
+
+        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-full hover:brightness-110 transition-all duration-300">
+            Submit Donation
+        </button>
+
+        <!-- Success/Error Messages -->
+        <div id="donation-message" class="text-center font-medium mt-4"></div>
+        </form>
+
+    </div>
+  </div>
+</section>
+
+<script type="module">
+ import {
+  auth,
+  db,
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  onAuthStateChanged
+} from './js/script.js'
+
+const walletAddress = "821693759";
+
+// ✅ Clipboard Copy Handler
+function copyWallet() {
+  navigator.clipboard.writeText(walletAddress).then(() => {
+    showMessage("Wallet address copied!", "green");
+  }).catch(() => {
+    showMessage("Failed to copy wallet address.", "red");
+  });
+}
+
+// ✅ Feedback Message
+function showMessage(message, type) {
+  const msgEl = document.getElementById("donation-message");
+  msgEl.textContent = message;
+  msgEl.className = `text-center mt-4 font-medium ${type === "green" ? "text-green-600" : "text-red-500"}`;
+}
+
+// ✅ Listen for Copy Button Click
+document.getElementById("copyWalletBtn").addEventListener("click", copyWallet);
+
+// ✅ Pre-fill user info if logged in
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        document.getElementById("donor-first-name").value = data.firstName || "";
+        document.getElementById("donor-last-name").value = data.lastName || "";
+        document.getElementById("donor-email").value = data.email || user.email;
+        document.getElementById("donor-wallet").value = walletAddress;
+      }
+    } catch (error) {
+      showMessage("Failed to fetch user data.", "red");
+    }
+  }
+});
+
+// ✅ Donation Form Submission
+document.getElementById("donationForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const firstName = document.getElementById("donor-first-name").value.trim();
+  const lastName = document.getElementById("donor-last-name").value.trim();
+  const email = document.getElementById("donor-email").value.trim();
+  const txid = document.getElementById("donor-txid").value.trim();
+  const wallet = document.getElementById("donor-wallet").value.trim();
+  const amount = parseFloat(document.getElementById("donor-amount").value);
+
+  if (!txid || !amount || isNaN(amount)) {
+    return showMessage("Please enter a valid TXID and amount.", "red");
+    document.getElementById("txid-message").textContent = "Invalid TXID";
+
+  }
+
+  try {
+    await addDoc(collection(db, "donations"), {
+      firstName,
+      lastName,
+      email,
+      txid,
+      wallet,
+      amount,
+      status: "pending",
+      timestamp: new Date()
+    });
+
+    showMessage("Thank you for your donation! We have received your details.", "green");
+    e.target.reset();
+  } catch (err) {
+    showMessage("Failed to submit donation. Please try again.", "red");
+  }
+});
+
+</script>
+
+ <!-- Footer Start -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Logo & About -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-contact text-center">
+                    <img src="img/quantumincome-logo.jpg" alt="Quantum Income Logo" style="width: 70px; margin-bottom: 15px;">
+                    <p class="text-white">
+                        Quantum Income is a global platform focused on helping people earn through remote validation jobs and building impact through donations and referrals.
+                    </p>
+                    <div class="footer-social">
+                        <a class="btn btn-custom" href="https://x.com/GlaciasO25?t=67F_EY_93jev-Rjj-tv1Gw&s=09"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-custom" href="https://www.facebook.com/profile.php?id=61564678751322"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-custom" href="https://www.instagram.com/quantum_arket?igsh=YzljYTk1ODg3Zg=="><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Popular Links</h2>
+                    <a href="about">About Us</a>
+                    <a href="validator">Validator</a>
+                    <a href="withdraw">Withdrawals</a>
+                    <a href="donations">Donate</a>
+                    <a href="referral">Refer</a>
+                </div>
+            </div>
+
+            <!-- Useful Links -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-link">
+                    <h2>Useful Links</h2>
+                    <a href="profile">Profile</a>
+                    <a href="service">Services</a>
+                    <a href="help">Help</a>
+                    <a href="validator">Remote Jobs</a>
+                    <a href="earnings">Earnings</a>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-newsletter">
+                    <h2>Newsletter</h2>
+                    <form>
+                        <input class="form-control" placeholder="Email goes here">
+                        <button class="btn btn-custom">Submit</button>
+                        <label>Don't worry, we don't spam!</label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="container copyright">
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; <a href="#">Quantum Income</a>, All Rights Reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p>
+  Designed by <a href="https://antocapteknologies.com" target="_blank">Antocap Teknologies</a> |
+    <a href="https://htmlcodex.com" target="_blank" style="font-size: 6px;">Template by HTML Codex</a>
+    </p> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+ 
+        <!-- Back to top button -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- Pre Loader -->
+        <div id="loader" class="show">
+            <div class="loader"></div>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/parallax/parallax.min.js"></script>
+        
+        <!-- Contact Javascript File -->
+        <script src="mail/jqBootstrapValidation.min.js"></script>
+        <script src="mail/contact.js"></script>
+
+        <script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+<script type ="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
+
+<!-- Your custom script -->
+<script type="module" src="./js/script.js"></script>
+<script type="module" src="./js/referral.js"></script>
+
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+
+<script>
+ document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Disable right-click
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && (event.key === "u" || event.key === "U")) {
+      event.preventDefault(); // Disable "View Source" (Ctrl + U)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "I") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + I)
+    }
+    if (event.ctrlKey && event.shiftKey && event.key === "J") {
+      event.preventDefault(); // Disable DevTools (Ctrl + Shift + J)
+    }
+    if (event.ctrlKey && event.key === "S") {
+      event.preventDefault(); // Disable Save (Ctrl + S)
+    }
+    if (event.ctrlKey && event.key === "P") {
+      event.preventDefault(); // Disable Print (Ctrl + P)
+    }
+  });
+
+
+</script>
+</body>
+</html>
+
